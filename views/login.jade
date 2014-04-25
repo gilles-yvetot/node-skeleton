@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  #content
+    form(method="post" action="/login")
+      p
+        label Username:
+          input(type="text" name="username" value="Gilles")
+      p
+        label Password:
+          input(type="text" name="password" value="password")
+      p
+        input(type="submit" value="Login")

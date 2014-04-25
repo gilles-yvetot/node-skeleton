@@ -1,0 +1,16 @@
+{
+  "name": "node-skeleton",
+  "version": "0.0.1",
+  "author": {
+    "name": "Gilles Yvetot",
+    "email": "g.yvetot@gmail.com"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.4.8",
+    "jade": "*"
+  }
+}

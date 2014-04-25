@@ -1,0 +1,37 @@
+doctype html
+html(lang='en')
+  head
+    title= title
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='')
+    meta(name='author', content='Gilles Yvetot')
+    
+    link(href='/css/style.css', rel='stylesheet' type='text/css')
+    link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet")
+    link(href='http://fonts.googleapis.com/css?family=Roboto:400,500,300,300italic,400italic,500italic' rel='stylesheet' type='text/css')
+    
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js')
+    script(src='/js/global.js')
+
+  body
+    header
+    .container
+        nav
+            #logo 
+                a(href='/')
+                    img(src='/img/Juan-Monterro.png' alt='juan_monterro_logo')
+            #menu
+            
+        block content
+    footer
+        #contact_info   
+            a(href='tel:+1 (786) 203-7880') 
+                 i.fa.fa-phone 
+                 |+1 (786) 203-7880
+            a(href='mailto:juan.monterro@gmail.com') 
+                i.fa.fa-envelope 
+                |juan.monterro@gmail.com 
+
+

@@ -1,0 +1,125 @@
+
+
+html{
+  height: 100%;
+}
+body{
+  padding:100px 0px 100px 0px;
+  position:absolute; 
+  top:0; 
+  bottom:0; 
+  left:0; 
+  right:0;
+  margin:0;
+  font-family:Roboto;
+  font-weight: 300;
+}
+/*
+                                                              HEADER
+*/
+body > header{
+  margin-top:-100px;
+  height:100px; 
+  background-color:#f1f2f2;
+}
+
+/*
+                                                              BODY
+*/
+body > .container{
+  min-height:100%; 
+  background-color:#f1f2f2;
+  display: table;
+  width:100%;
+/*
+                                                              NAV
+*/
+}
+body > .container > nav{
+  display: table-cell;
+  width: 200px;
+  color: black;
+  vertical-align: top;
+}
+body > .container > nav > #logo > a > img{
+  height: auto;
+  width: 180px;
+  margin: 0px 10px 0px 10px;
+  padding:0;
+}
+body > .container > nav > #menu > ul{
+  margin: 0;
+  padding: 20px 0px 0px 50px;
+  overflow: scroll;
+  list-style-type: none;
+  font-size: 18px;
+}
+body > .container > nav > #menu > ul ul{
+  margin: 0px 0px 0px 10px;
+  padding: 0;
+  list-style-type: none;
+  list-style-position: outside;
+  font-size: 15px;
+}
+body > .container > nav > #menu > ul span{
+  text-transform: capitalize;
+  text-decoration: none;
+  color: gray;
+}
+body > .container > nav > #menu > ul span:hover{
+  text-transform: capitalize;
+  text-decoration: none;
+  color: gray;
+  font-weight: 400;
+  cursor:pointer;
+}
+/*
+                                                              BODY CONTENT
+*/
+body  > .container > #content{
+  display: table-cell;
+  background-color: white;
+  width:100%;
+  vertical-align: middle;
+  text-align: center;
+}
+
+body > .container > #content > img{
+  padding: 0;
+  max-height: 523px;
+  width:auto;
+  max-width: 100%;
+  display: block;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+/*
+                                                              FOOTER
+*/
+
+body > footer{
+  height:100px; 
+  background-color:#f1f2f2;
+  position:relative;
+}
+body > footer > #contact_info{
+  position: absolute;
+  right: 0px;
+  bottom: 10px;
+  font-size: 13px;
+}
+body > footer > #contact_info > a{
+  text-decoration: none;
+  color: gray;
+  padding-right: 15px;
+}
+
+body > footer > #contact_info > a > i{
+  font-size: 15px;
+  vertical-align: -2px;
+  padding-right: 4px;
+}
+
+
+
