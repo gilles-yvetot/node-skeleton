@@ -2,6 +2,26 @@
 window.onload =window_load;
 $( window ).resize(window_resize);
 
+document.addEventListener("fullscreenchange", function () {
+	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
+	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
+}, false);
+ 
+document.addEventListener("mozfullscreenchange", function () {
+	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
+	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
+}, false);
+ 
+document.addEventListener("webkitfullscreenchange", function () {
+	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
+	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
+}, false);
+ 
+document.addEventListener("msfullscreenchange", function () {
+	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
+	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
+}, false);
+
 function window_resize(){
 }
 function window_load(){
@@ -44,7 +64,6 @@ function getImages(e){
 	var sender = (e && e.target) || (window.event && window.event.srcElement);
 	var myEle = sender;
 
-	console.log(sender.innerHTML);
 	$.ajax({
 		  type: "POST",
 		  url: '/pictures',
@@ -53,7 +72,33 @@ function getImages(e){
 		  	console.dir(data);
 		  }
 		});
+}
 
+function requestFullScreen() {
+
+	if( window.innerHeight != screen.height){
+		// Supports most browsers and their versions.
+	    var requestMethod = document.body.requestFullScreen || document.body.webkitRequestFullScreen || document.body.mozRequestFullScreen || document.body.msRequestFullScreen;
+
+	    if (requestMethod) { // Native full screen.
+	        requestMethod.call(document.body);
+	    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+	        var wscript = new ActiveXObject("WScript.Shell");
+	        if (wscript !== null) {
+	            wscript.SendKeys("{F11}");
+	        }
+	    }
+	}
+	else{
+		if(document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if(document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if(document.webkitExitFullscreen) {
+			document.webkitExitFullscreen();
+		}
+	}
+    
 }
 
 

@@ -8,6 +8,7 @@ var http = require('http');
 var path = require('path');
 var sitemap = require('./sitemap.json');
 require('./pass.js').initUsers();
+require('./picturesFinder.js');
 
 var app = module.exports =express();
 

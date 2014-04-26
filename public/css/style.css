@@ -103,22 +103,32 @@ body > footer{
   background-color:#f1f2f2;
   position:relative;
 }
+body > footer i{
+  font-size: 15px;
+  vertical-align: -1px;
+  padding-right: 4px;
+}
+body > footer > #fullscreen{
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  font-size: 13px;
+  color: gray;
+  font-size: 14px;
+}
+body > footer > #fullscreen:hover{
+  cursor: pointer;
+}
 body > footer > #contact_info{
   position: absolute;
   right: 0px;
-  bottom: 10px;
-  font-size: 13px;
+  bottom: 20px;
+  font-size: 14px;
 }
 body > footer > #contact_info > a{
   text-decoration: none;
   color: gray;
   padding-right: 15px;
-}
-
-body > footer > #contact_info > a > i{
-  font-size: 15px;
-  vertical-align: -2px;
-  padding-right: 4px;
 }
 
 
