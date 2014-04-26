@@ -60,15 +60,17 @@ module.exports = function(app, sitemap) {
 		var path = Object.keys(req.body)[0];
 		// TODO: insert a regex to prevent injection here (eval) (think about the case when there is nothing)
 		var core = require('./core.js');
+		//TODO: Thibault, here is where I am looking to launch the searching process
 		var obeujay = core.getImages(path);
 		res.json(obeujay);
 	});
 
+
+
 	app.post('/login', function(req, res){
 	  require('./pass').authenticate(req.body.username, req.body.password, function(err, user){
 	    if (user) {
-	      // Regenerate session when signing in
-	      // to prevent fixation
+	      // Regenerate session when signing in to prevent fixation
 	      req.session.regenerate(function(){
 	        // Store the user's primary key
 	        // in the session store to be retrieved,

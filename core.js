@@ -17,6 +17,9 @@ module.exports =
 {
 	getImages : function(folder_name){
 		var sitemap = require('./sitemap.json');
+		// the goal here is to walk through my image folder to figure out 
+		// which pictures are inside, thanks to the function find('directory'). 
+		//The current solution is to get this information from an updated json
 		var obj2return = this.breadth_search(sitemap,folder_name);
 		return obj2return;
 	},
