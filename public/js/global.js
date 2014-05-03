@@ -27,24 +27,104 @@ function window_resize(){
 function window_load(){
 	window_resize();
 	populateNav();
+	var a = document.getElementById('dynamicAdminContent');
+	if(a)
+		getAdminContent('root',true);
 }
+/*
+	Absolutely put these function in admin page only=====================================================
+*/
+function getAdminContent(folderName, forward){
+
+		var dataForAjax ={};	dataForAjax[folderName]=forward;
+		$.ajax({
+			  type: "GET",
+			  url: '/admin_folders',
+			  data: dataForAjax,
+			  success: function(data){
+			  	renderAdminContent(data);
+			  }
+			});
+
+}
+function insertInput(title,action){
+	
+	var container = $('#modifs > form')[0];
+	while (container.hasChildNodes()) {
+		    container.removeChild(container.lastChild);
+		}
+	if(action=='upload')
+	{
+		
+	}
+	else if(action=='modify')
+	{
+		var name = document.createElement("input");
+		name.type = 'text';
+		name.className = '';
+		name.form = 'modifForm';
+		var order = name.cloneNode(true), subtitle = name.cloneNode(true);
+		name.name ='name'; name.value =title;
+		order.name='order'; order.placeholder= 1;
+		subtitle.name= 'subtitle'; subtitle.placeholder = 'subtitle';
+		container.appendChild(name);	container.appendChild(order);	container.appendChild(subtitle);
+	}
+	else if(action=='delete')
+	{
+
+	}
+	else if(action=='add')
+	{
+
+	}
+}
+function renderAdminContent(data){
+	var title ='';
+	if(data[0] !='Your Website')
+		title+='<i class="fa fa-reply" value="'+data[0]
+		+'" title="Go back to parent folder" onclick="getAdminContent(\''+data[0]+'\',false)"></i>';
+	title +=data[0];
+	$('body > #container > #content > #dynamicAdminContent > h1').html(title);
+	data.shift();
+	var str='';
+	if(data)
+	data.forEach(function(value){
+		str+='<div><div onclick="getAdminContent(\''+value+'\',true);">'+value+'</div><div>'
+			+	'<i title="Upload a picture in the folder" class="fa fa-cloud-upload" onclick="insertInput(\''+value+'\',\'upload\')"></i>'
+			+ 	'<i title="Modify the folder" class="fa fa-font" onclick="insertInput(\''+value+'\',\'modify\')"></i>'
+			+	'<i title="Delete this folder" class="fa fa-times" onclick="insertInput(\''+value+'\',\'delete\')"></i>'
+			+'</div></div>';
+	});
+	$('body > #container > #content > #dynamicAdminContent > #folders').html(str);
+
+}
+/*
+	=========================================================================================================
+*/
 function populateNav()
 {
-	// jQuery AJAX call for JSON
-	$.getJSON( '/sitemap', function( data ) {
+	getSitemap(function(sitemap){
 		// Inject the whole content string into our existing HTML list
-		$('body > .container > nav > #menu ').html(populateTree(data).replace(/<ul><\/ul>/gi,''));
+		$('body > #container > nav > #menu ').html(populateTree(sitemap).replace(/<ul><\/ul>/gi,''));
 		//style
-		$('body > .container > nav > #menu > ul').css('display','block');
-		$('body > .container > nav > #menu > ul ul').css('display','none');
+		$('body > #container > nav > #menu > ul').css('display','block');
+		$('body > #container > nav > #menu > ul ul').css('display','none');
 		//event handler: close and open the nav sub-section
-		$('body > .container > nav > #menu > ul li').click(function (){
-			$('body > .container > nav > #menu > ul ul').css('display','none');
+		$('body > #container > nav > #menu > ul li').click(function (){
+			$('body > #container > nav > #menu > ul ul').css('display','none');
 			$(this).find('ul').css('display','block');
 		});
 	});
-	
 }
+
+function getSitemap(action)
+{
+	// jQuery AJAX call for JSON
+	$.getJSON( '/sitemap', function( sitemap ){
+		action(sitemap);
+	});
+}
+
 
 function populateTree(tree)
 {
@@ -65,7 +145,7 @@ function getImages(e){
 	var myEle = sender;
 
 	$.ajax({
-		  type: "POST",
+		  type: "GET",
 		  url: '/pictures',
 		  data: sender.innerHTML,
 		  success: function(data){

@@ -1,5 +1,9 @@
 
-module.exports = function(app, sitemap) {
+module.exports = function(app) {
+
+	var path = require('path');
+	var core = require('./core.js');
+	var sitemap = require('./sitemap.json');
 
 	/*==========================
 	    Routes: GET
@@ -23,6 +27,19 @@ module.exports = function(app, sitemap) {
 		res.render('contact.jade', {
 			title: 'Contact',
 		});
+	});
+	// PICTURES ===============================================================
+	app.get('/pictures', function(req, res){
+		
+		var path = Object.keys(req.body)[0];
+		// TODO: insert a regex to prevent injection here (eval) (think about the case when there is nothing)
+		core.getImages(path, function(err,data){
+			if (err)
+				res.writeHead(500, err.message).send();
+ 			else
+ 				res.json(data);
+		});
+		
 	});
 	// RESTRICTED & LOGIN ======================================================
 
@@ -50,23 +67,51 @@ module.exports = function(app, sitemap) {
 		});
 	});
 	
+	
+
+	app.get('/admin_folders', restrict,function(req, res){
+		var folderName = Object.keys(req.query)[0];
+		// we are getting the content of the folder forward
+		if(req.query[folderName]=='true'){
+			core.getContentFolder(folderName,function(err,arr){
+				if(err){
+					console.log(err);
+					res.send('error while retrieving folder content');
+					res.end();
+				}
+				else
+				{
+					res.json(arr);
+				}
+			});
+		}
+		else{
+			core.getParentFolder(folderName,function(err,arr){
+				if(err){
+					console.log(err);
+					res.send('error while retrieving folder content');
+					res.end();
+				}
+				else
+				{
+					res.json(arr);
+				}
+			});
+		}
+			
+	});
+
+
 	/*==========================
 	    Routes: POST
 	==========================*/
 
-	// SITEMAP =================================================================
-	app.post('/pictures', function(req, res){
-		
-		var path = Object.keys(req.body)[0];
-		// TODO: insert a regex to prevent injection here (eval) (think about the case when there is nothing)
-		var core = require('./core.js');
-		//TODO: Thibault, here is where I am looking to launch the searching process
-		var obeujay = core.getImages(path);
-		res.json(obeujay);
+	// PICTURES ===============================================================
+	app.post('/pictures',function(req,res){
+		core.picturesPost(req,res);
 	});
 
-
-
+	// LOGIN ==================================================================
 	app.post('/login', function(req, res){
 	  require('./pass').authenticate(req.body.username, req.body.password, function(err, user){
 	    if (user) {

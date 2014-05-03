@@ -26,47 +26,81 @@ body > header{
 /*
                                                               BODY
 */
-body > .container{
+body > #container{
   min-height:100%; 
   background-color:#f1f2f2;
   display: table;
   width:100%;
+}
+
+/*
+                                                              BODY - ADMIN
+*/
+body > #container > #content > #dynamicAdminContent > #folders{
+  text-align: left;
+  margin-left: 100px;
+  font-size: 22px; 
+  float: left;
+}
+body > #container > #content > #dynamicAdminContent > #folders > div{
+  display: table;
+}
+body > #container > #content > #dynamicAdminContent > #folders > div > div{
+  padding:3px;
+  display: table-cell;
+  width:200px;
+}
+body > #container > #content > #dynamicAdminContent > #folders > div > div:nth-child(1){
+  text-decoration: underline;
+}
+body > #container > #content > #dynamicAdminContent > #folders > div > div:nth-child(1):hover{
+  cursor: pointer;
+  font-weight: bold;
+}
+body > #container > #content > #dynamicAdminContent > #folders > div > div:nth-child(2){
+  
+}
+body > #container > #content > #dynamicAdminContent > #folders > div > div > i{
+  padding-right: 4px;
+  padding-left: 4px;
+  cursor: pointer;
+}
 /*
                                                               NAV
 */
-}
-body > .container > nav{
+
+body > #container > nav{
   display: table-cell;
   width: 200px;
   color: black;
   vertical-align: top;
 }
-body > .container > nav > #logo > a > img{
+body > #container > nav > #logo > a > img{
   height: auto;
   width: 180px;
   margin: 0px 10px 0px 10px;
   padding:0;
 }
-body > .container > nav > #menu > ul{
+body > #container > nav > #menu > ul{
   margin: 0;
   padding: 20px 0px 0px 50px;
   overflow: scroll;
   list-style-type: none;
   font-size: 18px;
 }
-body > .container > nav > #menu > ul ul{
+body > #container > nav > #menu > ul ul{
   margin: 0px 0px 0px 10px;
   padding: 0;
   list-style-type: none;
   list-style-position: outside;
   font-size: 15px;
 }
-body > .container > nav > #menu > ul span{
+body > #container > nav > #menu > ul span{
   text-transform: capitalize;
   text-decoration: none;
   color: gray;
 }
-body > .container > nav > #menu > ul span:hover{
+body > #container > nav > #menu > ul span:hover{
   text-transform: capitalize;
   text-decoration: none;
   color: gray;
@@ -76,7 +110,7 @@ body > .container > nav > #menu > ul span:hover{
 /*
                                                               BODY CONTENT
 */
-body  > .container > #content{
+body  > #container > #content{
   display: table-cell;
   background-color: white;
   width:100%;
@@ -84,13 +118,12 @@ body  > .container > #content{
   text-align: center;
 }
 
-body > .container > #content > img{
+body > #container > #content > img{
   padding: 0;
   max-height: 523px;
   width:auto;
   max-width: 100%;
   display: block;
-
   margin-left: auto;
   margin-right: auto;
 }

@@ -1,71 +1,23 @@
 {
-
 	"Portraits":{
 		"subtitle":"Friends'portraits",
-		"img":[
-			{
-				"name":"example",
-				"alt": "alt text"
-			},
-			{
-				"name":"example2",
-				"alt": "alt text2"
-			}
-		],
+		"order":1,
 		"Portraits2":{
-			"subtitle":"Friends'portraits",
-			"img":[
-				{
-					"name":"example",
-					"alt": "alt text"
-				},
-				{
-					"name":"example2",
-					"alt": "alt text2"
-				}
-			],
+			"subtitle":"Friends'portraits in P2",
+			"order":1,
 			"Portraits3":{
-				"subtitle":"Friends'portraits",
-				"img":[
-					{
-						"name":"example",
-						"alt": "alt text"
-					},
-					{
-						"name":"example2",
-						"alt": "alt text2"
-					}
-				],
-				"folder": null
+				"subtitle":"Friends'portraits in P3",
+				"order":1
 			}
 		}
 	},
 	"Quito":{
 		"subtitle":"Photos from Quito, Ecuador",
-		"img":[
-			{
-				"name":"example",
-				"alt": "alt text"
-			},
-			{
-				"name":"example2",
-				"alt": "alt text2"
-			}
-		],
-		"folder":null
+		"order":1
 	},
 	"Miami":{
 		"subtitle":"Photos from Miami, FL, USA",
-		"img":[
-			{
-				"name":"example",
-				"alt": "alt text"
-			},
-			{
-				"name":"example2",
-				"alt": "alt text2"
-			}
-		],
-		"folder":null
+		"order":1
+		
 	}
 }

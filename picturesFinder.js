@@ -1,5 +1,5 @@
 var array = [];
-var find = require('findit')('./public/img/');
+var find = require('findit');
 var path = require('path');
 
 find.on('file', function(file) {
@@ -12,3 +12,4 @@ find.on('file', function(file) {
 find.on('end', function() {
 	console.log(array);
 });
+

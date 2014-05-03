@@ -1,4 +1,22 @@
 extends layout
 
 block content
-	#content Now logged-in!
+    #content
+        #dynamicAdminContent
+            h1 Your Website
+            #folders
+            #modifs
+                form(action="/pictures", method="post", id='modifForm',enctype="multipart/form-data")
+
+        
+
+
+        div#uploadPicture
+            label Choose a category
+
+            form(action="/pictures", method="post", id='uploadForm',enctype="multipart/form-data")
+                p
+                    label Upload your picture
+                    input(type="file", name="displayImage")
+                p
+                    input(type="submit" value="Upload")
