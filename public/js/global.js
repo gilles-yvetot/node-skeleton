@@ -2,25 +2,15 @@
 window.onload =window_load;
 $( window ).resize(window_resize);
 
-document.addEventListener("fullscreenchange", function () {
-	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
+// full screen related functions and listeners
+function toogleFSicons(){
+ 	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
 	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
-}, false);
- 
-document.addEventListener("mozfullscreenchange", function () {
-	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
-	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
-}, false);
- 
-document.addEventListener("webkitfullscreenchange", function () {
-	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
-	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
-}, false);
- 
-document.addEventListener("msfullscreenchange", function () {
-	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
-	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
-}, false);
+ }
+document.addEventListener("fullscreenchange", toogleFSicons, false);
+document.addEventListener("mozfullscreenchange", toogleFSicons, false);
+document.addEventListener("webkitfullscreenchange", toogleFSicons, false);
+document.addEventListener("msfullscreenchange", toogleFSicons, false);
 
 function window_resize(){
 }
@@ -29,74 +19,159 @@ function window_load(){
 	populateNav();
 	var a = document.getElementById('dynamicAdminContent');
 	if(a)
-		getAdminContent('root',true);
+	{
+		getFolders('root',true);
+	}
 }
 /*
-	Absolutely put these function in admin page only=====================================================
+	Absolutely put these function in the admin page only=====================================================
 */
-function getAdminContent(folderName, forward){
-
+function getFolders(folderName, forward){
+		var path = $('#dynamicAdminContent #path')[0];
+		if (forward){
+			if(folderName !='root')
+				path.value = path.value + '/'+folderName;
+			else
+				path.value = 'root';
+		}
+		else{
+			path.value = path.value.slice(0,path.value.lastIndexOf('/'));
+		}
+		folderName = path.value;
 		var dataForAjax ={};	dataForAjax[folderName]=forward;
 		$.ajax({
 			  type: "GET",
-			  url: '/admin_folders',
+			  url: '/folders',
 			  data: dataForAjax,
 			  success: function(data){
-			  	renderAdminContent(data);
+			  	renderFolders(data);
+			  	renderImg(data);
 			  }
 			});
 
 }
-function insertInput(title,action){
+
+function insertInput(oldName,oldOrder,oldSubtitle,action){
+	var container = $('#content > #dynamicAdminContent > #foldersRight > form')[0];
+	//empty the form first
+	$(container).html('');
+
+	//creating inputs
+	var name = document.createElement("input"); name.type = 'text';
+	var subtitle = name.cloneNode(true), order = name.cloneNode(true);
+	name.name ='name'; name.value =oldName; name.placeholder='Name';
+	order.name ='order'; order.value =oldOrder; order.placeholder='1';
+	subtitle.name ='subtitle'; subtitle.value =oldSubtitle; subtitle.placeholder='subtitle';
 	
-	var container = $('#modifs > form')[0];
-	while (container.hasChildNodes()) {
-		    container.removeChild(container.lastChild);
+	var submit = document.createElement("input"); 
+	submit.type= 'submit'; submit.value = 'Submit';
+
+
+	if(action=='uploadImage') {
+		var upload = document.createElement('input');
+		upload.type='file';		upload.name = 'upload'; 	upload.multiple='multiple';
+		var path = document.createElement('input');
+		path.form = 'picturesForm'; path.type ='hidden';	path.name='path';
+		path.value = $('#dynamicAdminContent #path')[0].value;
+		container = $('#content > #dynamicAdminContent > #picturesRight > form')[0];
+		$(container).html('');
+		container.appendChild(upload);container.appendChild(name);container.appendChild(subtitle);
+		container.appendChild(path);container.appendChild(order);container.appendChild(submit);
+	}
+	else if(action=='modifyFolder')	{
+		var previousName = document.createElement("input");
+		previousName.type='hidden'; previousName.name= 'oldName'; previousName.value = oldName;
+		container.appendChild(name);	container.appendChild(previousName);	container.appendChild(order);
+		container.appendChild(subtitle);	container.appendChild(submit);
+	}
+	else if(action=='deleteFolder')	{
+		var r=confirm("Are you sure you want to delete the "+oldName+" folder?");
+		if (r==true){
+			var arr=[];
+			var path = $('#dynamicAdminContent #path')[0];
+			if(oldName && path){
+				arr.push(oldName);	arr.push(path.value);
+				var data2send ={}; data2send.arr = arr;
+				$.ajax({
+					type: "DELETE",
+					url: '/folders',
+					data: data2send,
+					success: function(data){
+						if(data.retStatus && data.retStatus==200)
+							window.location.replace(data.redirectTo);
+					}
+				});
+			}
 		}
-	if(action=='upload')
-	{
-		
 	}
-	else if(action=='modify')
-	{
-		var name = document.createElement("input");
-		name.type = 'text';
-		name.className = '';
-		name.form = 'modifForm';
-		var order = name.cloneNode(true), subtitle = name.cloneNode(true);
-		name.name ='name'; name.value =title;
-		order.name='order'; order.placeholder= 1;
-		subtitle.name= 'subtitle'; subtitle.placeholder = 'subtitle';
-		container.appendChild(name);	container.appendChild(order);	container.appendChild(subtitle);
+	else if(action=='addFolder'){
+		container.appendChild(name);	container.appendChild(order);	
+		container.appendChild(subtitle); container.appendChild(submit);
 	}
-	else if(action=='delete')
-	{
+	else if(action=='modifyImage'){
 
 	}
-	else if(action=='add')
-	{
-
+	else if(action=='deleteImage'){
+		var r=confirm("Are you sure you want to delete "+oldName+" ?");
+		if (r==true){
+			var arr=[];
+			var path = $('#dynamicAdminContent #path')[0];
+			if(oldName && path){
+				arr.push(oldName);	arr.push(path.value);
+				var data2send ={}; data2send.arr = arr;
+				$.ajax({
+					type: "DELETE",
+					url: '/pictures',
+					data: data2send,
+					success: function(data){
+						if(data.retStatus && data.retStatus==200)
+							window.location.replace(data.redirectTo);
+					}
+				});
+			}
+		}
 	}
 }
-function renderAdminContent(data){
+function renderFolders(data){
+	var form = $('#foldersRight > form')[0];
+	$(form).html('');
 	var title ='';
-	if(data[0] !='Your Website')
-		title+='<i class="fa fa-reply" value="'+data[0]
-		+'" title="Go back to parent folder" onclick="getAdminContent(\''+data[0]+'\',false)"></i>';
-	title +=data[0];
+	if(data.title !='Your Website')
+		title+='<i class="fa fa-reply" value="'+data.title
+		+'" title="Go back to parent folder" onclick="getFolders(\''+data.title+'\',false)"></i>';
+	title +=data.title;
 	$('body > #container > #content > #dynamicAdminContent > h1').html(title);
-	data.shift();
 	var str='';
-	if(data)
-	data.forEach(function(value){
-		str+='<div><div onclick="getAdminContent(\''+value+'\',true);">'+value+'</div><div>'
-			+	'<i title="Upload a picture in the folder" class="fa fa-cloud-upload" onclick="insertInput(\''+value+'\',\'upload\')"></i>'
-			+ 	'<i title="Modify the folder" class="fa fa-font" onclick="insertInput(\''+value+'\',\'modify\')"></i>'
-			+	'<i title="Delete this folder" class="fa fa-times" onclick="insertInput(\''+value+'\',\'delete\')"></i>'
-			+'</div></div>';
+	if(data.tree)
+	Object.keys(data.tree).forEach(function(value){
+		if (value!= 'subtitle' && value!= 'order' && value!= 'img')
+			str+="<div onclick='getFolders(\""+value+"\",true);'>"+value+"</div><div>"
+				+ 	"<i title='Modify the folder' class='fa fa-font' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",\"modifyFolder\")'></i>"
+				+	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",\"deleteFolder\")'></i>"
+				+"</div><br/>";
 	});
-	$('body > #container > #content > #dynamicAdminContent > #folders').html(str);
+	str+='<div><button onclick="insertInput(\'\',\'\',\'\',\'addFolder\')">Add a folder into '+data.title+'</button></div>';
+	$('body > #container > #content > #dynamicAdminContent > #foldersLeft').html(str);
+}
 
+function renderImg(data)
+{
+	var container = $('#content #dynamicAdminContent #picturesLeft');
+	$(container).html('');
+	var path = $('#dynamicAdminContent #path')[0].value+'/';
+	if(data.tree.img && data.tree.img.length>0)
+	{
+		for(var i=0;i<data.tree.img.length;i++)
+		{
+			var str='';
+
+			str+= 	"<i title='Modify the picture' class='fa fa-font' onclick='insertInput("+i+",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\"modifyImage\")'></i>"
+				 +	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput("+i+",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\"deleteImage\")'></i>"
+				 +	"<img src='"+path.replace('root/','/img/')+data.tree.img[i].fileName+"' alt='"+data.tree.img[i].name+"'/></div>"
+			$(container).append('<div class="thumbBlock">'+str+'</div>');
+		}
+	}
+	$(container).append('<div><button onclick="insertInput(\'\',\'\',\'\',\'uploadImage\')">Add a picture into '+data.title+'</button></div>')
 }
 /*
 	=========================================================================================================
@@ -130,24 +205,29 @@ function populateTree(tree)
 {
 	var nav ='<ul>';
 	$.each(tree, function(key,value){
-		if(key!='subtitle' && key!='img' && value!=null){
-			nav+='<li><span onclick=\'getImages(event);\'>'+key+'</span>'+populateTree(value)+'</li>';	
+		if(key!='subtitle' && key!='order' && key!='img' && value!=null){
+			nav+='<li><span onclick=\'getPictures(event,null);\'><i class="fa fa-square-o"></i>'
+				+key+'</span>'+populateTree(value)+'</li>';	
 		}
 	});
 	nav+='</ul>';
 	return nav;
 }
 
-function getImages(e){
-
-	// get sender element
-	var sender = (e && e.target) || (window.event && window.event.srcElement);
-	var myEle = sender;
-
-	$.ajax({
+function getPictures(e,name){
+	var data2send={};
+	if(e){
+		var sender = (e && e.target) || (window.event && window.event.srcElement);
+		data2send.folderName=sender.innerText;
+	}
+	else if(name){
+		data2send.folderName= name;
+	}
+	if(data2send.folderName)
+		$.ajax({
 		  type: "GET",
 		  url: '/pictures',
-		  data: sender.innerHTML,
+		  data: data2send,
 		  success: function(data){
 		  	console.dir(data);
 		  }

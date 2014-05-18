@@ -4,19 +4,14 @@ block content
     #content
         #dynamicAdminContent
             h1 Your Website
-            #folders
-            #modifs
-                form(action="/pictures", method="post", id='modifForm',enctype="multipart/form-data")
+            h2 Folders
+            #foldersLeft
+            #foldersRight
+                form(action='/folders', method='post', id='foldersForm',enctype='multipart/form-data')
 
-        
+            h2 Pictures
+            #picturesLeft
+            #picturesRight
+                form(action='/pictures', method='post', id='picturesForm',enctype='multipart/form-data')
 
-
-        div#uploadPicture
-            label Choose a category
-
-            form(action="/pictures", method="post", id='uploadForm',enctype="multipart/form-data")
-                p
-                    label Upload your picture
-                    input(type="file", name="displayImage")
-                p
-                    input(type="submit" value="Upload")
+            input(type='hidden' id='path' form='foldersForm' name='path')
