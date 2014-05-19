@@ -126,11 +126,10 @@ module.exports =
 		var sitemap = require('./sitemap.json');
 
 		var path='';
-		var form = new formidable.IncomingForm(),
-	    files = [],
-	    fields = [];
+		var form = new formidable.IncomingForm();
+	    var files = [], fields = [];
 	    form.on('field', function(field, value) {
-	        if(field && field!='path' && field!='')
+	        if(field && field!='path')
 	        	fields.push([field, value]);
 	        else if(field=='path'){
 	        	path= value;
@@ -139,32 +138,61 @@ module.exports =
 	    form.on('file', function(field, file) {
 	        files.push(file);
 	    })
+
+
 	    form.on('end', function() {
 			if(path)
 					path = path.slice(5);
-			for (var i=0 ; i<files.length; i++){
+			if(files.length>0)
+			{
+				for (var i=0 ; i<files.length; i++){
+					var obj={};
+					for (var j=0 ; j<fields.length; j++){
+						obj[fields[j][0]] = fields[j][1];
+					}
+					obj.fileName=files[i].name;
+					var tmp= (path)?path+'/':'';
+					var newPath = __dirname + "/public/img/"+tmp+files[i].name;
+					fs.renameSync(files[i].path, newPath);
+
+					var folder = sitemap;
+					if(path)
+						folder = eval('sitemap.'+path.replace('/','.'));
+					if(!Array.isArray(folder.img))
+						folder.img = [];
+					folder.img.push(obj);
+				}
+			}
+			else{
 				var obj={};
 				for (var j=0 ; j<fields.length; j++){
 					obj[fields[j][0]] = fields[j][1];
 				}
-				obj.fileName=files[i].name;
-				var tmp= (path)?path+'/':'';
-				console.log('tmp:'+tmp);
-				var newPath = __dirname + "/public/img/"+tmp+files[i].name;
-				console.log(newPath);
-				console.log(files[i].path)
-				fs.renameSync(files[i].path, newPath);
-
+				// if the fileName is updated
+				if (obj['fileName']!=obj['oldFileName'])
+				{
+					//rename the pictures
+					var tmp= (path)?path+'/':'';
+					fs.renameSync(__dirname + "/public/img/"+tmp+obj['oldFileName'],
+								  __dirname + "/public/img/"+tmp+obj['fileName']);
+				}
+				//update the sitemap
 				var folder = sitemap;
 				if(path)
 					folder = eval('sitemap.'+path.replace('/','.'));
-				if(!Array.isArray(folder.img))
-					folder.img = [];
-				folder.img.push(obj);
-				// we save the modified sitemap
-				if (JSON.stringify(sitemap)!=''){
-					fs.writeFileSync('sitemap.json', JSON.stringify(sitemap));
+				var index=-1;
+				for(var i=0;i<folder.img.length ; i++){
+					if(folder.img[i].fileName==obj['oldFileName'])
+						index=i;
 				}
+				folder.img.splice(index,1);
+				delete obj['oldFileName'];
+				folder.img.push(obj);
+			}
+
+			// we save the modified sitemap
+			if (JSON.stringify(sitemap)!=''){
+				fs.writeFileSync('sitemap.json', JSON.stringify(sitemap));
 			}
 	    });
 	    form.parse(req);
@@ -174,7 +202,6 @@ module.exports =
 
 	foldersPost : function(req,next){
 		var formidable = require('formidable');
-		var util = require('util');
 		var fs = require('fs');
 		var sitemap = require('./sitemap.json');
 
@@ -236,7 +263,7 @@ module.exports =
 		});
 	},
 
-	deletePicture : function(index,path,res){
+	deletePicture : function(imgFileName,path,res){
 
 		var sitemap = require('./sitemap.json');
 		var fs = require('fs');
@@ -245,7 +272,12 @@ module.exports =
 		if(path)
 			obj = eval('sitemap.'+path.replace('/','.'));
 		// delete the img from the sitemap
-		var imgFileName = obj.img[index].fileName;
+		var index=-1;
+		for (var i=0; i<obj.img.length; i++)
+		{
+			if(obj.img[i].fileName == imgFileName)
+				index=i;
+		}
 		obj.img.splice(index,1);
 
 

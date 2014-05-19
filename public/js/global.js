@@ -51,7 +51,7 @@ function getFolders(folderName, forward){
 
 }
 
-function insertInput(oldName,oldOrder,oldSubtitle,action){
+function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
 	var container = $('#content > #dynamicAdminContent > #foldersRight > form')[0];
 	//empty the form first
 	$(container).html('');
@@ -65,22 +65,11 @@ function insertInput(oldName,oldOrder,oldSubtitle,action){
 	
 	var submit = document.createElement("input"); 
 	submit.type= 'submit'; submit.value = 'Submit';
-
-
-	if(action=='uploadImage') {
-		var upload = document.createElement('input');
-		upload.type='file';		upload.name = 'upload'; 	upload.multiple='multiple';
-		var path = document.createElement('input');
-		path.form = 'picturesForm'; path.type ='hidden';	path.name='path';
-		path.value = $('#dynamicAdminContent #path')[0].value;
-		container = $('#content > #dynamicAdminContent > #picturesRight > form')[0];
-		$(container).html('');
-		container.appendChild(upload);container.appendChild(name);container.appendChild(subtitle);
-		container.appendChild(path);container.appendChild(order);container.appendChild(submit);
-	}
-	else if(action=='modifyFolder')	{
+	
+	if(action=='modifyFolder')	{
 		var previousName = document.createElement("input");
 		previousName.type='hidden'; previousName.name= 'oldName'; previousName.value = oldName;
+		
 		container.appendChild(name);	container.appendChild(previousName);	container.appendChild(order);
 		container.appendChild(subtitle);	container.appendChild(submit);
 	}
@@ -108,8 +97,35 @@ function insertInput(oldName,oldOrder,oldSubtitle,action){
 		container.appendChild(name);	container.appendChild(order);	
 		container.appendChild(subtitle); container.appendChild(submit);
 	}
-	else if(action=='modifyImage'){
 
+
+	else if(action=='uploadImage') {
+		var upload = document.createElement('input');
+		upload.type='file';		upload.name = 'upload'; 	upload.multiple='multiple';
+		var path = document.createElement('input');
+		path.form = 'picturesForm'; path.type ='hidden';	path.name='path';
+		path.value = $('#dynamicAdminContent #path')[0].value;
+		
+		container = $('#content > #dynamicAdminContent > #picturesRight > form')[0];
+		$(container).html('');
+		
+		container.appendChild(upload);container.appendChild(name);container.appendChild(subtitle);
+		container.appendChild(path);container.appendChild(order);container.appendChild(submit);
+	}
+	else if(action=='modifyImage'){
+		var previousFileName = document.createElement("input");
+		previousFileName.type='hidden'; previousFileName.name= 'oldFileName'; previousFileName.value = oldFileName;
+		var fileName =document.createElement("input");
+		fileName.type='text'; fileName.name='fileName';fileName.value=oldFileName;
+		var path = document.createElement('input');
+		path.form = 'picturesForm'; path.type ='hidden';	path.name='path';
+		path.value = $('#dynamicAdminContent #path')[0].value;
+
+		container = $('#content > #dynamicAdminContent > #picturesRight > form')[0];
+		$(container).html('');
+		
+		container.appendChild(name);	container.appendChild(previousFileName);	container.appendChild(fileName);
+		container.appendChild(path); container.appendChild(order);	container.appendChild(subtitle);	container.appendChild(submit);
 	}
 	else if(action=='deleteImage'){
 		var r=confirm("Are you sure you want to delete "+oldName+" ?");
@@ -131,6 +147,7 @@ function insertInput(oldName,oldOrder,oldSubtitle,action){
 			}
 		}
 	}
+
 }
 function renderFolders(data){
 	var form = $('#foldersRight > form')[0];
@@ -146,8 +163,8 @@ function renderFolders(data){
 	Object.keys(data.tree).forEach(function(value){
 		if (value!= 'subtitle' && value!= 'order' && value!= 'img')
 			str+="<div onclick='getFolders(\""+value+"\",true);'>"+value+"</div><div>"
-				+ 	"<i title='Modify the folder' class='fa fa-font' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",\"modifyFolder\")'></i>"
-				+	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",\"deleteFolder\")'></i>"
+				+ 	"<i title='Modify the folder' class='fa fa-font' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",null,\"modifyFolder\")'></i>"
+				+	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",null,\"deleteFolder\")'></i>"
 				+"</div><br/>";
 	});
 	str+='<div><button onclick="insertInput(\'\',\'\',\'\',\'addFolder\')">Add a folder into '+data.title+'</button></div>';
@@ -165,8 +182,8 @@ function renderImg(data)
 		{
 			var str='';
 
-			str+= 	"<i title='Modify the picture' class='fa fa-font' onclick='insertInput("+i+",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\"modifyImage\")'></i>"
-				 +	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput("+i+",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\"deleteImage\")'></i>"
+			str+= 	"<i title='Modify the picture' class='fa fa-font' onclick='insertInput(\""+data.tree.img[i].name+"\",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\""+data.tree.img[i].fileName+"\",\"modifyImage\")'></i>"
+				 +	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput(\""+data.tree.img[i].name+"\",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\""+data.tree.img[i].fileName+"\",\"deleteImage\")'></i>"
 				 +	"<img src='"+path.replace('root/','/img/')+data.tree.img[i].fileName+"' alt='"+data.tree.img[i].name+"'/></div>"
 			$(container).append('<div class="thumbBlock">'+str+'</div>');
 		}
