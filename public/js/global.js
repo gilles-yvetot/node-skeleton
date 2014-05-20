@@ -28,6 +28,7 @@ function window_load(){
 */
 function getFolders(folderName, forward){
 		var path = $('#dynamicAdminContent #path')[0];
+		$('#content > #dynamicAdminContent form').html('');
 		if (forward){
 			if(folderName !='root')
 				path.value = path.value + '/'+folderName;
@@ -167,7 +168,7 @@ function renderFolders(data){
 				+	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",null,\"deleteFolder\")'></i>"
 				+"</div><br/>";
 	});
-	str+='<div><button onclick="insertInput(\'\',\'\',\'\',\'addFolder\')">Add a folder into '+data.title+'</button></div>';
+	str+='<button onclick="insertInput(\'\',\'\',\'\',null,\'addFolder\')">Add a folder into '+data.title+'</button>';
 	$('body > #container > #content > #dynamicAdminContent > #foldersLeft').html(str);
 }
 
@@ -188,7 +189,7 @@ function renderImg(data)
 			$(container).append('<div class="thumbBlock">'+str+'</div>');
 		}
 	}
-	$(container).append('<div><button onclick="insertInput(\'\',\'\',\'\',\'uploadImage\')">Add a picture into '+data.title+'</button></div>')
+	$(container).append('<button onclick="insertInput(\'\',\'\',\'\',null,\'uploadImage\')">Add a picture into '+data.title+'</button>')
 }
 /*
 	=========================================================================================================

@@ -88,6 +88,17 @@ body > #container{
   max-height: 100px;
   max-width: 100px;
 }
+#dynamicAdminContent button{
+  padding:5px 15px;
+  background-color:#ddd;
+  border:1px solid #333;
+  color:#333;
+  display: block;
+  cursor: pointer;
+}
+#dynamicAdminContent button:hover{
+  background-color: #BFD4FF;
+}
 /*
                                                               NAV
 */
