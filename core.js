@@ -16,29 +16,71 @@ module.exports =
 		}
 	},
 
-	getImages : function(folderName,next){
-		var findit = require('findit')
-		var path = require('path');
-		var array = [];
-		var find=null;
-		if (folderName='Your Website') folderName='';
-		
-		find=findit('./public/img/');
+	breadthSearch : function(tree,name){
+		var arr=[], returnValue=null,found=false;;
+		arr.push(tree);
+		while(arr.length >0 && found==false)
+		{
+			var node = arr[0];
+			arr.shift();
+			Object.keys(node).forEach(function(key){
+				if(key==name)
+				{
+					found=true;
+					//workaround here because does not to return the value directly
+					returnValue= node[key];
+				}
+				else{
+					if(key!='subtitle' && key!='order'&& key!='img')
+						arr.push(node[key]);
+				}
+			});
+		}
+		if (found)
+			return returnValue;
+		else 
+			return 0;
+	},
 
-		find.on('file', function(file) {
-		  if ((path.extname(file) === '.png' 
-		  	|| path.extname(file) === '.gif' 
-		  	|| path.extname(file) === '.jpg')&&(path.dirname(file).indexOf(folderName) > -1)) {
-		    	array.push(path.basename(file));
-		  }
-		});
-		find.on('directory', function (dir, stat, stop) {
-		    if(!(path.basename(dir)=='img' && folderName==''))
-		    	stop();
-		});
-		find.on('end', function(){
-			next(null,array)
-		});
+	// getImages : function(folderName,next){
+	// 	var findit = require('findit')
+	// 	var path = require('path');
+	// 	var arr = [];
+	// 	var find=null;
+	// 	if (folderName='Your Website') folderName='';
+		
+	// 	find=findit('./public/img/');
+
+	// 	find.on('file', function(file) {
+	// 	  if ( (path.extname(file) === '.png' || path.extname(file) === '.gif' || path.extname(file) === '.jpg')
+	// 	  	&& (path.dirname(file).indexOf(folderName) > -1) ){
+	// 	    	arr.push(file);
+	// 	  }
+	// 	});
+	// 	find.on('directory', function (dir, stat, stop) {
+	// 	    if(!(path.basename(dir)=='img' || folderName==''))
+	// 	    	stop();
+	// 	});
+	// 	find.on('end', function(){
+	// 		console.log('\n');
+	// 		next(null,arr)
+	// 	});
+	// },
+
+	getImages : function(folderName,next){
+		var sitemap = require('./sitemap.json');
+		var obj=null;
+		if(folderName=='' || folderName=='/' || folderName =='root'){
+			obj = sitemap;
+		}
+		else {
+			obj= this.breadthSearch(sitemap,folderName);
+		}
+		if(Array.isArray(obj.img))
+			next(null,obj.img);
+		else
+			next("Cannot find "+folderName,null);
+
 	},
 
 	// kind of breadth search algorithm function
@@ -92,32 +134,6 @@ module.exports =
 			next(null,obj);
 		}
 			
-	},
-
-	breadthSearch : function(tree,name){
-		var arr=[], returnValue=null,found=false;;
-		arr.push(tree);
-		while(arr.length >0 && found==false)
-		{
-			var node = arr[0];
-			arr.shift();
-			Object.keys(node).forEach(function(key){
-				if(key==name)
-				{
-					found=true;
-					//workaround here because does not to return the value directly
-					returnValue= node[key];
-				}
-				else{
-					if(key!='subtitle' && key!='order'&& key!='img')
-						arr.push(node[key]);
-				}
-			});
-		}
-		if (found)
-			return returnValue;
-		else 
-			return 0;
 	},
 
 	picturesPost: function(req, next){

@@ -22,6 +22,10 @@ function window_load(){
 	{
 		getFolders('root',true);
 	}
+	else
+	{
+		getPictures('root')
+	}
 }
 /*
 	Absolutely put these function in the admin page only=====================================================
@@ -46,7 +50,7 @@ function getFolders(folderName, forward){
 			  data: dataForAjax,
 			  success: function(data){
 			  	renderFolders(data);
-			  	renderImg(data);
+			  	renderImgInAdmin(data);
 			  }
 			});
 
@@ -172,7 +176,7 @@ function renderFolders(data){
 	$('body > #container > #content > #dynamicAdminContent > #foldersLeft').html(str);
 }
 
-function renderImg(data)
+function renderImgInAdmin(data)
 {
 	var container = $('#content #dynamicAdminContent #picturesLeft');
 	$(container).html('');
@@ -224,7 +228,7 @@ function populateTree(tree)
 	var nav ='<ul>';
 	$.each(tree, function(key,value){
 		if(key!='subtitle' && key!='order' && key!='img' && value!=null){
-			nav+='<li><span onclick=\'getPictures(event,null);\'><i class="fa fa-square-o"></i>'
+			nav+='<li><span onclick="getPictures(\''+key+'\');""><i class="fa fa-square-o"></i>'
 				+key+'</span>'+populateTree(value)+'</li>';	
 		}
 	});
@@ -232,16 +236,11 @@ function populateTree(tree)
 	return nav;
 }
 
-function getPictures(e,name){
+function getPictures(name){
+	console.dir(name);
 	var data2send={};
-	if(e){
-		var sender = (e && e.target) || (window.event && window.event.srcElement);
-		data2send.folderName=sender.innerText;
-	}
-	else if(name){
+	if(name){
 		data2send.folderName= name;
-	}
-	if(data2send.folderName)
 		$.ajax({
 		  type: "GET",
 		  url: '/pictures',
@@ -250,6 +249,7 @@ function getPictures(e,name){
 		  	console.dir(data);
 		  }
 		});
+	}
 }
 
 function requestFullScreen() {
