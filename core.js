@@ -1,9 +1,8 @@
 
-module.exports =
-{
-	titleFilter :function(el){	if (el != 'subtitle' && el != 'order' && el != 'img')	return el;	},
 
-	saveSitemap : function(sitemap){
+	module.exports.titleFilter = function(el){	if (el != 'subtitle' && el != 'order' && el != 'img')	return el;	}
+
+	module.exports.saveSitemap = function(sitemap){
 		// we save the modified sitemap
 		if (JSON.stringify(sitemap)!=''){
 			require('fs').writeFile('sitemap.json', JSON.stringify(sitemap), function(err) {
@@ -14,9 +13,9 @@ module.exports =
 			    }
 			});
 		}
-	},
+	}
 
-	breadthSearch : function(tree,name){
+	module.exports.breadthSearch = function(tree,name){
 		var arr=[], returnValue=null,found=false;;
 		arr.push(tree);
 		while(arr.length >0 && found==false)
@@ -40,51 +39,29 @@ module.exports =
 			return returnValue;
 		else 
 			return 0;
-	},
+	}
 
-	// getImages : function(folderName,next){
-	// 	var findit = require('findit')
-	// 	var path = require('path');
-	// 	var arr = [];
-	// 	var find=null;
-	// 	if (folderName='Your Website') folderName='';
-		
-	// 	find=findit('./public/img/');
-
-	// 	find.on('file', function(file) {
-	// 	  if ( (path.extname(file) === '.png' || path.extname(file) === '.gif' || path.extname(file) === '.jpg')
-	// 	  	&& (path.dirname(file).indexOf(folderName) > -1) ){
-	// 	    	arr.push(file);
-	// 	  }
-	// 	});
-	// 	find.on('directory', function (dir, stat, stop) {
-	// 	    if(!(path.basename(dir)=='img' || folderName==''))
-	// 	    	stop();
-	// 	});
-	// 	find.on('end', function(){
-	// 		console.log('\n');
-	// 		next(null,arr)
-	// 	});
-	// },
-
-	getImages : function(folderName,next){
+	
 		var sitemap = require('./sitemap.json');
+
+	module.exports.getImages = function(folderName,next){
 		var obj=null;
+
 		if(folderName=='' || folderName=='/' || folderName =='root'){
 			obj = sitemap;
 		}
 		else {
 			obj= this.breadthSearch(sitemap,folderName);
 		}
-		if(Array.isArray(obj.img))
-			next(null,obj.img);
+		if(obj)
+			next(null,obj);
 		else
 			next("Cannot find "+folderName,null);
 
-	},
+	}
 
 	// kind of breadth search algorithm function
-	getParentFolder : function (name,next){
+	module.exports.getParentFolder = function (name,next){
 		if(name !='root')
 			name = name.slice(name.lastIndexOf('/')+1);
 		var arr=[], returnValue=null, found=false, parentName='root';
@@ -115,8 +92,8 @@ module.exports =
 			}
 		}
 		next(null,retArr);
-	},
-	getContentFolder : function(name, next){
+	}
+	module.exports.getContentFolder = function(name, next){
 		var obj ={};
 		var sitemap = require('./sitemap.json');
 		if (name == 'root')
@@ -134,9 +111,9 @@ module.exports =
 			next(null,obj);
 		}
 			
-	},
+	}
 
-	picturesPost: function(req, next){
+	module.exports.picturesPost = function(req, next){
 		var fs = require('fs');
 		var formidable = require('formidable');
 		var sitemap = require('./sitemap.json');
@@ -214,9 +191,9 @@ module.exports =
 	    form.parse(req);
 
 		next(null);
-	},
+	}
 
-	foldersPost : function(req,next){
+	module.exports.foldersPost = function(req,next){
 		var formidable = require('formidable');
 		var fs = require('fs');
 		var sitemap = require('./sitemap.json');
@@ -263,6 +240,7 @@ module.exports =
 					obj[fields.name]['img']=[];
 					obj[fields.name]['subtitle'] = fields.subtitle;
 					obj[fields.name]['order'] = fields.order;
+					obj['path']='img/'+path.replace('.','/')+'/';
 				}
 				// we save the modified sitemap
 				if (JSON.stringify(sitemap)!=''){
@@ -277,9 +255,9 @@ module.exports =
 			}
 			
 		});
-	},
+	}
 
-	deletePicture : function(imgFileName,path,res){
+	module.exports.deletePicture = function(imgFileName,path,res){
 
 		var sitemap = require('./sitemap.json');
 		var fs = require('fs');
@@ -311,7 +289,7 @@ module.exports =
 			        if(path)
 			        	path+='/';
 			        console.log(__dirname+'/public/img/'+path+imgFileName);
-					fs.unlink(__dirname+'/public/img/'+path+imgFileName);
+					fs.unlinkSync(__dirname+'/public/img/'+path+imgFileName);
 					res.send({
 				      retStatus : 200,
 				      redirectTo: '/admin'
@@ -320,9 +298,25 @@ module.exports =
 			});
 		}
 		
-	},
+	}
 
-	deleteFolder : function(folderName,path,res){
+	module.exports.deleteFolderRecursive = function(path,fs) {
+	    var files = [];
+	    if( fs.existsSync(path) ) {
+	        files = fs.readdirSync(path);
+	        files.forEach(function(file,index){
+	            var curPath = path + "/" + file;
+	            if(fs.lstatSync(curPath).isDirectory()) { // recurse
+	                this.deleteFolderRecursive(curPath,fs);
+	            } else { // delete file
+	                fs.unlinkSync(curPath);
+	            }
+	        });
+	        fs.rmdirSync(path);
+	    }
+	}
+
+	module.exports.deleteFolder = function(folderName,path,res){
 
 		var sitemap = require('./sitemap.json');
 		var fs = require('fs');
@@ -352,25 +346,36 @@ module.exports =
 			});
 		}
 		
-	},
-
-
-	deleteFolderRecursive : function(path,fs) {
-	    var files = [];
-	    if( fs.existsSync(path) ) {
-	        files = fs.readdirSync(path);
-	        files.forEach(function(file,index){
-	            var curPath = path + "/" + file;
-	            if(fs.lstatSync(curPath).isDirectory()) { // recurse
-	                this.deleteFolderRecursive(curPath,fs);
-	            } else { // delete file
-	                fs.unlinkSync(curPath);
-	            }
-	        });
-	        fs.rmdirSync(path);
-	    }
 	}
 
-}
 
+// var fs = require('fs')
+	// module.exports ={
+ //    	function fct1()
+	// 	function fct2()
+	// }
 
+	// getImages = function(folderName,next){
+	// 	var findit = require('findit')
+	// 	var path = require('path');
+	// 	var arr = [];
+	// 	var find=null;
+	// 	if (folderName='Your Website') folderName='';
+		
+	// 	find=findit('./public/img/');
+
+	// 	find.on('file', function(file) {
+	// 	  if ( (path.extname(file) === '.png' || path.extname(file) === '.gif' || path.extname(file) === '.jpg')
+	// 	  	&& (path.dirname(file).indexOf(folderName) > -1) ){
+	// 	    	arr.push(file);
+	// 	  }
+	// 	});
+	// 	find.on('directory', function (dir, stat, stop) {
+	// 	    if(!(path.basename(dir)=='img' || folderName==''))
+	// 	    	stop();
+	// 	});
+	// 	find.on('end', function(){
+	// 		console.log('\n');
+	// 		next(null,arr)
+	// 	});
+	// },

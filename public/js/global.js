@@ -24,7 +24,7 @@ function window_load(){
 	}
 	else
 	{
-		getPictures('root')
+		getPictures('root');
 	}
 }
 /*
@@ -237,7 +237,6 @@ function populateTree(tree)
 }
 
 function getPictures(name){
-	console.dir(name);
 	var data2send={};
 	if(name){
 		data2send.folderName= name;
@@ -246,10 +245,24 @@ function getPictures(name){
 		  url: '/pictures',
 		  data: data2send,
 		  success: function(data){
-		  	console.dir(data);
+		  	if(data)
+		  		renderPictures(data);
 		  }
 		});
 	}
+}
+
+function renderPictures(data)
+{
+	//empty the galery
+	$('#galleria.galleria').html('');
+	
+	for (var i = 0; i < data.img.length; i++) {
+		$('#galleria.galleria').append('<img src="'+data.img[i].fileName+'" alt="'+data.img[i].name+'">');
+	};
+	$('#galleria.galleria').append('<img src="/img/Juan-Monterro.png" alt="logo">')
+	Galleria.run('.galleria');
+
 }
 
 function requestFullScreen() {

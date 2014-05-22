@@ -22,7 +22,56 @@ body > header{
   height:100px; 
   background-color:#f1f2f2;
 }
+/*
+                                                              NAV
+*/
 
+body > #container > nav{
+  display: table-cell;
+  width: 200px;
+  color: black;
+  vertical-align: top;
+}
+body > #container > nav > #logo > a > img{
+  height: auto;
+  width: 180px;
+  margin: 0px 10px 0px 10px;
+  padding:0;
+}
+body > #container > nav > #menu > ul{
+  margin: 0;
+  padding: 20px 0px 0px 30px;
+  overflow: scroll;
+  list-style-type: none;
+  font-size: 18px;
+  position: relative;
+}
+body > #container > nav > #menu > ul ul{
+  margin: 0px 0px 0px 10px;
+  padding: 0;
+  list-style-type: none;
+  list-style-position: outside;
+  font-size: 15px;
+}
+body > #container > nav > #menu > ul span{
+  text-transform: capitalize;
+  text-decoration: none;
+  color: gray;
+}
+body > #container > nav > #menu > ul span > i{
+  color:transparent;
+  font-size: 14px;
+  padding-right:5px;
+  vertical-align: middle;
+}
+body > #container > nav > #menu > ul span:hover{
+  text-decoration: none;
+  color: black;
+  cursor:pointer;
+}
+body > #container > nav > #menu > ul span:hover > i{
+  color:black;
+}
 /*
                                                               BODY
 */
@@ -99,56 +148,7 @@ body > #container{
 #dynamicAdminContent button:hover{
   background-color: #BFD4FF;
 }
-/*
-                                                              NAV
-*/
 
-body > #container > nav{
-  display: table-cell;
-  width: 200px;
-  color: black;
-  vertical-align: top;
-}
-body > #container > nav > #logo > a > img{
-  height: auto;
-  width: 180px;
-  margin: 0px 10px 0px 10px;
-  padding:0;
-}
-body > #container > nav > #menu > ul{
-  margin: 0;
-  padding: 20px 0px 0px 30px;
-  overflow: scroll;
-  list-style-type: none;
-  font-size: 18px;
-  position: relative;
-}
-body > #container > nav > #menu > ul ul{
-  margin: 0px 0px 0px 10px;
-  padding: 0;
-  list-style-type: none;
-  list-style-position: outside;
-  font-size: 15px;
-}
-body > #container > nav > #menu > ul span{
-  text-transform: capitalize;
-  text-decoration: none;
-  color: gray;
-}
-body > #container > nav > #menu > ul span > i{
-  color:transparent;
-  font-size: 14px;
-  padding-right:5px;
-  vertical-align: middle;
-}
-body > #container > nav > #menu > ul span:hover{
-  text-decoration: none;
-  color: black;
-  cursor:pointer;
-}
-body > #container > nav > #menu > ul span:hover > i{
-  color:black;
-}
 /*
                                                               BODY CONTENT
 */
@@ -161,9 +161,10 @@ body  > #container > #content{
   text-align: center;
 }
 
-body > #container > #content > img{
+body > #container > #content > #galleria.galleria{
   padding: 0;
   max-height: 523px;
+  height: 523px;
   width:auto;
   max-width: 100%;
   display: block;

@@ -8,12 +8,15 @@ html(lang='en')
     meta(name='description', content='')
     meta(name='author', content='Gilles Yvetot')
     
-    link(href='/css/style.css', rel='stylesheet' type='text/css')
-    link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet")
+    link(href='/css/style.css', rel='stylesheet', type='text/css')
+    link(href="/css/galleria.classic.css",rel="stylesheet")
+    link(href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet')
     link(href='http://fonts.googleapis.com/css?family=Roboto:400,500,300,300italic,400italic,500italic' rel='stylesheet' type='text/css')
     
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js')
     script(src='/js/global.js')
+    script(src='/js/galleria-1.3.5.min.js')
+    script(src='/js/galleria.classic.min.js')
 
   body
     header
@@ -26,7 +29,7 @@ html(lang='en')
             
         block content
     footer
-        #fullscreen(onclick="requestFullScreen();")
+        #fullscreen(onclick='requestFullScreen();')
             i.fa.fa-arrows-alt
             |Fullscreen
         #contact_info   
