@@ -1,11 +1,36 @@
 
+var sitemap = require('./sitemap.json');
+var fs = require('fs');
+var formidable = require('formidable');
+var path = require('path');
+var findit = require('findit');
 
-	module.exports.titleFilter = function(el){	if (el != 'subtitle' && el != 'order' && el != 'img')	return el;	}
 
-	module.exports.saveSitemap = function(sitemap){
+function deleteFolderRecursive(path,fs) {
+    var files = [];
+    if( fs.existsSync(path) ) {
+        files = fs.readdirSync(path);
+        files.forEach(function(file,index){
+            var curPath = path + "/" + file;
+            if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                this.deleteFolderRecursive(curPath,fs);
+            } else { // delete file
+                fs.unlinkSync(curPath);
+            }
+        });
+        fs.rmdirSync(path);
+    }
+}
+
+
+module.exports = {
+
+	titleFilter : function(el){	if (el != 'subtitle' && el != 'order' && el != 'img')	return el;	},
+
+	saveSitemap : function(sitemap){
 		// we save the modified sitemap
 		if (JSON.stringify(sitemap)!=''){
-			require('fs').writeFile('sitemap.json', JSON.stringify(sitemap), function(err) {
+			fs.writeFile('sitemap.json', JSON.stringify(sitemap), function(err) {
 			    if(err) {
 			        next(err);
 			    } else {
@@ -13,9 +38,9 @@
 			    }
 			});
 		}
-	}
+	},
 
-	module.exports.breadthSearch = function(tree,name){
+	breadthSearch : function(tree,name){
 		var arr=[], returnValue=null,found=false;;
 		arr.push(tree);
 		while(arr.length >0 && found==false)
@@ -30,7 +55,7 @@
 					returnValue= node[key];
 				}
 				else{
-					if(key!='subtitle' && key!='order'&& key!='img')
+					if(key!='subtitle' && key!='order'&& key!='img' && key!='path')
 						arr.push(node[key]);
 				}
 			});
@@ -39,12 +64,9 @@
 			return returnValue;
 		else 
 			return 0;
-	}
+	},
 
-	
-		var sitemap = require('./sitemap.json');
-
-	module.exports.getImages = function(folderName,next){
+	getImages : function(folderName,next){
 		var obj=null;
 
 		if(folderName=='' || folderName=='/' || folderName =='root'){
@@ -58,14 +80,14 @@
 		else
 			next("Cannot find "+folderName,null);
 
-	}
+	},
 
 	// kind of breadth search algorithm function
-	module.exports.getParentFolder = function (name,next){
+	getParentFolder : function (name,next){
 		if(name !='root')
 			name = name.slice(name.lastIndexOf('/')+1);
 		var arr=[], returnValue=null, found=false, parentName='root';
-		var tree = require('./sitemap.json');
+		var tree = sitemap;
 		arr.push(tree);
 		var retArr={};
 		if (name in tree){
@@ -92,10 +114,10 @@
 			}
 		}
 		next(null,retArr);
-	}
-	module.exports.getContentFolder = function(name, next){
+	},
+
+	getContentFolder : function(name, next){
 		var obj ={};
-		var sitemap = require('./sitemap.json');
 		if (name == 'root')
 		{
 			obj.title = 'Your Website';
@@ -111,12 +133,9 @@
 			next(null,obj);
 		}
 			
-	}
+	},
 
-	module.exports.picturesPost = function(req, next){
-		var fs = require('fs');
-		var formidable = require('formidable');
-		var sitemap = require('./sitemap.json');
+	picturesPost : function(req, next){
 
 		var path='';
 		var form = new formidable.IncomingForm();
@@ -191,12 +210,9 @@
 	    form.parse(req);
 
 		next(null);
-	}
+	},
 
-	module.exports.foldersPost = function(req,next){
-		var formidable = require('formidable');
-		var fs = require('fs');
-		var sitemap = require('./sitemap.json');
+	foldersPost : function(req,next){
 
 		var form = new formidable.IncomingForm();
 		form.parse(req, function(err, fields, files) {
@@ -240,7 +256,7 @@
 					obj[fields.name]['img']=[];
 					obj[fields.name]['subtitle'] = fields.subtitle;
 					obj[fields.name]['order'] = fields.order;
-					obj['path']='img/'+path.replace('.','/')+'/';
+					obj['path']=(path)?'img/'+path.replace('.','/')+'/':'img/';
 				}
 				// we save the modified sitemap
 				if (JSON.stringify(sitemap)!=''){
@@ -255,12 +271,10 @@
 			}
 			
 		});
-	}
+	},
 
-	module.exports.deletePicture = function(imgFileName,path,res){
+	deletePicture : function(imgFileName,path,res){
 
-		var sitemap = require('./sitemap.json');
-		var fs = require('fs');
 		path = path.slice(5);
 		var obj = sitemap;
 		if(path)
@@ -298,28 +312,11 @@
 			});
 		}
 		
-	}
+	},
 
-	module.exports.deleteFolderRecursive = function(path,fs) {
-	    var files = [];
-	    if( fs.existsSync(path) ) {
-	        files = fs.readdirSync(path);
-	        files.forEach(function(file,index){
-	            var curPath = path + "/" + file;
-	            if(fs.lstatSync(curPath).isDirectory()) { // recurse
-	                this.deleteFolderRecursive(curPath,fs);
-	            } else { // delete file
-	                fs.unlinkSync(curPath);
-	            }
-	        });
-	        fs.rmdirSync(path);
-	    }
-	}
 
-	module.exports.deleteFolder = function(folderName,path,res){
+	deleteFolder : function(folderName,path,res){
 
-		var sitemap = require('./sitemap.json');
-		var fs = require('fs');
 		path = path.slice(5);
 		var obj = sitemap;
 		if(path)
@@ -337,7 +334,7 @@
 				    });
 			    } else {
 			        //remove the folder
-					this.deleteFolderRecursive(__dirname+'/public/img/'+path+'/'+folderName+'/',fs);
+					deleteFolderRecursive(__dirname+'/public/img/'+path+'/'+folderName+'/',fs);
 					res.send({
 				      retStatus : 200,
 				      redirectTo: '/admin'
@@ -348,34 +345,4 @@
 		
 	}
 
-
-// var fs = require('fs')
-	// module.exports ={
- //    	function fct1()
-	// 	function fct2()
-	// }
-
-	// getImages = function(folderName,next){
-	// 	var findit = require('findit')
-	// 	var path = require('path');
-	// 	var arr = [];
-	// 	var find=null;
-	// 	if (folderName='Your Website') folderName='';
-		
-	// 	find=findit('./public/img/');
-
-	// 	find.on('file', function(file) {
-	// 	  if ( (path.extname(file) === '.png' || path.extname(file) === '.gif' || path.extname(file) === '.jpg')
-	// 	  	&& (path.dirname(file).indexOf(folderName) > -1) ){
-	// 	    	arr.push(file);
-	// 	  }
-	// 	});
-	// 	find.on('directory', function (dir, stat, stop) {
-	// 	    if(!(path.basename(dir)=='img' || folderName==''))
-	// 	    	stop();
-	// 	});
-	// 	find.on('end', function(){
-	// 		console.log('\n');
-	// 		next(null,arr)
-	// 	});
-	// },
+}

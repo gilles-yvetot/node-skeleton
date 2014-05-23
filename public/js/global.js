@@ -166,7 +166,7 @@ function renderFolders(data){
 	var str='';
 	if(data.tree)
 	Object.keys(data.tree).forEach(function(value){
-		if (value!= 'subtitle' && value!= 'order' && value!= 'img')
+		if (value!= 'subtitle' && value!= 'order' && value!= 'img'&& value!= 'path')
 			str+="<div onclick='getFolders(\""+value+"\",true);'>"+value+"</div><div>"
 				+ 	"<i title='Modify the folder' class='fa fa-font' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",null,\"modifyFolder\")'></i>"
 				+	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",null,\"deleteFolder\")'></i>"
@@ -189,7 +189,7 @@ function renderImgInAdmin(data)
 
 			str+= 	"<i title='Modify the picture' class='fa fa-font' onclick='insertInput(\""+data.tree.img[i].name+"\",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\""+data.tree.img[i].fileName+"\",\"modifyImage\")'></i>"
 				 +	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput(\""+data.tree.img[i].name+"\",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\""+data.tree.img[i].fileName+"\",\"deleteImage\")'></i>"
-				 +	"<img src='"+path.replace('root/','/img/')+data.tree.img[i].fileName+"' alt='"+data.tree.img[i].name+"'/></div>"
+				 +	"<img src='"+path.replace('root/','/img/')+data.tree.img[i].fileName+"' width='100' height='100' alt='"+data.tree.img[i].name+"'/></div>"
 			$(container).append('<div class="thumbBlock">'+str+'</div>');
 		}
 	}
@@ -227,7 +227,7 @@ function populateTree(tree)
 {
 	var nav ='<ul>';
 	$.each(tree, function(key,value){
-		if(key!='subtitle' && key!='order' && key!='img' && value!=null){
+		if(typeof(value) == 'object' && !Array.isArray(value)){
 			nav+='<li><span onclick="getPictures(\''+key+'\');""><i class="fa fa-square-o"></i>'
 				+key+'</span>'+populateTree(value)+'</li>';	
 		}
@@ -256,9 +256,8 @@ function renderPictures(data)
 {
 	//empty the galery
 	$('#galleria.galleria').html('');
-	
 	for (var i = 0; i < data.img.length; i++) {
-		$('#galleria.galleria').append('<img src="'+data.img[i].fileName+'" alt="'+data.img[i].name+'">');
+		$('#galleria.galleria').append('<img src="'+data.path+data.img[i].fileName+'" alt="'+data.img[i].name+'">');
 	};
 	$('#galleria.galleria').append('<img src="/img/Juan-Monterro.png" alt="logo">')
 	Galleria.run('.galleria');
