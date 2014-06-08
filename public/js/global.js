@@ -17,11 +17,11 @@ function window_resize(){
 function window_load(){
 	window_resize();
 	populateNav();
-	var a = document.getElementById('dynamicAdminContent');
-	if(a)
+	if(window.location.pathname == '/admin')
 	{
 		getFolders('root',true);
 	}
+	else if (window.location.pathname == '/login'){	}
 	else
 	{
 		getPictures('root');
@@ -133,12 +133,12 @@ function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
 		container.appendChild(path); container.appendChild(order);	container.appendChild(subtitle);	container.appendChild(submit);
 	}
 	else if(action=='deleteImage'){
-		var r=confirm("Are you sure you want to delete "+oldName+" ?");
+		var r=confirm("Are you sure you want to delete "+oldFileName+" ?");
 		if (r==true){
 			var arr=[];
 			var path = $('#dynamicAdminContent #path')[0];
-			if(oldName && path){
-				arr.push(oldName);	arr.push(path.value);
+			if(oldFileName && path){
+				arr.push(oldFileName);	arr.push(path.value);
 				var data2send ={}; data2send.arr = arr;
 				$.ajax({
 					type: "DELETE",
@@ -254,14 +254,26 @@ function getPictures(name){
 
 function renderPictures(data)
 {
-	//empty the galery
-	$('#galleria.galleria').html('');
-	for (var i = 0; i < data.img.length; i++) {
-		$('#galleria.galleria').append('<img src="'+data.path+data.img[i].fileName+'" alt="'+data.img[i].name+'">');
-	};
-	$('#galleria.galleria').append('<img src="/img/Juan-Monterro.png" alt="logo">')
-	Galleria.run('.galleria');
+	if (data.img && Array.isArray(data.img)){
+		for (var i = 0; i < data.img.length; i++) {
+			$('#pictures').append('<img data-original="'+data.path+data.img[i].fileName+'" alt="'+data.img[i].name+'" class="lazy" />')
+		};
 
+
+		$("img.lazy").lazyload({
+			container : $("#pictures"),
+			effect : "fadeIn",
+			threshold : 400
+		});
+		$('#pictures').css('width',($(window).width()-200)+'px')
+
+		$("#pictures").mousewheel(function(event, delta) {
+			this.scrollLeft -= (delta * 5);
+			event.preventDefault();
+		});
+
+		
+	}
 }
 
 function requestFullScreen() {

@@ -156,20 +156,18 @@ body  > #container > #content{
   display: table-cell;
   background-color: white;
   width:100%;
+  max-width: 100%;
   vertical-align: middle;
   height: 100%;
   text-align: center;
-}
 
-body > #container > #content > #galleria.galleria{
-  padding: 0;
-  max-height: 523px;
-  height: 523px;
-  width:auto;
-  max-width: 100%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+}
+#content #pictures{
+  overflow:auto;
+  white-space: nowrap;
+}
+#content #pictures img.lazy{
+  height:500px;
 }
 /*
                                                               FOOTER

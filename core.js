@@ -4,6 +4,7 @@ var fs = require('fs');
 var formidable = require('formidable');
 var path = require('path');
 var findit = require('findit');
+//var thumb = require('node-thumbnail').thumb;
 
 
 function deleteFolderRecursive(path,fs) {
@@ -151,10 +152,11 @@ module.exports = {
 	        files.push(file);
 	    })
 
-
 	    form.on('end', function() {
 			if(path)
 					path = path.slice(5);
+
+	    	var newPath = __dirname + "/public/img/"+((path)?path+'/':'');
 			if(files.length>0)
 			{
 				for (var i=0 ; i<files.length; i++){
@@ -163,9 +165,8 @@ module.exports = {
 						obj[fields[j][0]] = fields[j][1];
 					}
 					obj.fileName=files[i].name;
-					var tmp= (path)?path+'/':'';
-					var newPath = __dirname + "/public/img/"+tmp+files[i].name;
-					fs.renameSync(files[i].path, newPath);
+					// move from the temp folder to the appropriate folder
+					fs.renameSync(files[i].path, newPath+files[i].name);
 
 					var folder = sitemap;
 					if(path)
@@ -174,6 +175,12 @@ module.exports = {
 						folder.img = [];
 					folder.img.push(obj);
 				}
+				// create the thumbnail of the image
+				// thumb({
+				// 	  source: newPath,
+				// 	  destination: newPath,
+				// 	  width: 60
+				// 	  }, function() {});
 			}
 			else{
 				var obj={};
@@ -184,9 +191,8 @@ module.exports = {
 				if (obj['fileName']!=obj['oldFileName'])
 				{
 					//rename the pictures
-					var tmp= (path)?path+'/':'';
-					fs.renameSync(__dirname + "/public/img/"+tmp+obj['oldFileName'],
-								  __dirname + "/public/img/"+tmp+obj['fileName']);
+					fs.renameSync(newPath+obj['oldFileName'],
+								  newPath+obj['fileName']);
 				}
 				//update the sitemap
 				var folder = sitemap;
@@ -231,7 +237,7 @@ module.exports = {
 				// in that case, we are modifying a folder because we have an old name
 				if(fields.oldName){
 					// if the name has changed, we need to copy the object and then 
-					if (fields.name != fields.oldName){ 
+					if (fields.name != fields.oldName){
 						//copy the object (we do that for the images)
 						obj[fields.name] = obj[fields.oldName]
 						obj[fields.name]['subtitle'] = fields.subtitle;
@@ -256,7 +262,7 @@ module.exports = {
 					obj[fields.name]['img']=[];
 					obj[fields.name]['subtitle'] = fields.subtitle;
 					obj[fields.name]['order'] = fields.order;
-					obj['path']=(path)?'img/'+path.replace('.','/')+'/':'img/';
+					obj[fields.name]['path']=(path)?'img/'+path.replace('.','/')+'/':'img/';
 				}
 				// we save the modified sitemap
 				if (JSON.stringify(sitemap)!=''){
