@@ -1,6 +1,8 @@
 
 var sitemap = require('./sitemap.json');
+
 var fs = require('fs');
+
 var formidable = require('formidable');
 var path = require('path');
 var findit = require('findit');
@@ -319,6 +321,8 @@ module.exports = {
 			        if(path)
 			        	path+='/';
 					fs.unlinkSync(__dirname+'/public/img/'+path+imgFileName);
+					fs.unlinkSync(__dirname+'/public/img/'+path+imgFileName.replace('w_','o_'));
+					fs.unlinkSync(__dirname+'/public/img/'+path+imgFileName.replace('w_','o_'));
 					res.send({
 				      retStatus : 200,
 				      redirectTo: '/admin'
