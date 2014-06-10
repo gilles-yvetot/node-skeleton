@@ -4,8 +4,7 @@ var fs = require('fs');
 var formidable = require('formidable');
 var path = require('path');
 var findit = require('findit');
-//var thumb = require('node-thumbnail').thumb;
-
+var im = require('imagemagick');
 
 function deleteFolderRecursive(path,fs) {
     var files = [];
@@ -164,10 +163,26 @@ module.exports = {
 					for (var j=0 ; j<fields.length; j++){
 						obj[fields[j][0]] = fields[j][1];
 					}
-					obj.fileName=files[i].name;
+					obj.fileName='w_'+files[i].name;
 					// move from the temp folder to the appropriate folder
-					fs.renameSync(files[i].path, newPath+files[i].name);
+					fs.renameSync(files[i].path, newPath+'o_'+files[i].name);
 
+					// creating the web-optimized image
+					im.resize({
+					  srcPath: newPath+'o_'+files[i].name,
+					  dstPath: newPath+'w_'+files[i].name,
+					  height:   1000
+					}, function(err, stdout, stderr){
+					  if (err) throw err;
+					});
+					// creating the thumbnail version
+					im.resize({
+					  srcPath: newPath+'o_'+files[i].name,
+					  dstPath: newPath+'t_'+files[i].name,
+					  height:   100
+					}, function(err, stdout, stderr){
+					  if (err) throw err;
+					});
 					var folder = sitemap;
 					if(path)
 						folder = eval('sitemap.'+path.replace('/','.'));
@@ -175,12 +190,7 @@ module.exports = {
 						folder.img = [];
 					folder.img.push(obj);
 				}
-				// create the thumbnail of the image
-				// thumb({
-				// 	  source: newPath,
-				// 	  destination: newPath,
-				// 	  width: 60
-				// 	  }, function() {});
+
 			}
 			else{
 				var obj={};
@@ -262,7 +272,7 @@ module.exports = {
 					obj[fields.name]['img']=[];
 					obj[fields.name]['subtitle'] = fields.subtitle;
 					obj[fields.name]['order'] = fields.order;
-					obj[fields.name]['path']=(path)?'img/'+path.replace('.','/')+'/':'img/';
+					obj[fields.name]['path']='img/'+path.replace('.','/')+fields.name+'/';
 				}
 				// we save the modified sitemap
 				if (JSON.stringify(sitemap)!=''){
@@ -308,7 +318,6 @@ module.exports = {
 			        //remove the picture
 			        if(path)
 			        	path+='/';
-			        console.log(__dirname+'/public/img/'+path+imgFileName);
 					fs.unlinkSync(__dirname+'/public/img/'+path+imgFileName);
 					res.send({
 				      retStatus : 200,
