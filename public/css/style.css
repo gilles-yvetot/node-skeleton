@@ -89,6 +89,10 @@ body > #container{
   color:gray;
   vertical-align: top;
 }
+#dynamicAdminContent > h1 > i:hover{
+  color: black;
+  cursor: pointer;
+}
 #dynamicAdminContent > div{
   display: inline-block;
   padding-left: 10%;
@@ -99,15 +103,14 @@ body > #container{
 }
 /*          FOLDER LEFT PART        */ 
 /*each Line*/
-#dynamicAdminContent > div > div{
-  font-size:20px;
+#dynamicAdminContent > #foldersLeft > div{
   padding:3px;
   width: 200px;
   font-size:20px;
   display: inline-block;
 
 }
-#dynamicAdminContent > #foldersLeft > div:nth-child(1):hover{
+#dynamicAdminContent > #foldersLeft > div:nth-of-type(2n+1):hover{
   color:black;
   cursor: pointer;
 
@@ -129,13 +132,26 @@ body > #container{
 #dynamicAdminContent > #picturesLeft .thumbBlock{
   border:1px solid #bbb;
   margin:3px;
-  height: 100px;
   width: 100px;
+  display: inline-block;
+  vertical-align: top;
 }
-#dynamicAdminContent > #picturesLeft .thumbBlock > img{
+.thumbBlock div{
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+.thumbBlock div:nth-child(2){
+  height:100px;
+  width:100px;
+  display: table-cell;
+  vertical-align: middle;
+}
+.thumbBlock div img{
   display: block;
   max-height: 100px;
   max-width: 100px;
+  margin:auto;
 }
 #dynamicAdminContent button{
   padding:5px 15px;
@@ -167,7 +183,7 @@ body  > #container > #content{
   white-space: nowrap;
 }
 #content #pictures img.lazy{
-  height:500px;
+  height:600px;
 }
 /*
                                                               FOOTER

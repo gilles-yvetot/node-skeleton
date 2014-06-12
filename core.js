@@ -43,7 +43,7 @@ module.exports = {
 	},
 
 	breadthSearch : function(tree,name){
-		var arr=[], returnValue=null,found=false;;
+		var arr=[], returnValue=null,found=false;
 		arr.push(tree);
 		while(arr.length >0 && found==false)
 		{
@@ -158,6 +158,7 @@ module.exports = {
 					path = path.slice(5);
 
 	    	var newPath = __dirname + "/public/img/"+((path)?path+'/':'');
+			//upload of new pictures
 			if(files.length>0)
 			{
 				for (var i=0 ; i<files.length; i++){
@@ -173,7 +174,7 @@ module.exports = {
 					im.resize({
 					  srcPath: newPath+'o_'+files[i].name,
 					  dstPath: newPath+'w_'+files[i].name,
-					  height:   1000
+					  height:   1200
 					}, function(err, stdout, stderr){
 					  if (err) throw err;
 					});
@@ -181,7 +182,7 @@ module.exports = {
 					im.resize({
 					  srcPath: newPath+'o_'+files[i].name,
 					  dstPath: newPath+'t_'+files[i].name,
-					  height:   100
+					  width:   200
 					}, function(err, stdout, stderr){
 					  if (err) throw err;
 					});
@@ -194,16 +195,22 @@ module.exports = {
 				}
 
 			}
+			//update fields
 			else{
 				var obj={};
 				for (var j=0 ; j<fields.length; j++){
 					obj[fields[j][0]] = fields[j][1];
 				}
+				obj['fileName']= 'w_'+obj['fileName'];
 				// if the fileName is updated
 				if (obj['fileName']!=obj['oldFileName'])
 				{
 					//rename the pictures
 					fs.renameSync(newPath+obj['oldFileName'],
+								  newPath+obj['fileName']);
+					fs.renameSync(newPath+obj['oldFileName'].replace('w_','o_'),
+								  newPath+obj['fileName']);
+					fs.renameSync(newPath+obj['oldFileName'].replace('w_','t_'),
 								  newPath+obj['fileName']);
 				}
 				//update the sitemap
@@ -219,6 +226,12 @@ module.exports = {
 				delete obj['oldFileName'];
 				folder.img.push(obj);
 			}
+			//sort img by order
+			var folder = sitemap;
+			if(path)
+				folder = eval('sitemap.'+path.replace('/','.'));
+			folder.img.sort(function(a,b) { return parseFloat(a.order) - parseFloat(b.order) } );
+
 
 			// we save the modified sitemap
 			if (JSON.stringify(sitemap)!=''){
@@ -322,7 +335,7 @@ module.exports = {
 			        	path+='/';
 					fs.unlinkSync(__dirname+'/public/img/'+path+imgFileName);
 					fs.unlinkSync(__dirname+'/public/img/'+path+imgFileName.replace('w_','o_'));
-					fs.unlinkSync(__dirname+'/public/img/'+path+imgFileName.replace('w_','o_'));
+					fs.unlinkSync(__dirname+'/public/img/'+path+imgFileName.replace('w_','t_'));
 					res.send({
 				      retStatus : 200,
 				      redirectTo: '/admin'
