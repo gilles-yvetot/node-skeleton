@@ -72,6 +72,15 @@ body > #container > nav > #menu > ul span:hover{
 body > #container > nav > #menu > ul span:hover > i{
   color:black;
 }
+body > #container > nav > #menu > ul li.selected li{
+  display:block;
+}
+body > #container > nav > #menu > ul li li{
+  display:none;
+}
+body > #container > nav > #menu > ul li.selected{
+  display:block;
+}
 /*
                                                               BODY
 */

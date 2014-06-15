@@ -3,14 +3,14 @@ window.onload =window_load;
 $( window ).resize(window_resize);
 
 // full screen related functions and listeners
-function toogleFSicons(){
+function toggleFSicons(){
  	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
 	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
  }
-document.addEventListener("fullscreenchange", toogleFSicons, false);
-document.addEventListener("mozfullscreenchange", toogleFSicons, false);
-document.addEventListener("webkitfullscreenchange", toogleFSicons, false);
-document.addEventListener("msfullscreenchange", toogleFSicons, false);
+document.addEventListener("fullscreenchange", toggleFSicons, false);
+document.addEventListener("mozfullscreenchange", toggleFSicons, false);
+document.addEventListener("webkitfullscreenchange", toggleFSicons, false);
+document.addEventListener("msfullscreenchange", toggleFSicons, false);
 
 function window_resize(){
 }
@@ -200,13 +200,14 @@ function populateNav()
 	getSitemap(function(sitemap){
 		// Inject the whole content string into our existing HTML list
 		$('body > #container > nav > #menu ').html(populateTree(sitemap).replace(/<ul><\/ul>/gi,''));
-		//style
-		$('body > #container > nav > #menu > ul').css('display','block');
-		$('body > #container > nav > #menu > ul ul').css('display','none');
-		//event handler: close and open the nav sub-section
-		$('body > #container > nav > #menu > ul li').click(function (){
-			$('body > #container > nav > #menu > ul ul').css('display','none');
-			$(this).find('ul').css('display','block');
+		//event handler: close and open the nav sub-section + style on the icon
+		$('body > #container > nav > #menu > ul li').click(function (event){
+			$('body > #container > nav > #menu > ul li').removeClass('selected');
+			$(this).addClass('selected');
+			$(this).parent().parent().addClass('selected');
+
+			$('body > #container > nav > #menu > ul i').css('color','transparent');
+			$(event.target).find('i').css('color','gray');
 		});
 	});
 }
@@ -252,7 +253,7 @@ function getPictures(name){
 function renderPictures(data)
 {
 	data=lookForPictures(data);
-	if (data.img && Array.isArray(data.img)){
+	if (data && data.img && Array.isArray(data.img)){
 		for (var i = 0; i < data.img.length; i++) {
 			$('#pictures').append('<img data-original="'+data.path+data.img[i].fileName+'" alt="'+data.img[i].name+'" class="lazy" />')
 		};
@@ -287,10 +288,8 @@ function lookForPictures(data){
 				var node = arr[0];
 				arr.shift();
 				Object.keys(node).forEach(function(key){
-					console.log('key='+key);
 					if(node[key].img && Array.isArray(node[key].img) && node[key].img.length>0)  
 					{
-						console.log('key='+key);
 						found=true;
 						//workaround here because does not to return the value directly
 						returnValue= node[key];

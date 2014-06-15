@@ -13,7 +13,7 @@ module.exports = function(app) {
 	// HOME ====================================================================
 	app.get('/', function(req, res){
 		res.render('home.jade', {
-			title: 'Home',
+			title: 'Juan Montero Photography',
 		});
 	});
 

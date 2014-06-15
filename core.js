@@ -248,7 +248,7 @@ module.exports = {
 		var form = new formidable.IncomingForm();
 		form.parse(req, function(err, fields, files) {
 			// if we perform a modification about a folder
-			if (Object.keys(fields).length >0)
+			if (Object.keys(fields).length >0 && fields.name)
 			{
 				var path='';
 				if(fields.path){
