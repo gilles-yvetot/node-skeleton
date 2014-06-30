@@ -15,6 +15,7 @@ document.addEventListener("msfullscreenchange", toggleFSicons, false);
 function window_resize(){
 }
 function window_load(){
+
 	window_resize();
 	populateNav();
 	if(window.location.pathname == '/admin')
@@ -54,6 +55,26 @@ function getFolders(folderName, forward){
 			  }
 			});
 
+}
+
+function validateAdminForm(formId){
+	var i=0;
+	$('#'+formId+' input').each(function(){
+		if ($(this).val().indexOf("'")>-1||$(this).val().indexOf('"')>-1){
+			$(this).after("<div style='color:red;'>You cannot provide quote or double quote!</div>");
+			i++;
+		}
+	});
+	
+	var val = $('#'+formId+' input[name="order"]').val();
+	if(isNaN(val)){ // if it not a number
+		$('#'+formId+' input[name="order"]').after("<div style='color:red;'>You have to provide a number</div>");
+		i++;
+	}
+
+	if (i>0)
+		return false;
+	else return true;
 }
 
 function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){

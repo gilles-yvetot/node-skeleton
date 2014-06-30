@@ -8,14 +8,14 @@ var path = require('path');
 var findit = require('findit');
 var im = require('imagemagick');
 
-function deleteFolderRecursive(path,fs) {
+function deleteFolderRecursive(path) {
     var files = [];
     if( fs.existsSync(path) ) {
         files = fs.readdirSync(path);
         files.forEach(function(file,index){
             var curPath = path + "/" + file;
             if(fs.lstatSync(curPath).isDirectory()) { // recurse
-                this.deleteFolderRecursive(curPath,fs);
+                deleteFolderRecursive(curPath);
             } else { // delete file
                 fs.unlinkSync(curPath);
             }
@@ -209,9 +209,9 @@ module.exports = {
 					fs.renameSync(newPath+obj['oldFileName'],
 								  newPath+obj['fileName']);
 					fs.renameSync(newPath+obj['oldFileName'].replace('w_','o_'),
-								  newPath+obj['fileName']);
+								  newPath+obj['fileName'].replace('w_','o_'));
 					fs.renameSync(newPath+obj['oldFileName'].replace('w_','t_'),
-								  newPath+obj['fileName']);
+								  newPath+obj['fileName'].replace('w_','t_'));
 				}
 				//update the sitemap
 				var folder = sitemap;
@@ -366,7 +366,7 @@ module.exports = {
 				    });
 			    } else {
 			        //remove the folder
-					deleteFolderRecursive(__dirname+'/public/img/'+path+'/'+folderName+'/',fs);
+					deleteFolderRecursive(__dirname+'/public/img/'+path+'/'+folderName+'/');
 					res.send({
 				      retStatus : 200,
 				      redirectTo: '/admin'
@@ -376,5 +376,7 @@ module.exports = {
 		}
 		
 	}
+
+
 
 }
