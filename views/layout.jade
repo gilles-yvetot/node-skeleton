@@ -10,7 +10,7 @@ html(lang='en')
     meta(name='author', content='Gilles Yvetot')
     //----------Style
     link(href='/css/style.css', rel='stylesheet', type='text/css')
-    link(href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet')
+    link(href='//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css' rel='stylesheet')
     link(href='http://fonts.googleapis.com/css?family=Roboto:400,500,300,300italic,400italic,500italic' rel='stylesheet' type='text/css')
     //----------Script
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js')
@@ -21,24 +21,31 @@ html(lang='en')
 
   body
     header
-    #container
+        #logo 
+            a(href='/')
+                img(src='/img/logo.png' alt='juan montero logo')
         nav
-            #logo 
-                a(href='/')
-                    img(src='/img/Juan-Monterro.png' alt='juan_monterro_logo')
-            #menu
-            
+            a(href='personal')
+                |Personal
+            a(href='photography')
+                |Photography
+            a(href='pdf')
+                |PDF
+            a(href='contact')
+                |Contact
+ 
+    #content
         block content
+    
     footer
-        #fullscreen(onclick='requestFullScreen();')
-            i.fa.fa-arrows-alt
-            |Fullscreen
-        #contact_info   
-            a(href='tel:+1 (786) 203-7880') 
-                 i.fa.fa-phone 
-                 |+1 (786) 203-7880
-            a(href='jdmvd@hotmail.com ') 
-                i.fa.fa-envelope 
-                |jdmvd@hotmail.com 
+        #share
+            a(href='#')
+                i.fa.fa-facebook-square
+            a(href='#')
+                i.fa.fa-instagram
+            a(href='#')
+                i.fa.fa-behance-square
+            a(href='#')
+                i.fa.fa-linkedin-square
 
 

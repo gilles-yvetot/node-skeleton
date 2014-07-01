@@ -1,235 +1,88 @@
-
-
-html{
-  height: 100%;
-}
-body{
-  padding:100px 0px 100px 0px;
-  position:absolute; 
-  top:0; 
-  bottom:0; 
-  left:0; 
-  right:0;
-  margin:0;
-  font-family:Roboto;
-  font-weight: 300;
-}
 /*
-                                                              HEADER
+                                      COMMON
 */
-body > header{
-  margin-top:-100px;
-  height:100px; 
-  background-color:#f1f2f2;
-}
-/*
-                                                              NAV
-*/
-
-body > #container > nav{
-  display: table-cell;
-  width: 200px;
-  color: black;
-  vertical-align: top;
-}
-body > #container > nav > #logo > a > img{
-  height: auto;
-  width: 180px;
-  margin: 0px 10px 0px 10px;
-  padding:0;
-}
-body > #container > nav > #menu > ul{
-  margin: 0;
-  padding: 20px 0px 0px 30px;
-  overflow: scroll;
-  list-style-type: none;
-  font-size: 18px;
+body, html{
   position: relative;
+  background-color:black;
+  color:white;
+  font-family: Roboto;
 }
-body > #container > nav > #menu > ul ul{
-  margin: 0px 0px 0px 10px;
-  padding: 0;
-  list-style-type: none;
-  list-style-position: outside;
-  font-size: 15px;
-}
-body > #container > nav > #menu > ul span{
-  text-transform: capitalize;
+a{
+  color:inherit;
   text-decoration: none;
-  color: gray;
 }
-body > #container > nav > #menu > ul span > i{
-  color:transparent;
-  font-size: 14px;
-  padding-right:5px;
-  vertical-align: middle;
+
+/*
+                                      HEADER
+*/
+
+header{
+  height:60px; 
+  position: fixed;
+  top:0;
+  right: 0;
+  left: 0;
 }
-body > #container > nav > #menu > ul span:hover{
-  text-decoration: none;
-  color: black;
-  cursor:pointer;
+
+#logo{
+  float: left;
 }
-body > #container > nav > #menu > ul span:hover > i{
+#logo img{
+  height: auto;
+  width:183px;
+  margin-left: 30px;
+  margin-top:21px;
+}
+nav{
+  float: right;
+  margin-right: 30px;
+  margin-top:26px;
+}
+nav a{
+  margin:0 10px;
+  text-transform:capitalize;
+  letter-spacing: 1px;
+  font-size: 10pt;
+}
+/*
+                                      CONTENT
+*/
+#content{
+  background: white;
+  position: fixed;
+  top:60px;
+  bottom:60px;
+  left:0;
+  right:0;
   color:black;
-}
-body > #container > nav > #menu > ul li.selected li{
-  display:block;
-}
-body > #container > nav > #menu > ul li li{
-  display:none;
-}
-body > #container > nav > #menu > ul li.selected{
-  display:block;
+  padding:300px;
 }
 /*
-                                                              BODY
+                                      FOOTER
 */
-body > #container{
-  min-height:100%; 
-  background-color:#f1f2f2;
-  display: table;
-  width:100%;
+footer{
+  height:60px; 
+  position: fixed;
+  bottom:0;
+  right: 0;
+  left: 0;
+}
+#share{
+  float: left;
+  margin-top:20px;
+  margin-left: 30px;
+}
+#share i{
+  margin-right: 10px;
+  font-size: 20px;
 }
 
-/*
-                                                              BODY - ADMIN
-*/
-#dynamicAdminContent {
-  color:gray;
-  vertical-align: top;
+#share a:hover i{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
+  filter: alpha(opacity=50);/* IE 5-7 */
+  -moz-opacity: 0.5;/* Netscape */
+  -khtml-opacity: 0.5;/* Safari 1.x */
+  opacity: 0.5;/* Good browsers */
 }
-#dynamicAdminContent > h1 > i:hover{
-  color: black;
-  cursor: pointer;
-}
-#dynamicAdminContent > div{
-  display: inline-block;
-  padding-left: 10%;
-  text-align: left;
-  width:40%;
-  color:#b3b3b3;
-  vertical-align: middle;
-}
-/*          FOLDER LEFT PART        */ 
-/*each Line*/
-#dynamicAdminContent > #foldersLeft > div{
-  padding:3px;
-  width: 200px;
-  font-size:20px;
-  display: inline-block;
-
-}
-#dynamicAdminContent > #foldersLeft > div:nth-of-type(2n+1):hover{
-  color:black;
-  cursor: pointer;
-
-}
-#dynamicAdminContent > div > div > i{
-  padding-right: 4px;
-  padding-left: 4px;
-}
-#dynamicAdminContent > div > div > i:hover{
-  cursor: pointer;
-  color: black;
-}
-
-#dynamicAdminContent > div > form > input{
-  display: block;
-  width:50%;
-
-}
-#dynamicAdminContent > #picturesLeft .thumbBlock{
-  border:1px solid #bbb;
-  margin:3px;
-  width: 100px;
-  display: inline-block;
-  vertical-align: top;
-}
-.thumbBlock div{
-  display: block;
-  text-align: center;
-  width: 100%;
-}
-.thumbBlock div:nth-child(2){
-  height:100px;
-  width:100px;
-  display: table-cell;
-  vertical-align: middle;
-}
-.thumbBlock div img{
-  display: block;
-  max-height: 100px;
-  max-width: 100px;
-  margin:auto;
-}
-#dynamicAdminContent button{
-  padding:5px 15px;
-  background-color:#ddd;
-  border:1px solid #333;
-  color:#333;
-  display: block;
-  cursor: pointer;
-}
-#dynamicAdminContent button:hover{
-  background-color: #BFD4FF;
-}
-
-/*
-                                                              BODY CONTENT
-*/
-body  > #container > #content{
-  display: table-cell;
-  background-color: white;
-  width:100%;
-  max-width: 100%;
-  vertical-align: middle;
-  height: 100%;
-  text-align: center;
-
-}
-#content #pictures{
-  overflow:auto;
-  white-space: nowrap;
-}
-#content #pictures img.lazy{
-  height:600px;
-}
-/*
-                                                              FOOTER
-*/
-
-body > footer{
-  height:100px; 
-  background-color:#f1f2f2;
-  position:relative;
-}
-body > footer i{
-  font-size: 15px;
-  vertical-align: -1px;
-  padding-right: 4px;
-}
-body > footer > #fullscreen{
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  font-size: 13px;
-  color: gray;
-  font-size: 14px;
-}
-body > footer > #fullscreen:hover{
-  cursor: pointer;
-}
-body > footer > #contact_info{
-  position: absolute;
-  right: 0px;
-  bottom: 20px;
-  font-size: 14px;
-}
-body > footer > #contact_info > a{
-  text-decoration: none;
-  color: gray;
-  padding-right: 15px;
-}
-
 
 

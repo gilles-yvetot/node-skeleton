@@ -16,18 +16,37 @@ module.exports = function(app) {
 			title: 'Juan Montero Photography',
 		});
 	});
-
-	// SITEMAP =================================================================
-	app.get('/sitemap', function(req, res){
-		res.json(sitemap);
-	});
-
 	// CONTACT =================================================================
 	app.get('/contact', function(req, res){
 		res.render('contact.jade', {
 			title: 'Contact',
 		});
 	});
+	// PERSONAL =================================================================
+	app.get('/personal', function(req, res){
+		res.render('personal.jade', {
+			title: 'Personal',
+		});
+	});
+	// PHOTOGRAPHY ==============================================================
+	app.get('/photography', function(req, res){
+		res.render('photography.jade', {
+			title: 'Photography',
+		});
+	});
+	// PDF ======================================================================
+	app.get('/pdf', function(req, res){
+		res.render('pdf.jade', {
+			title: 'PDF',
+		});
+	});
+
+
+	// SITEMAP =================================================================
+	app.get('/sitemap', function(req, res){
+		res.json(sitemap);
+	});
+
 	// PICTURES ===============================================================
 	app.get('/pictures', function(req, res){
 		// TODO: insert a regex to prevent injection here (eval) (think about the case when there is nothing)
