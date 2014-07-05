@@ -5,13 +5,26 @@ body, html{
   position: relative;
   background-color:black;
   color:white;
-  font-family: Roboto;
+  font-family: 'MetronicPro', Arial, Helvetica;
 }
 a{
   color:inherit;
   text-decoration: none;
 }
-
+@font-face {
+  font-family: 'MetronicPro';
+  src: url('/font/MetronicProAir.eot') format('embedded-opentype'),  url('/font/MetronicProAir.woff') format('woff');
+  font-weight: lighter;;
+}
+@font-face {
+  font-family: 'MetronicPro';
+  src: url('/font/MetronicProRegular.eot') format('embedded-opentype'),  url('/font/MetronicProRegular.woff') format('woff');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Bague';
+  src: url('/font/PFBagueSansPro-Regular.eot') format('embedded-opentype'),  url('/font/PFBagueSansPro-Regular.woff') format('woff');
+}
 /*
                                       HEADER
 */
@@ -36,14 +49,41 @@ header{
 nav{
   float: right;
   margin-right: 30px;
-  margin-top:26px;
+  margin-top:16px;
 }
-nav a{
-  margin:0 10px;
-  text-transform:capitalize;
+nav .menu_item{
+  margin: 0;
+  padding: 10px 0;
+  text-transform: capitalize;
   letter-spacing: 1px;
   font-size: 10pt;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  min-width: 80px;
+  text-align: center;
+  border: 1px solid transparent;
 }
+.submenu{
+  display: none;
+}
+.submenu ul{
+  list-style: none;
+  margin: 10px 0;
+  padding: 0;
+  background: white;
+  color: black;
+}
+.submenu ul li{
+  padding: 5px 0;
+}
+.menu_item:hover .submenu{
+  display: block;
+}
+.menu_item:hover{
+  border: 1px solid white;
+}
+
 /*
                                       CONTENT
 */
@@ -56,6 +96,7 @@ nav a{
   right:0;
   color:black;
   padding:300px;
+  z-index: -1;
 }
 /*
                                       FOOTER

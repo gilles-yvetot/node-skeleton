@@ -11,7 +11,6 @@ html(lang='en')
     //----------Style
     link(href='/css/style.css', rel='stylesheet', type='text/css')
     link(href='//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css' rel='stylesheet')
-    link(href='http://fonts.googleapis.com/css?family=Roboto:400,500,300,300italic,400italic,500italic' rel='stylesheet' type='text/css')
     //----------Script
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js')
     script(src='/js/global.js')
@@ -25,14 +24,20 @@ html(lang='en')
             a(href='/')
                 img(src='/img/logo.png' alt='juan montero logo')
         nav
-            a(href='personal')
-                |Personal
-            a(href='photography')
-                |Photography
-            a(href='pdf')
-                |PDF
-            a(href='contact')
-                |Contact
+            a.menu_item(href='personal') Personal
+                .submenu
+                    ul
+                        li Quotidian
+                        li Facades
+                        li Facades
+                        li Facades
+            a.menu_item(href='photography') Photography
+                .submenu
+            a.menu_item(href='pdf') PDF 
+                .submenu
+            a.menu_item(href='contact') About/Contact
+                .submenu
+
  
     #content
         block content
