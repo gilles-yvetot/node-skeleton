@@ -42,6 +42,39 @@ module.exports = {
 		}
 	},
 
+	sendEmailFromForm : function(data){
+		if (data.email && data.message){
+			var message = ((data.name)?data.name+'<br/>':'') 
+						+ ((data.phone)?data.phone+'<br/>':'') 
+						+ data.email+'<br/>'
+						+ ((data.address)?data.address+'<br/>':'') 
+						+ '<br/>'+data.message,
+			obj = ((data.name)?data.name:'Someone')+" sent a message from your website";
+			var mail = require("nodemailer").mail;
+			mail({
+			    from: "contact@jdmontero.com", // sender address
+			    to: "jdmvd@hotmail.com", // list of receivers
+			    subject: obj, // Subject line
+			    html: message // html body
+			});
+		}
+	},
+
+	getNavData : function(){
+		if(sitemap && (sitemap['personal'] || sitemap['Personal'])){
+			var arr =[];
+			if (sitemap['personal'])
+				arr= Object.keys(sitemap['personal']);
+			else if (sitemap['Personal'])
+				arr= Object.keys(sitemap['Personal']);
+
+			arr= arr.filter(function(el){
+				return (el!='path' && el!='img' && el!='subtitle' && el!='order');
+			});
+			return arr;
+		}
+	},
+
 	breadthSearch : function(tree,name){
 		var arr=[], returnValue=null,found=false;
 		arr.push(tree);
@@ -287,7 +320,7 @@ module.exports = {
 					obj[fields.name]['img']=[];
 					obj[fields.name]['subtitle'] = fields.subtitle;
 					obj[fields.name]['order'] = fields.order;
-					obj[fields.name]['path']='img/'+path.replace('.','/')+fields.name+'/';
+					obj[fields.name]['path']='/img/'+path.replace('.','/')+((path=='')?'':'/')+fields.name+'/';
 				}
 				// we save the modified sitemap
 				if (JSON.stringify(sitemap)!=''){

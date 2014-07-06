@@ -6,6 +6,8 @@ body, html{
   background-color:black;
   color:white;
   font-family: 'MetronicPro', Arial, Helvetica;
+  margin:0;
+  padding: 0;
 }
 a{
   color:inherit;
@@ -14,7 +16,7 @@ a{
 @font-face {
   font-family: 'MetronicPro';
   src: url('/font/MetronicProAir.eot') format('embedded-opentype'),  url('/font/MetronicProAir.woff') format('woff');
-  font-weight: lighter;;
+  font-weight: lighter;
 }
 @font-face {
   font-family: 'MetronicPro';
@@ -24,6 +26,23 @@ a{
 @font-face {
   font-family: 'Bague';
   src: url('/font/PFBagueSansPro-Regular.eot') format('embedded-opentype'),  url('/font/PFBagueSansPro-Regular.woff') format('woff');
+}
+.visibleBlock{
+  display: block !important;
+}
+.visibleInlineBlock{
+  display: inline-block !important;
+}
+.leftPart, .rightPart{
+  display: table-cell;
+  width: 50%;
+  border: 0;
+  padding: 0;
+  margin:0;
+  vertical-align: top;
+}
+.redText{
+  color:red;
 }
 /*
                                       HEADER
@@ -52,8 +71,6 @@ nav{
   margin-top:16px;
 }
 nav .menu_item{
-  margin: 0;
-  padding: 10px 0;
   text-transform: capitalize;
   letter-spacing: 1px;
   font-size: 10pt;
@@ -64,13 +81,17 @@ nav .menu_item{
   text-align: center;
   border: 1px solid transparent;
 }
+.menu_item > a:first-child{
+    display: block;
+    padding:10px;
+}
 .submenu{
   display: none;
 }
 .submenu ul{
   list-style: none;
-  margin: 10px 0;
-  padding: 0;
+  padding: 10px 0 0 0;
+  margin: 0;
   background: white;
   color: black;
 }
@@ -84,33 +105,269 @@ nav .menu_item{
   border: 1px solid white;
 }
 
+
+
+
+
+
+
+
+
+
 /*
                                       CONTENT
 */
-#content{
-  background: white;
+
+/*                Home              */
+
+#contentHome{
+  overflow: hidden;
   position: fixed;
-  top:60px;
-  bottom:60px;
-  left:0;
-  right:0;
-  color:black;
-  padding:300px;
+  top: 60px;
+  bottom: 60px;
+  right: 0;
+  left: 0;
+  z-index: -1;
+
+}
+#contentHome img {
+  width: auto;
+  height: 180%;
+  position: relative;
+  display: block;
+  margin: auto;
+  margin-top: -100px;
+}
+
+
+/*                Login              */
+#loginMain{
+  margin: auto;
+  width:500px;
+  text-align: center;
+  border:1px solid white;
+  padding:10px;
+  margin-top:50px;
+}
+#loginMain input{
+  margin-left: 5px;
+}
+
+
+
+/*                Admin              */
+#dynamicAdminContent{
+  text-align: center;
+}
+
+
+
+
+
+/*                Personal              */
+
+#contentPersonal{
+  margin-left: 25%;
+  height: 85%;
+  position: fixed;
+  top: 60px;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+}
+.margin-left-15{
+  margin-left: 15% !important;
+}
+#contentPersonal > #centralImg{
+  display: inline-block;
+  max-height: 85%;
+  height: 85%;
+  max-width: 80%;
+  width: 80%
+
+}
+#contentPersonal > #centralImg img{
+  max-height: 100%;
+  max-width: 100%;
+}
+#contentPersonal > #thumbs{
+  display: none;
+  width:20%;
+  max-width:20%;
+  max-height: 85%;
+  vertical-align: top;
+  overflow-y:scroll;
+}
+#contentPersonal > #thumbs img{
+  display: block;
+  width:100px;
+  height:auto;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
+  filter: alpha(opacity=50);/* IE 5-7 */
+  -moz-opacity: 0.5;/* Netscape */
+  -khtml-opacity: 0.5;/* Safari 1.x */
+  opacity: 0.5;/* Good browsers */
+}
+#contentPersonal > #thumbs img:hover{
+  cursor: pointer;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";/* IE 8 */
+  filter: alpha(opacity=100);/* IE 5-7 */
+  -moz-opacity: 1;/* Netscape */
+  -khtml-opacity: 1;/* Safari 1.x */
+  opacity: 1;/* Good browsers */
+}
+#bottomPersonal{
+  margin-left:15%;
+  height:15%;
+  margin-right: 20%;
+  position: relative;
+}
+#bottomPersonal h2{
+  display: inline-block;
+  text-transform: capitalize;
+  margin: 0 20px 0 0;
+}
+#bottomPersonal i:hover{
+  cursor: pointer;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
+  filter: alpha(opacity=50);/* IE 5-7 */
+  -moz-opacity: 0.5;/* Netscape */
+  -khtml-opacity: 0.5;/* Safari 1.x */
+  opacity: 0.5;/* Good browsers */
+}
+#bottomPersonal > .fa-stack{
+  display: block;
+  font-size: 12px;
+  cursor: pointer;
+}
+#bottomPersonal > .fa-stack:hover{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
+  filter: alpha(opacity=50);/* IE 5-7 */
+  -moz-opacity: 0.5;/* Netscape */
+  -khtml-opacity: 0.5;/* Safari 1.x */
+  opacity: 0.5;/* Good browsers */
+} 
+
+#bottomPersonal .floatRight{
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 20px;
+  text-align: right;
+}
+#bottomPersonal .description,
+#bottomPersonal #share
+{
+  display: none;
+}
+#bottomPersonal #slideshow{
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+#bottomPersonal #slideshow:hover{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
+  filter: alpha(opacity=50);/* IE 5-7 */
+  -moz-opacity: 0.5;/* Netscape */
+  -khtml-opacity: 0.5;/* Safari 1.x */
+  opacity: 0.5;/* Good browsers */
+  cursor: pointer;
+}
+
+
+
+
+
+/*             Contact                 */
+#contentContact{
+  background:rgb(15,15,15);
+  position: fixed;
+  top: 60px;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
   z-index: -1;
 }
+#resume{
+  padding:0 60px;
+  margin: 40px 0;
+  border-right: 1px solid white;
+  text-align: right;
+}
+#resume img{
+  width:50%;
+  height: auto;
+}
+#resume div{
+  width:40%;
+  margin-left: auto;
+  overflow-y:scroll;
+  font-size: 12pt;
+  font-family: 'Bague', Arial, Helvetica;
+}
+#contactForm{
+  padding-left: 60px;
+  padding-top: 40px;
+  width: 350px;
+}
+#contactForm > div{
+  font-size: 12pt;
+  padding:2px 0;
+}
+#contactForm form{
+  margin-top: 30px;
+  font-weight: lighter;
+  font-size: 9pt;
+}
+#contactForm input[type='text'],
+#contactForm input[type='email'],
+#contactForm textarea{
+  width:100%;
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+}
+#contactForm input[type='submit']{
+  float: right;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: white;
+  font-family: 'MetronicPro';
+  font-weight:bolder;
+  font-size: 22px;
+  position: relative;
+  right: -7px;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
 /*
                                       FOOTER
 */
-footer{
-  height:60px; 
+#footerHome{
+  height:40px; 
   position: fixed;
+  padding-top: 20px;
   bottom:0;
   right: 0;
   left: 0;
 }
+#footerHome #copyright{
+  float: right;
+  margin-right: 30px;
+  font-size: 14px;
+  font-family: 'Bague', Arial, Helvetica;
+}
 #share{
   float: left;
-  margin-top:20px;
   margin-left: 30px;
 }
 #share i{
@@ -125,5 +382,4 @@ footer{
   -khtml-opacity: 0.5;/* Safari 1.x */
   opacity: 0.5;/* Good browsers */
 }
-
 

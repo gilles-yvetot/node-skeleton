@@ -1,17 +1,16 @@
 extends layout
 
 block content
-    #content
-        #dynamicAdminContent
-            h1 Your Website
-            h2 Folders
-            #foldersLeft
-            #foldersRight
-                form(action='/folders', method='post', id='foldersForm',enctype='multipart/form-data' onsubmit='return validateAdminForm("foldersForm")')
+    #dynamicAdminContent
+        h1 Your Website
+        h2 Folders
+        #foldersLeft
+        #foldersRight
+            form(action='/folders', method='post', id='foldersForm',enctype='multipart/form-data' onsubmit='return validateAdminForm("foldersForm")')
 
-            h2 Pictures
-            #picturesLeft
-            #picturesRight
-                form(action='/pictures', method='post', id='picturesForm',enctype='multipart/form-data' onsubmit='return validateAdminForm("picturesForm")')
+        h2 Pictures
+        #picturesLeft
+        #picturesRight
+            form(action='/pictures', method='post', id='picturesForm',enctype='multipart/form-data' onsubmit='return validateAdminForm("picturesForm")')
 
-            input(type='hidden' id='path' form='foldersForm' name='path')
+        input(type='hidden' id='path' form='foldersForm' name='path')

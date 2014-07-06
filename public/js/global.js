@@ -7,29 +7,49 @@ function toggleFSicons(){
  	$('body > footer > #fullscreen > i').toggleClass('fa-arrows-alt');
 	$('body > footer > #fullscreen > i').toggleClass('fa-times-circle-o');
  }
-document.addEventListener("fullscreenchange", toggleFSicons, false);
-document.addEventListener("mozfullscreenchange", toggleFSicons, false);
-document.addEventListener("webkitfullscreenchange", toggleFSicons, false);
-document.addEventListener("msfullscreenchange", toggleFSicons, false);
+
+
+function attachEventListeners(){
+	document.addEventListener("fullscreenchange", toggleFSicons, false);
+	document.addEventListener("mozfullscreenchange", toggleFSicons, false);
+	document.addEventListener("webkitfullscreenchange", toggleFSicons, false);
+	document.addEventListener("msfullscreenchange", toggleFSicons, false);
+
+	$('#bottomPersonal .fa-stack').click(function(){
+		$('#bottomPersonal .description').toggleClass('visibleBlock');
+	});
+	$('#bottomPersonal .fa-share-alt').click(function(){
+		$('#bottomPersonal #share').toggleClass('visibleBlock');
+	});
+	$('#bottomPersonal #slideshow').click(function(){
+		$('#contentPersonal #thumbs').toggleClass('visibleInlineBlock');
+		$('#contentPersonal').toggleClass('margin-left-15');
+	});
+}
 
 function window_resize(){
 }
 function window_load(){
 
+	attachEventListeners();
 	window_resize();
 	populateNav();
-	if(window.location.pathname == '/admin')
+	var path = window.location.pathname;
+	path = path.substring(1,path.length);// remove the first '/'
+
+	switch(path)
 	{
-		getFolders('root',true);
-	}
-	else if (window.location.pathname == '/login'){	}
-	else
-	{
-		getPictures('root');
+		case 'admin':
+			getFolders('root','forward');
+		break;
+		case 'login':
+		break;
+		case '':
+		break;
 	}
 }
 /*
-	Absolutely put these function in the admin page only=====================================================
+	Absolutely put these function in the admin page only (external JS)====================================
 */
 function getFolders(folderName, forward){
 		var path = $('#dynamicAdminContent #path')[0];
@@ -180,7 +200,7 @@ function renderFolders(data){
 		title+='<i class="fa fa-reply" value="'+data.title
 		+'" title="Go back to parent folder" onclick="getFolders(\''+data.title+'\',false)"></i>';
 	title +=data.title;
-	$('body > #container > #content > #dynamicAdminContent > h1').html(title);
+	$('#dynamicAdminContent > h1').html(title);
 	var str='';
 	if(data.tree)
 	Object.keys(data.tree).forEach(function(value){
@@ -191,7 +211,7 @@ function renderFolders(data){
 				+"</div><br/>";
 	});
 	str+='<button onclick="insertInput(\'\',\'\',\'\',null,\'addFolder\')">Add a folder into '+data.title+'</button>';
-	$('body > #container > #content > #dynamicAdminContent > #foldersLeft').html(str);
+	$('#dynamicAdminContent #foldersLeft').html(str);
 }
 
 function renderImgInAdmin(data)
@@ -254,6 +274,13 @@ function populateTree(tree)
 	nav+='</ul>';
 	return nav;
 }
+
+function showPictureInPersonal(i)
+{
+	console.log(i);
+	$('#centralImg img').css('display','none');
+	$($('#centralImg img').get(i)).css('display','block');
+} 
 
 function getPictures(name){
 	var data2send={};

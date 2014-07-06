@@ -5,6 +5,8 @@ module.exports = function(app) {
 	var core = require('./core.js');
 	var sitemap = require('./sitemap.json');
 
+	var navData = core.getNavData();
+
 	/*==========================
 	    Routes: GET
 	==========================*/
@@ -14,30 +16,48 @@ module.exports = function(app) {
 	app.get('/', function(req, res){
 		res.render('home.jade', {
 			title: 'Juan Montero Photography',
+			personal: navData,
 		});
 	});
 	// CONTACT =================================================================
 	app.get('/contact', function(req, res){
 		res.render('contact.jade', {
 			title: 'Contact',
+			personal: navData,
 		});
 	});
 	// PERSONAL =================================================================
-	app.get('/personal', function(req, res){
-		res.render('personal.jade', {
-			title: 'Personal',
+	app.get('/personal/:subpart', function(req, res){
+		core.getContentFolder(req.params.subpart, function(err,content){
+			if(err){
+				res.render('personal.jade', {
+					personal: navData,
+					title: 'Personal',
+					error: err
+				});
+			}
+			else{
+				res.render('personal.jade', {
+					personal: navData,
+					title: (req.params.subpart)?req.params.subpart:'Personal',
+					data: content.tree
+				});
+			}
 		});
+		
 	});
 	// PHOTOGRAPHY ==============================================================
-	app.get('/photography', function(req, res){
+	app.get('/photography/', function(req, res){
 		res.render('photography.jade', {
 			title: 'Photography',
+			personal: navData,
 		});
 	});
 	// PDF ======================================================================
-	app.get('/pdf', function(req, res){
+	app.get('/pdf/', function(req, res){
 		res.render('pdf.jade', {
 			title: 'PDF',
+			personal: navData,
 		});
 	});
 
@@ -75,12 +95,14 @@ module.exports = function(app) {
 	app.get('/login', function(req, res){
 	  res.render('login.jade', {
 			title: 'Login',
+			personal: navData,
 		});
 	});
 
 	app.get('/admin', restrict,function(req, res){
 	  res.render('admin.jade', {
 			title: 'Manage your content',
+			personal: navData,
 		});
 	});
 	
@@ -89,15 +111,15 @@ module.exports = function(app) {
 		
 		var path = Object.keys(req.query)[0];
 		core.getContentFolder(path,function(err,obj){
-				if(err){
-					console.log(err);
-					res.send('error while retrieving folder content');
-					res.end();
-				}
-				else
-				{
-					res.json(obj);
-				}
+			if(err){
+				console.log(err);
+				res.send('error while retrieving folder content');
+				res.end();
+			}
+			else
+			{
+				res.json(obj);
+			}
 		});
 			
 	});
@@ -140,16 +162,21 @@ module.exports = function(app) {
 	        req.session.success = 'Authenticated as ' + user.name
 	          + ' click to <a href="/logout">logout</a>. '
 	          + ' You may now access <a href="/restricted">/restricted</a>.';
-	        res.redirect('admin');
+	        res.redirect('/admin');
 	      });
 	    } else {
 	      console.log(err);
 	      req.session.error = 'Authentication failed, please check your '
 	        + ' username and password.'
 	        + ' (use "user1" and "password")';
-	      res.redirect('login');
+	      res.redirect('/login');
 	    }
 	  });
+	});
+	// CONTACT ================================================================
+	app.post('/contact', function(req,res){
+		core.sendEmailFromForm(req.body)
+	    res.redirect('back');
 	});
 
 

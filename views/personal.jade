@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    #contentPersonal
+        #centralImg
+            for item,index in data.img
+                if index == 0
+                    img(src='#{data.path}#{data.img[0].fileName}' style='display:block;')
+                else
+                    img(src='#{data.path}#{data.img[index].fileName}' style='display:none;')
+        #thumbs
+            for item,index in data.img
+                img(src='#{data.path}#{item.fileName.replace("w_","t_")}' onclick='showPictureInPersonal(#{index})')
+        #bottomPersonal
+            h2= title
+            span 1/#{data.img.length}
+            .fa-stack
+                i.fa.fa-circle-o.fa-stack-2x
+                i.fa.fa-info.fa-stack-1x
+            .floatRight
+                #slideshow slideshow
+                include share
+                i.fa.fa-share-alt
+            .description #{data.img[0].subtitle}

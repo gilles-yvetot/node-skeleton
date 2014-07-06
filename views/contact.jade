@@ -1,5 +1,41 @@
 extends layout
 
 block content
-	h1 Contact
+    #contentContact
+        .leftPart
+            #resume
+                img(src='/img/juan.jpg' alt="Juan David Montero")
+                div
+                    |Juan Montero was born in Cuenca, Ecuador where he was introduced to the camera for the first time while earning his bachelors degree in Design.
+                    br
+                    br
+                    |Montero worked as a graphic designer for an importer and distributor of spirits before immigrating to the United States. In 2011 he expanded his photographic education at Miami International University of Art in Design. 
+                    br
+                    br
+                    |Montero is passionate photographing people and world cultures with a personal artistic style that communicates a strong sense of place and awareness. His photo documentary narratives reflect an interest in conservation while exploring issues related to the human condition.
+        .rightPart
+            #contactForm
+                div Juan David Montero
+                .redText
+                    |+1(786)203-7880
+                    br
+                    |jdmvd@hotmail.com
+                div Miami, Florida
+                
+                form(action='/contact' method='post')
+                    div Name
+                    input(type='text' name='name')
+                    div Email Address
+                    input(type='email' name='email' required)
+                    div Phone Number
+                    input(type='text' name='phone')
+                    div Address
+                    input(type='text' name='address')
+                    div Message
+                    textarea(type='text' name='message' rows='5' required)
+                    input(type='submit' value='Send')
+                    
 
+
+block footer
+    include footerHome

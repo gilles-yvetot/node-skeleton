@@ -18,39 +18,35 @@ html(lang='en')
     script(src='/js/jquery.scrollstop.min.js')
     script(src='/js/jquery.mousewheel.min.js')
 
+  mixin submenuItem(val)
+    li
+        a(href='/personal/#{val}') #{val}
+
   body
     header
         #logo 
             a(href='/')
                 img(src='/img/logo.png' alt='juan montero logo')
         nav
-            a.menu_item(href='personal') Personal
+            .menu_item
+                a(href='#') Personal
                 .submenu
                     ul
-                        li Quotidian
-                        li Facades
-                        li Facades
-                        li Facades
-            a.menu_item(href='photography') Photography
+                        for val in personal
+                            +submenuItem(val)
+            .menu_item
+                a(href='/photography/') Photography
                 .submenu
-            a.menu_item(href='pdf') PDF 
+            .menu_item
+                a(href='/pdf/') PDF 
                 .submenu
-            a.menu_item(href='contact') About/Contact
+            .menu_item
+                a(href='/contact/') About/Contact
                 .submenu
 
- 
-    #content
-        block content
+    block content
+    block footer
     
-    footer
-        #share
-            a(href='#')
-                i.fa.fa-facebook-square
-            a(href='#')
-                i.fa.fa-instagram
-            a(href='#')
-                i.fa.fa-behance-square
-            a(href='#')
-                i.fa.fa-linkedin-square
+    
 
 
