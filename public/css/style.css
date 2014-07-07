@@ -1,13 +1,13 @@
 /*
                                       COMMON
 */
+
 body, html{
-  position: relative;
   background-color:black;
   color:white;
   font-family: 'MetronicPro', Arial, Helvetica;
-  margin:0;
   padding: 0;
+  margin: 0;
 }
 a{
   color:inherit;
@@ -34,15 +34,24 @@ a{
   display: inline-block !important;
 }
 .leftPart, .rightPart{
-  display: table-cell;
+  display: inline-block;
   width: 50%;
   border: 0;
   padding: 0;
   margin:0;
   vertical-align: top;
+  height: 100%;
+  overflow:hidden;
+  position: relative;
+}
+.margin-left-15{
+  margin-left: 15% !important;
 }
 .redText{
   color:red;
+}
+.push{
+  height: 60px;
 }
 /*
                                       HEADER
@@ -50,10 +59,6 @@ a{
 
 header{
   height:60px; 
-  position: fixed;
-  top:0;
-  right: 0;
-  left: 0;
 }
 
 #logo{
@@ -80,6 +85,7 @@ nav .menu_item{
   min-width: 80px;
   text-align: center;
   border: 1px solid transparent;
+  z-index: 2;
 }
 .menu_item > a:first-child{
     display: block;
@@ -115,50 +121,61 @@ nav .menu_item{
 
 
 /*
-                                      CONTENT
+                                      CONTENT WRAPPER
 */
+#content{
+  position:absolute;
+  top:60px;
+  bottom:0;
+  right:0;
+  left:0;
+}
 
-/*                Home              */
-
+.wrapperWithFooter{
+  position:absolute;
+  top:0px;
+  bottom:60px;
+  right:0;
+  left:0;
+}
 #contentHome{
   overflow: hidden;
-  position: fixed;
-  top: 60px;
-  bottom: 60px;
-  right: 0;
-  left: 0;
-  z-index: -1;
-
 }
-#contentHome img {
-  width: auto;
-  height: 180%;
-  position: relative;
-  display: block;
-  margin: auto;
-  margin-top: -100px;
-}
-
-
-/*                Login              */
 #loginMain{
   margin: auto;
   width:500px;
   text-align: center;
   border:1px solid white;
   padding:10px;
-  margin-top:50px;
+  margin-top:100px;
 }
+#dynamicAdminContent{
+  text-align: center;
+}
+#contentPersonal{
+  margin-left: 25%;
+}
+#contentContact{
+  background:rgb(15,15,15);
+}
+
+/*                Home              */
+
+#contentHome img {
+  width: auto;
+  height: 160%;
+  position: relative;
+  display: block;
+  margin: auto;
+  margin-top: -130px;
+}
+
+
+/*                Login              */
 #loginMain input{
   margin-left: 5px;
 }
 
-
-
-/*                Admin              */
-#dynamicAdminContent{
-  text-align: center;
-}
 
 
 
@@ -166,18 +183,6 @@ nav .menu_item{
 
 /*                Personal              */
 
-#contentPersonal{
-  margin-left: 25%;
-  height: 85%;
-  position: fixed;
-  top: 60px;
-  bottom: 60px;
-  left: 0;
-  right: 0;
-}
-.margin-left-15{
-  margin-left: 15% !important;
-}
 #contentPersonal > #centralImg{
   display: inline-block;
   max-height: 85%;
@@ -278,37 +283,33 @@ nav .menu_item{
 
 
 /*             Contact                 */
-#contentContact{
-  background:rgb(15,15,15);
-  position: fixed;
-  top: 60px;
-  bottom: 60px;
-  left: 0;
-  right: 0;
-  overflow: hidden;
-  z-index: -1;
-}
+
 #resume{
-  padding:0 60px;
-  margin: 40px 0;
-  border-right: 1px solid white;
+  height: 84%;
+  margin: 8% 0;
+  padding-right: 60px;
   text-align: right;
+  border-right: 1px solid white;
 }
 #resume img{
-  width:50%;
-  height: auto;
+  height: 50%;
+  padding-bottom:2%; 
+  display: block;
+  margin-left: auto;
 }
 #resume div{
-  width:40%;
+  height: 48%;
+  width: 50%;
   margin-left: auto;
-  overflow-y:scroll;
+  overflow: scroll;
   font-size: 12pt;
   font-family: 'Bague', Arial, Helvetica;
+  margin-left:auto;
 }
 #contactForm{
-  padding-left: 60px;
-  padding-top: 40px;
-  width: 350px;
+  width: 50%;
+  height: 84%;
+  padding: 8% 0 8% 60px;
 }
 #contactForm > div{
   font-size: 12pt;
@@ -354,11 +355,11 @@ nav .menu_item{
 */
 #footerHome{
   height:40px; 
-  position: fixed;
   padding-top: 20px;
-  bottom:0;
-  right: 0;
-  left: 0;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
 }
 #footerHome #copyright{
   float: right;

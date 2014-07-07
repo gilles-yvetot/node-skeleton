@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    #contentContact
+    #contentContact.wrapperWithFooter
         .leftPart
             #resume
                 img(src='/img/juan.jpg' alt="Juan David Montero")
@@ -35,7 +35,7 @@ block content
                     textarea(type='text' name='message' rows='5' required)
                     input(type='submit' value='Send')
                     
-
+    .push
 
 block footer
     include footerHome

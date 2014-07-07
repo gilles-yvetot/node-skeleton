@@ -23,29 +23,30 @@ html(lang='en')
         a(href='/personal/#{val}') #{val}
 
   body
-    header
-        #logo 
-            a(href='/')
-                img(src='/img/logo.png' alt='juan montero logo')
-        nav
-            .menu_item
-                a(href='#') Personal
-                .submenu
-                    ul
-                        for val in personal
-                            +submenuItem(val)
-            .menu_item
-                a(href='/photography/') Photography
-                .submenu
-            .menu_item
-                a(href='/pdf/') PDF 
-                .submenu
-            .menu_item
-                a(href='/contact/') About/Contact
-                .submenu
-
-    block content
-    block footer
+        header
+            #logo 
+                a(href='/')
+                    img(src='/img/logo.png' alt='juan montero logo')
+            nav
+                .menu_item
+                    a(href='#') Personal
+                    .submenu
+                        ul
+                            for val in personal
+                                +submenuItem(val)
+                .menu_item
+                    a(href='/photography/') Photography
+                    .submenu
+                .menu_item
+                    a(href='/pdf/') PDF 
+                    .submenu
+                .menu_item
+                    a(href='/contact/') About/Contact
+                    .submenu
+        
+        #content
+            block content
+        block footer
     
     
 
