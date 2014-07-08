@@ -24,6 +24,7 @@ module.exports = function(app) {
 		res.render('contact.jade', {
 			title: 'Contact',
 			personal: navData,
+			mail: req.query.mail
 		});
 	});
 	// PERSONAL =================================================================
@@ -175,10 +176,8 @@ module.exports = function(app) {
 	});
 	// CONTACT ================================================================
 	app.post('/contact', function(req,res){
-		core.sendEmailFromForm(req.body)
-	    res.redirect('back');
-	});
-
+		core.sendEmailFromForm(req.body,res);
+	});	
 
 	/*==========================
 	    Routes: DELETE

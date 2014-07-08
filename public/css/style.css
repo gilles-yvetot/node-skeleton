@@ -50,6 +50,9 @@ a{
 .redText{
   color:red;
 }
+.greenText{
+  color:green;
+}
 .push{
   height: 60px;
 }
@@ -163,11 +166,12 @@ nav .menu_item{
 
 #contentHome img {
   width: auto;
-  height: 160%;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
   position: relative;
   display: block;
   margin: auto;
-  margin-top: -130px;
 }
 
 
@@ -301,7 +305,7 @@ nav .menu_item{
   height: 48%;
   width: 50%;
   margin-left: auto;
-  overflow: scroll;
+  overflow-y: scroll;
   font-size: 12pt;
   font-family: 'Bague', Arial, Helvetica;
   margin-left:auto;

@@ -42,7 +42,7 @@ module.exports = {
 		}
 	},
 
-	sendEmailFromForm : function(data){
+	sendEmailFromForm : function(data,res){
 		if (data.email && data.message){
 			var message = ((data.name)?data.name+'<br/>':'') 
 						+ ((data.phone)?data.phone+'<br/>':'') 
@@ -53,10 +53,11 @@ module.exports = {
 			var mail = require("nodemailer").mail;
 			mail({
 			    from: "contact@jdmontero.com", // sender address
-			    to: "jdmvd@hotmail.com", // list of receivers
+			    to: "g.yvetot@gmail.com", // list of receivers
 			    subject: obj, // Subject line
 			    html: message // html body
 			});
+		    res.redirect('/contact?mail=sent');
 		}
 	},
 
