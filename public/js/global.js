@@ -17,12 +17,15 @@ function attachEventListeners(){
 
 	$('#bottomPersonal .fa-stack').click(function(){
 		$('#bottomPersonal .description').toggleClass('visibleBlock');
+		$('#contentPersonal #centralImg').toggleClass('bottom25');
+		$('#contentPersonal #thumbs').toggleClass('bottom25');
+		$('#contentPersonal #bottomPersonal').toggleClass('top75');
 	});
 	$('#bottomPersonal .fa-share-alt').click(function(){
 		$('#bottomPersonal #share').toggleClass('visibleBlock');
 	});
 	$('#bottomPersonal #slideshow').click(function(){
-		$('#contentPersonal #thumbs').toggleClass('visibleInlineBlock');
+		$('#contentPersonal #thumbs').toggleClass('visibleBlock');
 		$('#contentPersonal').toggleClass('margin-left-15');
 	});
 }
@@ -52,8 +55,8 @@ function window_load(){
 	Absolutely put these function in the admin page only (external JS)====================================
 */
 function getFolders(folderName, forward){
-		var path = $('#dynamicAdminContent #path')[0];
-		$('#content > #dynamicAdminContent form').html('');
+		var path = $('#contentAdmin #path')[0];
+		$('#content > #contentAdmin form').html('');
 		if (forward){
 			if(folderName !='root')
 				path.value = path.value + '/'+folderName;
@@ -98,7 +101,7 @@ function validateAdminForm(formId){
 }
 
 function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
-	var container = $('#content > #dynamicAdminContent > #foldersRight > form')[0];
+	var container = $('#content > #contentAdmin > #foldersRight > form')[0];
 	//empty the form first
 	$(container).html('');
 
@@ -117,7 +120,7 @@ function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
 		var r=confirm("Are you sure you want to delete the "+oldName+" folder and its content?");
 		if (r==true){
 			var arr=[];
-			var path = $('#dynamicAdminContent #path')[0];
+			var path = $('#contentAdmin #path')[0];
 			if(oldName && path){
 				arr.push(oldName);	arr.push(path.value);
 				var data2send ={}; data2send.arr = arr;
@@ -147,12 +150,12 @@ function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
 
 		html+='<input type="file" name="upload" multiple="multiple"/>';
 		html+='<input type="text" name="name" placeholder="Name"/>';
-		html+='<input type="hidden" name="path" form="picturesForm" value="'+$('#dynamicAdminContent #path')[0].value+'"/>';
+		html+='<input type="hidden" name="path" form="picturesForm" value="'+$('#contentAdmin #path')[0].value+'"/>';
 		html+='<input type="text" name="subtitle" placeholder="Subtitle"/>';
 		html+='<input type="number" name="order" placeholder="1"/>';
 		html+='<input type="submit" value="Submit" />';
 
-		container = $('#content > #dynamicAdminContent > #picturesRight > form')[0];
+		container = $('#content > #contentAdmin > #picturesRight > form')[0];
 		$(container).html(html);
 		
 	}
@@ -161,12 +164,12 @@ function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
 		html+='<input type="text" name="name" value="'+oldName+'" placeholder="Name"/>';
 		html+='<input type="text" name="fileName" value="'+oldFileName.replace('w_','')+'"/>';
 		html+='<input type="hidden" name="oldFileName" value="'+oldFileName+'"/>';
-		html+='<input type="hidden" name="path" form="picturesForm" value="'+$('#dynamicAdminContent #path')[0].value+'"/>';
+		html+='<input type="hidden" name="path" form="picturesForm" value="'+$('#contentAdmin #path')[0].value+'"/>';
 		html+='<input type="text" name="subtitle" value="'+oldSubtitle+'" placeholder="Subtitle"/>';
 		html+='<input type="number" name="order" value="'+oldOrder+'" placeholder="1"/>';
 		html+='<input type="submit" value="Submit" />';
 
-		container = $('#content > #dynamicAdminContent > #picturesRight > form')[0];
+		container = $('#content > #contentAdmin > #picturesRight > form')[0];
 		$(container).html(html);
 		
 	}
@@ -174,7 +177,7 @@ function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
 		var r=confirm("Are you sure you want to delete "+oldFileName+" ?");
 		if (r==true){
 			var arr=[];
-			var path = $('#dynamicAdminContent #path')[0];
+			var path = $('#contentAdmin #path')[0];
 			if(oldFileName && path){
 				arr.push(oldFileName);	arr.push(path.value);
 				var data2send ={}; data2send.arr = arr;
@@ -200,7 +203,7 @@ function renderFolders(data){
 		title+='<i class="fa fa-reply" value="'+data.title
 		+'" title="Go back to parent folder" onclick="getFolders(\''+data.title+'\',false)"></i>';
 	title +=data.title;
-	$('#dynamicAdminContent > h1').html(title);
+	$('#contentAdmin > h1').html(title);
 	var str='';
 	if(data.tree)
 	Object.keys(data.tree).forEach(function(value){
@@ -211,14 +214,14 @@ function renderFolders(data){
 				+"</div><br/>";
 	});
 	str+='<button onclick="insertInput(\'\',\'\',\'\',null,\'addFolder\')">Add a folder into '+data.title+'</button>';
-	$('#dynamicAdminContent #foldersLeft').html(str);
+	$('#contentAdmin #foldersLeft').html(str);
 }
 
 function renderImgInAdmin(data)
 {
-	var container = $('#content #dynamicAdminContent #picturesLeft');
+	var container = $('#content #contentAdmin #picturesLeft');
 	$(container).html('');
-	var path = $('#dynamicAdminContent #path')[0].value+'/';
+	var path = $('#contentAdmin #path')[0].value+'/';
 	if(data.tree.img && data.tree.img.length>0)
 	{
 		for(var i=0;i<data.tree.img.length;i++)
@@ -277,9 +280,18 @@ function populateTree(tree)
 
 function showPictureInPersonal(i)
 {
-	console.log(i);
 	$('#centralImg img').css('display','none');
 	$($('#centralImg img').get(i)).css('display','block');
+	$('#bottomPersonal > span').text((i+1)+'/'+$('#bottomPersonal > span').text().split('/')[1])
+}
+function nextPictureInPersonal(){
+	var index= -1;
+	$('#centralImg img').each(function(i,el){
+		if ($(el).css('display')=='block')
+			index == i;
+	});
+	$($('#centralImg img').get(i)).css('display','none');
+	$($('#centralImg img').get(i+1)).css('display','block');
 } 
 
 function getPictures(name){

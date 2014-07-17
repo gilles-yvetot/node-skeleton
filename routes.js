@@ -49,9 +49,21 @@ module.exports = function(app) {
 	});
 	// PHOTOGRAPHY ==============================================================
 	app.get('/photography/', function(req, res){
-		res.render('photography.jade', {
-			title: 'Photography',
-			personal: navData,
+		core.getContentFolder('personal',function(err,content){
+			if(err){
+				res.render('photography.jade', {
+					personal: navData,
+					title: 'Photography',
+					error: err
+				});
+			}
+			else{
+				res.render('photography.jade', {
+					personal: navData,
+					title: 'Photography',
+					data: content.tree
+				});
+			}
 		});
 	});
 	// PDF ======================================================================

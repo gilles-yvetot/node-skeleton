@@ -1,3 +1,7 @@
 extends layout
 
 block content
+    #contentPhotography
+        for item,index in data.img
+                .tile
+                    img(src='#{data.path}#{data.img[index].fileName}')

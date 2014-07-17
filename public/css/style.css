@@ -8,6 +8,7 @@ body, html{
   font-family: 'MetronicPro', Arial, Helvetica;
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 a{
   color:inherit;
@@ -29,9 +30,6 @@ a{
 }
 .visibleBlock{
   display: block !important;
-}
-.visibleInlineBlock{
-  display: inline-block !important;
 }
 .leftPart, .rightPart{
   display: inline-block;
@@ -55,6 +53,12 @@ a{
 }
 .push{
   height: 60px;
+}
+.bottom25{
+  bottom: 25%!important;
+}
+.top75{
+  top:75%!important;
 }
 /*
                                       HEADER
@@ -133,7 +137,9 @@ nav .menu_item{
   right:0;
   left:0;
 }
-
+#contentHome{
+  overflow: hidden;
+}
 .wrapperWithFooter{
   position:absolute;
   top:0px;
@@ -141,10 +147,8 @@ nav .menu_item{
   right:0;
   left:0;
 }
-#contentHome{
-  overflow: hidden;
-}
-#loginMain{
+
+#contentLogin{
   margin: auto;
   width:500px;
   text-align: center;
@@ -152,11 +156,19 @@ nav .menu_item{
   padding:10px;
   margin-top:100px;
 }
-#dynamicAdminContent{
+#contentAdmin{
   text-align: center;
+}
+#contentPhotography{
+  width: 80%;
+  height: 90%;
+  padding: 10% 5%
 }
 #contentPersonal{
   margin-left: 25%;
+  max-height: 100%;
+  height: 100%;
+  position: relative;
 }
 #contentContact{
   background:rgb(15,15,15);
@@ -188,22 +200,25 @@ nav .menu_item{
 /*                Personal              */
 
 #contentPersonal > #centralImg{
-  display: inline-block;
-  max-height: 85%;
-  height: 85%;
-  max-width: 80%;
-  width: 80%
-
+  position: absolute;
+  top: 0;
+  bottom: 10%;
+  right: 20%;
+  left: 0;
 }
+
 #contentPersonal > #centralImg img{
   max-height: 100%;
   max-width: 100%;
+  margin: auto;
 }
 #contentPersonal > #thumbs{
   display: none;
-  width:20%;
-  max-width:20%;
-  max-height: 85%;
+  position: absolute;
+  top:0;
+  bottom: 10%;
+  left: 80%;
+  right:0;
   vertical-align: top;
   overflow-y:scroll;
 }
@@ -225,11 +240,13 @@ nav .menu_item{
   -khtml-opacity: 1;/* Safari 1.x */
   opacity: 1;/* Good browsers */
 }
-#bottomPersonal{
-  margin-left:15%;
-  height:15%;
-  margin-right: 20%;
-  position: relative;
+#contentPersonal > #bottomPersonal{
+  
+  position: absolute;
+  top:90%;
+  bottom: 0;
+  right: 20%;
+  left:0;
 }
 #bottomPersonal h2{
   display: inline-block;
@@ -263,6 +280,9 @@ nav .menu_item{
   right: 0;
   font-size: 20px;
   text-align: right;
+}
+#bottomPersonal .description{
+  width: 50%;
 }
 #bottomPersonal .description,
 #bottomPersonal #share
