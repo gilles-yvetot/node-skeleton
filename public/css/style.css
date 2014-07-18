@@ -60,6 +60,49 @@ a{
 .top75{
   top:75%!important;
 }
+.opacity50{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
+  filter: alpha(opacity=50);/* IE 5-7 */
+  -moz-opacity: 0.5;/* Netscape */
+  -khtml-opacity: 0.5;/* Safari 1.x */
+  opacity: 0.5;/* Good browsers */
+}
+.opacity100{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";/* IE 8 */
+  filter: alpha(opacity=100);/* IE 5-7 */
+  -moz-opacity: 1;/* Netscape */
+  -khtml-opacity: 1;/* Safari 1.x */
+  opacity: 1;/* Good browsers */
+}
+
+.popBG{
+  display: none;
+  position: fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:10;
+  background: white;
+}
+.popContent{
+  display: none;
+  position: fixed;
+  text-align: center;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  padding: 3%;
+  z-index:11;
+}
+.popContent > img{
+  
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+  display: inline-block;
+}
 /*
                                       HEADER
 */
@@ -136,6 +179,7 @@ nav .menu_item{
   bottom:0;
   right:0;
   left:0;
+  overflow: hidden;
 }
 #contentHome{
   overflow: hidden;
@@ -160,9 +204,11 @@ nav .menu_item{
   text-align: center;
 }
 #contentPhotography{
-  width: 80%;
-  height: 90%;
-  padding: 10% 5%
+  width: 606px; /* 3 imgs + their borders */
+  padding-right: 20px; /*scrollbar*/
+  height: 95%;
+  margin:auto;
+  overflow-y:scroll;
 }
 #contentPersonal{
   margin-left: 25%;
@@ -226,11 +272,6 @@ nav .menu_item{
   display: block;
   width:100px;
   height:auto;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
-  filter: alpha(opacity=50);/* IE 5-7 */
-  -moz-opacity: 0.5;/* Netscape */
-  -khtml-opacity: 0.5;/* Safari 1.x */
-  opacity: 0.5;/* Good browsers */
 }
 #contentPersonal > #thumbs img:hover{
   cursor: pointer;
@@ -302,8 +343,48 @@ nav .menu_item{
   cursor: pointer;
 }
 
+/*            Photography             */
 
 
+
+#contentPhotography .tile{
+  display: block;
+  width: 200px;
+  height: 200px;
+  border: 1px solid white;
+  background-position: center center;
+  background-size: cover;
+  float: left;
+}
+#contentPhotography .tile:hover{
+   /* IE4-8 and 9 (deprecated). */
+  filter: Gray();
+  /* SVG version for IE10, Chrome 17, FF3.5, 
+     Safari 5.2 and Opera 11.6 */
+  filter: url('#grayscale'); 
+  /* CSS3 filter, at the moment Webkit only. Prefix it for
+     future implementations */
+  -webkit-filter: grayscale(100%); 
+  filter: grayscale(100%); /* future-proof */
+  cursor: pointer;
+}
+#contentPhotography .tile > div{
+  width: 195px;
+  height: 20px;
+  padding-top: 180px;
+  padding-left: 5px;
+  text-transform: capitalize;
+  background-color: white;
+  color: black;
+  font-size: 20px;
+}
+#contentPhotography .tile > div:hover{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
+  filter: alpha(opacity=50);/* IE 5-7 */
+  -moz-opacity: 0.5;/* Netscape */
+  -khtml-opacity: 0.5;/* Safari 1.x */
+  opacity: 0.5;/* Good browsers */
+}
 
 
 /*             Contact                 */

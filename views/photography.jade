@@ -2,6 +2,12 @@ extends layout
 
 block content
     #contentPhotography
-        for item,index in data.img
+        for key,index in Object.keys(data)
+            if key != "img" && key!= "subtitle" && key!= "path" && key!= "order"
                 .tile
-                    img(src='#{data.path}#{data.img[index].fileName}')
+                    div #{key}
+                for item in data[key].img
+                    .tile.lazy(data-original="#{data[key].path}#{item.fileName}" title="#{item.name}" onclick="showImageInFullScreen('#{data[key].path}#{item.fileName}')")
+
+    .popBG.opacity50
+    .popContent

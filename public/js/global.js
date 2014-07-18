@@ -28,6 +28,12 @@ function attachEventListeners(){
 		$('#contentPersonal #thumbs').toggleClass('visibleBlock');
 		$('#contentPersonal').toggleClass('margin-left-15');
 	});
+
+	$('#contentPhotography .tile.lazy').lazyload({
+			container : $("#contentPhotography"),
+			effect : "fadeIn",
+			threshold : 100
+		});
 }
 
 function window_resize(){
@@ -265,19 +271,6 @@ function getSitemap(action)
 }
 
 
-function populateTree(tree)
-{
-	var nav ='<ul>';
-	$.each(tree, function(key,value){
-		if(typeof(value) == 'object' && !Array.isArray(value)){
-			nav+='<li><span onclick="getPictures(\''+key+'\');""><i class="fa fa-square-o"></i>'
-				+key+'</span>'+populateTree(value)+'</li>';	
-		}
-	});
-	nav+='</ul>';
-	return nav;
-}
-
 function showPictureInPersonal(i)
 {
 	$('#centralImg img').css('display','none');
@@ -293,47 +286,6 @@ function nextPictureInPersonal(){
 	$($('#centralImg img').get(i)).css('display','none');
 	$($('#centralImg img').get(i+1)).css('display','block');
 } 
-
-function getPictures(name){
-	var data2send={};
-	if(name){
-		data2send.folderName= name;
-		$.ajax({
-		  type: "GET",
-		  url: '/pictures',
-		  data: data2send,
-		  success: function(data){
-		  	if(data)
-		  		renderPictures(data);
-		  }
-		});
-	}
-}
-
-function renderPictures(data)
-{
-	data=lookForPictures(data);
-	if (data && data.img && Array.isArray(data.img)){
-		for (var i = 0; i < data.img.length; i++) {
-			$('#pictures').append('<img data-original="'+data.path+data.img[i].fileName+'" alt="'+data.img[i].name+'" class="lazy" />')
-		};
-
-
-		$("img.lazy").lazyload({
-			container : $("#pictures"),
-			effect : "fadeIn",
-			threshold : 400
-		});
-		$('#pictures').css('width',($(window).width()-200)+'px')
-
-		$("#pictures").mousewheel(function(event, delta) {
-			this.scrollLeft -= (delta * 5);
-			event.preventDefault();
-		});
-
-		
-	}
-}
 
 function lookForPictures(data){
 	
@@ -364,6 +316,13 @@ function lookForPictures(data){
 		}
 	}
 }
+
+function showImageInFullScreen(imgFile){
+	$('.popContent').html('<img src="'+imgFile+'"/>');
+	$('.popContent').toggleClass('visibleBlock');
+	$('.popBG').toggleClass('visibleBlock');
+}
+
 function requestFullScreen() {
 
 	if( window.innerHeight != screen.height){

@@ -10,7 +10,7 @@ block content
                     img(src='#{data.path}#{data.img[index].fileName}' style='display:none;')
         #thumbs
             for item,index in data.img
-                img(src='#{data.path}#{item.fileName.replace("w_","t_")}' onclick='showPictureInPersonal(#{index})')
+                img.opacity50(src='#{data.path}#{item.fileName.replace("w_","t_")}' onclick='showPictureInPersonal(#{index})')
         #bottomPersonal
             h2= title
             span 1/#{data.img.length}

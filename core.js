@@ -208,7 +208,7 @@ module.exports = {
 					im.resize({
 					  srcPath: newPath+'o_'+files[i].name,
 					  dstPath: newPath+'w_'+files[i].name,
-					  height:   1200
+					  width:   1200
 					}, function(err, stdout, stderr){
 					  if (err) throw err;
 					});
