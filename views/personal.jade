@@ -7,9 +7,9 @@ block content
                 i.fa.fa-chevron-circle-left
             for item,index in data.img
                 if index == 0
-                    img(src='#{data.path}#{data.img[0].fileName}' style='display:inline-block;')
+                    .imgAsBG(style="background-image:url('#{data.path}#{data.img[0].fileName}');display:inline-block;")
                 else
-                    img(src='#{data.path}#{data.img[index].fileName}' style='display:none;')
+                    .imgAsBG(style="background-image:url('#{data.path}#{data.img[index].fileName}');display:none;")
             .nextPrev(onclick="nextPictureInPersonal()")
                 i.fa.fa-chevron-circle-right
         #thumbs

@@ -48,6 +48,12 @@ function attachEventListeners(){
 			$('.popBG').removeClass('visibleBlock');
 			$('.popContent').removeClass('visibleBlock');
 		}
+		else if (evt.which == 37){
+			previousPictureInPersonal();
+		}
+		else if (evt.which == 39){
+			nextPictureInPersonal();
+		}
 	});
 }
 
@@ -271,37 +277,37 @@ function getSitemap(action)
 
 function showPictureInPersonal(i)
 {
-	$('#centralImg img').css('display','none');
-	$($('#centralImg img').get(i)).css('display','inline-block');
+	$('#centralImg .imgAsBG').css('display','none');
+	$($('#centralImg .imgAsBG').get(i)).css('display','inline-block');
 	$('#bottomPersonal > span').text((i+1)+'/'+$('#bottomPersonal > span').text().split('/')[1])
 }
 function nextPictureInPersonal(){
 	var index= -1;
-	var len = $('#centralImg img').length;
-	$('#centralImg img').each(function(i,el){
+	var len = $('#centralImg .imgAsBG').length;
+	$('#centralImg .imgAsBG').each(function(i,el){
 		if ($(el).css('display')=='inline-block')
 			index = i;
 	});
 	if(index>-1){
-		$('#centralImg img:eq('+index+')').css('display','none');
+		$('#centralImg .imgAsBG:eq('+index+')').css('display','none');
 			if((index+1)>=len)
 				index = -1;
-		$('#centralImg img:eq('+(index+1)+')').css('display','inline-block');
+		$('#centralImg .imgAsBG:eq('+(index+1)+')').css('display','inline-block');
 	}
 	
 } 
 function previousPictureInPersonal(){
 	var index= -1;
-	var len = $('#centralImg img').length;
-	$('#centralImg img').each(function(i,el){
+	var len = $('#centralImg imgAsBG').length;
+	$('#centralImg .imgAsBG').each(function(i,el){
 		if ($(el).css('display')=='inline-block')
 			index = i;
 	});
 	if(index>-1){
-		$('#centralImg img:eq('+index+')').css('display','none');
+		$('#centralImg .imgAsBG:eq('+index+')').css('display','none');
 		if((index-1)<0)
 			index = len;
-		$('#centralImg img:eq('+(index-1)+')').css('display','inline-block');
+		$('#centralImg .imgAsBG:eq('+(index-1)+')').css('display','inline-block');
 	}
 }
 
