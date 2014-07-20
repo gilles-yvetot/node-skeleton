@@ -4,7 +4,7 @@ module.exports = function(app) {
 	var path = require('path');
 	var core = require('./core.js');
 	var sitemap = require('./sitemap.json');
-
+	var url = require('url');
 	var navData = core.getNavData();
 
 	/*==========================
@@ -29,6 +29,7 @@ module.exports = function(app) {
 	});
 	// PERSONAL =================================================================
 	app.get('/personal/:subpart', function(req, res){
+		var query = url.parse(req.url, true).query;
 		core.getContentFolder(req.params.subpart, function(err,content){
 			if(err){
 				res.render('personal.jade', {
@@ -41,15 +42,19 @@ module.exports = function(app) {
 				res.render('personal.jade', {
 					personal: navData,
 					title: (req.params.subpart)?req.params.subpart:'Personal',
-					data: content.tree
+					data: content.tree,
+					pix: query.pix
 				});
 			}
 		});
 		
 	});
 	// PHOTOGRAPHY ==============================================================
-	app.get('/photography/', function(req, res){
-		core.getContentFolder('personal',function(err,content){
+	app.get('/photography/:subpart?', function(req, res){
+		var query = url.parse(req.url, true).query;
+		// TODO, once we will have pictures in photofraphr, we will replace 'personal' by 'photography'
+		var lookFor = (req.params.subpart)?req.params.subpart:'personal';
+		core.getContentFolder(lookFor,function(err,content){
 			if(err){
 				res.render('photography.jade', {
 					personal: navData,
@@ -61,7 +66,8 @@ module.exports = function(app) {
 				res.render('photography.jade', {
 					personal: navData,
 					title: 'Photography',
-					data: content.tree
+					data: content.tree,
+					pix: query.pix
 				});
 			}
 		});

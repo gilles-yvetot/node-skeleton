@@ -3,11 +3,15 @@ extends layout
 block content
     #contentPersonal
         #centralImg
+            .nextPrev(onclick="previousPictureInPersonal()")
+                i.fa.fa-chevron-circle-left
             for item,index in data.img
                 if index == 0
-                    img(src='#{data.path}#{data.img[0].fileName}' style='display:block;')
+                    img(src='#{data.path}#{data.img[0].fileName}' style='display:inline-block;')
                 else
                     img(src='#{data.path}#{data.img[index].fileName}' style='display:none;')
+            .nextPrev(onclick="nextPictureInPersonal()")
+                i.fa.fa-chevron-circle-right
         #thumbs
             for item,index in data.img
                 img.opacity50(src='#{data.path}#{item.fileName.replace("w_","t_")}' onclick='showPictureInPersonal(#{index})')
@@ -22,3 +26,10 @@ block content
                 include share
                 i.fa.fa-share-alt
             .description #{data.img[0].subtitle}
+        if pix && data.img && pix < data.img.length
+            .popBG.opacity50.visibleBlock
+            .popContent.visibleBlock
+                div(style='background-image:url("#{data.path}#{data.img[pix].fileName}");')
+        else
+            .popBG.opacity50
+            .popContent

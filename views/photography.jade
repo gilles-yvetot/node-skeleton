@@ -2,12 +2,21 @@ extends layout
 
 block content
     #contentPhotography
-        for key,index in Object.keys(data)
-            if key != "img" && key!= "subtitle" && key!= "path" && key!= "order"
-                .tile
-                    div #{key}
-                for item in data[key].img
-                    .tile.lazy(data-original="#{data[key].path}#{item.fileName}" title="#{item.name}" onclick="showImageInFullScreen('#{data[key].path}#{item.fileName}')")
+        if data
+            if data.img
+                for item in data.img
+                        .tile.lazy(data-original="#{data.path}#{item.fileName}" title="#{item.name}" onclick="showImageInFullScreen('#{data.path}#{item.fileName}')")
+            for key,index in Object.keys(data)
+                if key != "img" && key!= "subtitle" && key!= "path" && key!= "order"
+                    .tile
+                        div(onclick="redirectToPhoto('#{key}')") #{key}
+                    for item in data[key].img
+                        .tile.lazy(data-original="#{data[key].path}#{item.fileName}" title="#{item.name}" onclick="showImageInFullScreen('#{data[key].path}#{item.fileName}')")
+    if pix && data.img && pix < data.img.length
+        .popBG.opacity50.visibleBlock
+        .popContent.visibleBlock
+            div(style='background-image:url("#{data.path}#{data.img[pix].fileName}");')
+    else
+        .popBG.opacity50
+        .popContent
 
-    .popBG.opacity50
-    .popContent

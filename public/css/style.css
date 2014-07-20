@@ -83,6 +83,7 @@ a{
   left:0;
   right:0;
   z-index:10;
+  cursor: pointer;
   background: white;
 }
 .popContent{
@@ -93,15 +94,15 @@ a{
   bottom:0;
   left:0;
   right:0;
-  padding: 3%;
   z-index:11;
+  cursor: pointer;
 }
-.popContent > img{
-  
-  max-width: 100%;
-  max-height: 100%;
-  vertical-align: middle;
-  display: inline-block;
+.popContent > div{
+    background-position: center center;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
 }
 /*
                                       HEADER
@@ -251,12 +252,29 @@ nav .menu_item{
   bottom: 10%;
   right: 20%;
   left: 0;
-}
+  text-align: center;
 
-#contentPersonal > #centralImg img{
+}
+#centralImg img{
   max-height: 100%;
   max-width: 100%;
-  margin: auto;
+  vertical-align: middle;
+}
+#centralImg .nextPrev{
+  display: inline-block;
+  height: 100%;
+  vertical-align:middle;
+  position: relative;
+  cursor:pointer;
+  padding:0 5px;
+}
+#centralImg .nextPrev:hover i{
+  color: gray;
+}
+#centralImg .nextPrev i{
+  position: relative;
+  top: 50%;
+  font-size: 20px;
 }
 #contentPersonal > #thumbs{
   display: none;
@@ -355,18 +373,13 @@ nav .menu_item{
   background-position: center center;
   background-size: cover;
   float: left;
-}
-#contentPhotography .tile:hover{
-   /* IE4-8 and 9 (deprecated). */
-  filter: Gray();
-  /* SVG version for IE10, Chrome 17, FF3.5, 
-     Safari 5.2 and Opera 11.6 */
-  filter: url('#grayscale'); 
-  /* CSS3 filter, at the moment Webkit only. Prefix it for
-     future implementations */
-  -webkit-filter: grayscale(100%); 
-  filter: grayscale(100%); /* future-proof */
   cursor: pointer;
+}
+#contentPhotography .tile.lazy:hover{
+  filter: Gray();/* IE4-9 */
+  filter: url('#grayscale'); /* SVG version for IE10, Chrome 17, FF3.5, Safari 5.2 and Opera 11.6 */
+  -webkit-filter: grayscale(100%); /* Webkit only*/
+  filter: grayscale(100%); /* future-proof */
 }
 #contentPhotography .tile > div{
   width: 195px;
@@ -378,12 +391,12 @@ nav .menu_item{
   color: black;
   font-size: 20px;
 }
-#contentPhotography .tile > div:hover{
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
-  filter: alpha(opacity=50);/* IE 5-7 */
-  -moz-opacity: 0.5;/* Netscape */
-  -khtml-opacity: 0.5;/* Safari 1.x */
-  opacity: 0.5;/* Good browsers */
+#contentPhotography .tile:not(.lazy) > div:hover{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";/* IE 8 */
+  filter: alpha(opacity=80);/* IE 5-7 */
+  -moz-opacity: 0.8;/* Netscape */
+  -khtml-opacity: 0.8;/* Safari 1.x */
+  opacity: 0.8;/* Good browsers */
 }
 
 

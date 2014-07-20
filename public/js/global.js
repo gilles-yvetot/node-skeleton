@@ -15,25 +15,40 @@ function attachEventListeners(){
 	document.addEventListener("webkitfullscreenchange", toggleFSicons, false);
 	document.addEventListener("msfullscreenchange", toggleFSicons, false);
 
+	// show description panel
 	$('#bottomPersonal .fa-stack').click(function(){
 		$('#bottomPersonal .description').toggleClass('visibleBlock');
 		$('#contentPersonal #centralImg').toggleClass('bottom25');
 		$('#contentPersonal #thumbs').toggleClass('bottom25');
 		$('#contentPersonal #bottomPersonal').toggleClass('top75');
 	});
+	// show share panel
 	$('#bottomPersonal .fa-share-alt').click(function(){
 		$('#bottomPersonal #share').toggleClass('visibleBlock');
 	});
+	// show thumbnails in personal
 	$('#bottomPersonal #slideshow').click(function(){
 		$('#contentPersonal #thumbs').toggleClass('visibleBlock');
 		$('#contentPersonal').toggleClass('margin-left-15');
 	});
-
+	//activate lazy load on pictures in photgraphy pages
 	$('#contentPhotography .tile.lazy').lazyload({
 			container : $("#contentPhotography"),
-			effect : "fadeIn",
 			threshold : 100
-		});
+	});
+	// hide full screen image on click
+	$('.popContent').click(function(){
+		$('.popBG').removeClass('visibleBlock');
+		$('.popContent').removeClass('visibleBlock');
+	});
+
+	// hide full screen image on ESC
+	$(window).keydown(function(evt){
+		if (evt.which == 27){
+			$('.popBG').removeClass('visibleBlock');
+			$('.popContent').removeClass('visibleBlock');
+		}
+	});
 }
 
 function window_resize(){
@@ -42,7 +57,6 @@ function window_load(){
 
 	attachEventListeners();
 	window_resize();
-	populateNav();
 	var path = window.location.pathname;
 	path = path.substring(1,path.length);// remove the first '/'
 
@@ -245,22 +259,6 @@ function renderImgInAdmin(data)
 /*
 	=========================================================================================================
 */
-function populateNav()
-{
-	getSitemap(function(sitemap){
-		// Inject the whole content string into our existing HTML list
-		$('body > #container > nav > #menu ').html(populateTree(sitemap).replace(/<ul><\/ul>/gi,''));
-		//event handler: close and open the nav sub-section + style on the icon
-		$('body > #container > nav > #menu > ul li').click(function (event){
-			$('body > #container > nav > #menu > ul li').removeClass('selected');
-			$(this).addClass('selected');
-			$(this).parent().parent().addClass('selected');
-
-			$('body > #container > nav > #menu > ul i').css('color','transparent');
-			$(event.target).find('i').css('color','gray');
-		});
-	});
-}
 
 function getSitemap(action)
 {
@@ -274,18 +272,38 @@ function getSitemap(action)
 function showPictureInPersonal(i)
 {
 	$('#centralImg img').css('display','none');
-	$($('#centralImg img').get(i)).css('display','block');
+	$($('#centralImg img').get(i)).css('display','inline-block');
 	$('#bottomPersonal > span').text((i+1)+'/'+$('#bottomPersonal > span').text().split('/')[1])
 }
 function nextPictureInPersonal(){
 	var index= -1;
+	var len = $('#centralImg img').length;
 	$('#centralImg img').each(function(i,el){
-		if ($(el).css('display')=='block')
-			index == i;
+		if ($(el).css('display')=='inline-block')
+			index = i;
 	});
-	$($('#centralImg img').get(i)).css('display','none');
-	$($('#centralImg img').get(i+1)).css('display','block');
+	if(index>-1){
+		$('#centralImg img:eq('+index+')').css('display','none');
+			if((index+1)>=len)
+				index = -1;
+		$('#centralImg img:eq('+(index+1)+')').css('display','inline-block');
+	}
+	
 } 
+function previousPictureInPersonal(){
+	var index= -1;
+	var len = $('#centralImg img').length;
+	$('#centralImg img').each(function(i,el){
+		if ($(el).css('display')=='inline-block')
+			index = i;
+	});
+	if(index>-1){
+		$('#centralImg img:eq('+index+')').css('display','none');
+		if((index-1)<0)
+			index = len;
+		$('#centralImg img:eq('+(index-1)+')').css('display','inline-block');
+	}
+}
 
 function lookForPictures(data){
 	
@@ -318,9 +336,34 @@ function lookForPictures(data){
 }
 
 function showImageInFullScreen(imgFile){
-	$('.popContent').html('<img src="'+imgFile+'"/>');
+	$('.popContent').html('<div style="background-image:url(\''+imgFile+'\')"></div>');
 	$('.popContent').toggleClass('visibleBlock');
 	$('.popBG').toggleClass('visibleBlock');
+}
+function redirectToPhoto(subpart){
+	window.location = window.location.pathname+subpart;
+}
+function share(type) {
+    var w = 600;
+    var h = 500;
+    var url = 'http://www.jdmontero.com';
+
+    if (type == "f") {
+        url= 'https://www.facebook.com/sharer/sharer.php?u='+document.URL;
+        w = 600;
+        h = 322;
+    }
+    else if (type == "l") { 
+		url= 'http://www.linkedin.com/shareArticle?mini=true&url='+encodeURI(document.URL)+'&title='+encodeURI('Juan Montero Photography'+window.location.pathname.replace(/\//g,' - '));
+        w = 600;
+        h = 540;
+    }
+
+    var LeftPosition = ($(window).width()) ? ($(window).width() - w) / 2 : 600;
+    var TopPosition = ($(window).height()) ? ($(window).height() - h) / 2 : 500;
+    var settings =
+    'height=' + h + ',width=' + w + ',top=' + TopPosition + ',left=' + LeftPosition + ',scrollbars=yes,resizable=yes'
+    var popupWindow = window.open(url, "", settings)
 }
 
 function requestFullScreen() {
