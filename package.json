@@ -15,6 +15,6 @@
         "findit":"*",
         "formidable":"*",
         "imagemagick":"*",
-        "nodemailer":"*"
+        "nodemailer":"0.3.x"
         }
 }

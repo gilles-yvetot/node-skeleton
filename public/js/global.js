@@ -37,12 +37,12 @@ function attachEventListeners(){
 			threshold : 100
 	});
 	// hide full screen image on click
-	$('.popContent').click(function(){
+	$('.popContent .fa-compress').click(function(){
 		$('.popBG').removeClass('visibleBlock');
 		$('.popContent').removeClass('visibleBlock');
 	});
 
-	// hide full screen image on ESC
+	// hide full screen image on ESC and 
 	$(window).keydown(function(evt){
 		if (evt.which == 27){
 			$('.popBG').removeClass('visibleBlock');
@@ -278,36 +278,76 @@ function getSitemap(action)
 function showPictureInPersonal(i)
 {
 	$('#centralImg .imgAsBG').css('display','none');
-	$($('#centralImg .imgAsBG').get(i)).css('display','inline-block');
-	$('#bottomPersonal > span').text((i+1)+'/'+$('#bottomPersonal > span').text().split('/')[1])
+	$('#centralImg .imgAsBG:eq('+i+')').css('display','inline-block');
+	$('#bottomPersonal .imgIdx').text((i+1));
 }
 function nextPictureInPersonal(){
 	var index= -1;
 	var len = $('#centralImg .imgAsBG').length;
-	$('#centralImg .imgAsBG').each(function(i,el){
-		if ($(el).css('display')=='inline-block')
-			index = i;
-	});
-	if(index>-1){
-		$('#centralImg .imgAsBG:eq('+index+')').css('display','none');
+	
+	if($('.popContent').css('display')=='block'){
+		var src = $('.popContent #imgHere img')[0].src;
+		$('#centralImg .imgAsBG').each(function(i,el){
+			if (el.style.backgroundImage.substring(4,el.style.backgroundImage.length-1)==src)
+				index = i;
+		});
+		if(index>-1){
 			if((index+1)>=len)
-				index = -1;
-		$('#centralImg .imgAsBG:eq('+(index+1)+')').css('display','inline-block');
+					index = -1;
+			var e = $('#centralImg .imgAsBG:eq('+(index+1)+')')[0];
+			src= e.style.backgroundImage.substring(4,e.style.backgroundImage.length-1);
+			$('.popContent #imgHere').html('<img src="'+src+'"/>');
+			$('.popContent .imgIdx').text((index+2));
+
+		}
 	}
+	else{
+		$('#centralImg .imgAsBG').each(function(i,el){
+			if ($(el).css('display')=='inline-block')
+				index = i;
+		});
+		if(index>-1){
+			$('#centralImg .imgAsBG:eq('+index+')').css('display','none');
+				if((index+1)>=len)
+					index = -1;
+			$('#centralImg .imgAsBG:eq('+(index+1)+')').css('display','inline-block');
+			$('#bottomPersonal .imgIdx').text((index+2));
+		}
+	}
+	
 	
 } 
 function previousPictureInPersonal(){
 	var index= -1;
-	var len = $('#centralImg imgAsBG').length;
-	$('#centralImg .imgAsBG').each(function(i,el){
-		if ($(el).css('display')=='inline-block')
-			index = i;
-	});
-	if(index>-1){
-		$('#centralImg .imgAsBG:eq('+index+')').css('display','none');
-		if((index-1)<0)
-			index = len;
-		$('#centralImg .imgAsBG:eq('+(index-1)+')').css('display','inline-block');
+	var len = $('#centralImg .imgAsBG').length;
+	if($('.popContent').css('display')=='block'){
+		var src = $('.popContent #imgHere img')[0].src;
+		$('#centralImg .imgAsBG').each(function(i,el){
+			if (el.style.backgroundImage.substring(4,el.style.backgroundImage.length-1)==src)
+				index = i;
+		});
+		if(index>-1){
+			if((index-1)<0)
+				index = len;
+			var e = $('#centralImg .imgAsBG:eq('+(index-1)+')')[0];
+			src= e.style.backgroundImage.substring(4,e.style.backgroundImage.length-1);
+			$('.popContent #imgHere').html('<img src="'+src+'"/>');
+			$('.popContent .imgIdx').text(index);
+
+		}
+	}
+	else{
+		$('#centralImg .imgAsBG').each(function(i,el){
+			if ($(el).css('display')=='inline-block')
+				index = i;
+		});
+		if(index>-1){
+			$('#centralImg .imgAsBG:eq('+index+')').css('display','none');
+			if((index-1)<0)
+				index = len;
+			$('#centralImg .imgAsBG:eq('+(index-1)+')').css('display','inline-block');
+			$('#bottomPersonal .imgIdx').text(index);
+		}
 	}
 }
 
@@ -340,9 +380,15 @@ function lookForPictures(data){
 		}
 	}
 }
-
+function enlargePersonalPicture(){
+	var x = $('#centralImg .imgAsBG').filter(function () { 
+	    return this.style.display == 'inline-block' 
+	});
+	x=  x[0].style.backgroundImage.substring(4,x[0].style.backgroundImage.length-1);
+	showImageInFullScreen(x);
+}
 function showImageInFullScreen(imgFile){
-	$('.popContent').html('<div style="background-image:url(\''+imgFile+'\')"></div>');
+	$('.popContent #imgHere').html('<img src="'+imgFile+'"/>')
 	$('.popContent').toggleClass('visibleBlock');
 	$('.popBG').toggleClass('visibleBlock');
 }

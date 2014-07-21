@@ -43,7 +43,7 @@ module.exports = function(app) {
 					personal: navData,
 					title: (req.params.subpart)?req.params.subpart:'Personal',
 					data: content.tree,
-					pix: query.pix
+					pix: query.pix,
 				});
 			}
 		});

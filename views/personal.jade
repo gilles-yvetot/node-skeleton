@@ -3,33 +3,51 @@ extends layout
 block content
     #contentPersonal
         #centralImg
-            .nextPrev(onclick="previousPictureInPersonal()")
-                i.fa.fa-chevron-circle-left
+            #expand(onclick="enlargePersonalPicture()")
+                i.fa.fa-plus
             for item,index in data.img
                 if index == 0
                     .imgAsBG(style="background-image:url('#{data.path}#{data.img[0].fileName}');display:inline-block;")
+                        div(onclick="previousPictureInPersonal()")
+                        div(onclick="nextPictureInPersonal()")
+
                 else
                     .imgAsBG(style="background-image:url('#{data.path}#{data.img[index].fileName}');display:none;")
-            .nextPrev(onclick="nextPictureInPersonal()")
-                i.fa.fa-chevron-circle-right
+                        div(onclick="previousPictureInPersonal()")
+                        div(onclick="nextPictureInPersonal()")
         #thumbs
             for item,index in data.img
                 img.opacity50(src='#{data.path}#{item.fileName.replace("w_","t_")}' onclick='showPictureInPersonal(#{index})')
         #bottomPersonal
             h2= title
-            span 1/#{data.img.length}
+            span 
+                span.imgIdx 1
+                span /#{data.img.length}
             .fa-stack
                 i.fa.fa-circle-o.fa-stack-2x
                 i.fa.fa-info.fa-stack-1x
             .floatRight
-                #slideshow slideshow
+                #slideshow thumbnails
                 include share
                 i.fa.fa-share-alt
             .description #{data.img[0].subtitle}
-        if pix && data.img && pix < data.img.length
-            .popBG.opacity50.visibleBlock
-            .popContent.visibleBlock
-                div(style='background-image:url("#{data.path}#{data.img[pix].fileName}");')
-        else
-            .popBG.opacity50
-            .popContent
+        - var klass = (pix && data.img && pix < data.img.length)?"visibleBlock":""
+        .popBG.opacity50(class=klass)
+        .popContent(class=klass)
+            #popImg
+                i.fa.fa-chevron-left(onclick="previousPictureInPersonal()")
+                #imgHere
+                    img(src='#{data.path}#{data.img[parseInt(pix)-1].fileName}')
+                i.fa.fa-compress
+                i.fa.fa-chevron-right(onclick="nextPictureInPersonal()")
+                #popBot
+                    h2= title
+                    span 
+                        span.imgIdx= pix
+                        span /#{data.img.length}
+                    .floatRight
+                        div 2014 All rights reserved &copy; Juan David Montero
+                        include share
+                        
+
+

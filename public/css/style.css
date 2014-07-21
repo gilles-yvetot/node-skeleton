@@ -31,6 +31,9 @@ a{
 .visibleBlock{
   display: block !important;
 }
+.visibleTable{
+  display: table !important;
+}
 .leftPart, .rightPart{
   display: inline-block;
   width: 50%;
@@ -46,7 +49,7 @@ a{
   margin-left: 15% !important;
 }
 .redText{
-  color:red;
+  color:darkred;
 }
 .greenText{
   color:green;
@@ -75,6 +78,17 @@ a{
   opacity: 1;/* Good browsers */
 }
 
+.imgAsBG{
+  max-height: 100%;
+  max-width: 100%;
+  background-position: center center;
+  background-size: contain;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
 .popBG{
   display: none;
   position: fixed;
@@ -85,31 +99,93 @@ a{
   z-index:10;
   cursor: pointer;
   background: white;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";/* IE 8 */
+  filter: alpha(opacity=10);/* IE 5-7 */
+  -moz-opacity: 0.1;/* Netscape */
+  -khtml-opacity: 0.1;/* Safari 1.x */
+  opacity: 0.1;/* Good browsers */
 }
 .popContent{
   display: none;
   position: fixed;
   text-align: center;
-  top:0;
-  bottom:0;
-  left:0;
-  right:0;
+  top:2%;
+  bottom:2%;
+  left:10%;
+  right:10%;
   z-index:11;
+  margin: auto;
+}
+
+.popContent img{
+  max-height: 90%;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.popContent #popImg{
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  padding: 0 50px;
+}
+.popContent #imgHere{
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 10px 15px 50px 15px;
+  background: white;
+}
+#popImg > i{
+  font-size: 35px;
+  padding: 0 10px;
+}
+#popImg > i:hover{
   cursor: pointer;
 }
-.popContent > div{
-    background-position: center center;
-    background-size: contain;
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
+
+#popImg i.fa-compress{
+  top: 0;
+  position: absolute;
+  background: white;
+  width: 30px;
+  font-size: 25px;
+  color: black;
+  padding: 2px 0;
 }
+#popImg i.fa-compress:hover{
+  color:gray;
+}
+.popContent i.fa-chevron-left{
+  position: absolute;
+  top:50%;
+  margin-left: -45px;
+}
+.popContent i.fa-chevron-right{
+  position: absolute;
+  top:50%;
+}
+.popContent #popBot{
+  margin-top: -48px;
+  color: black;
+  position: relative;
+  text-align: left;
+  margin-left: 15px;
+}
+#popBot #share{
+  margin-left: 30px;
+  display: inline-block;
+  float: none;
+}
+
 /*
                                       HEADER
 */
 
 header{
-  height:60px; 
+  height:59px;
+  border-bottom: 1px solid gray; 
 }
 
 #logo{
@@ -209,7 +285,7 @@ nav .menu_item{
   padding-right: 20px; /*scrollbar*/
   height: 95%;
   margin:auto;
-  overflow-y:scroll;
+  overflow-y:auto;
 }
 #contentPersonal{
   margin-left: 25%;
@@ -252,42 +328,36 @@ nav .menu_item{
   bottom: 10%;
   right: 20%;
   left: 0;
-  padding: 0 27px;
   text-align: center;
 
 }
-#centralImg .imgAsBG{
-  max-height: 100%;
-  max-width: 100%;
-  background-position: center center;
-  background-size: contain;
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-}
-#centralImg .nextPrev{
-  display: inline-block;
-  height: 100%;
-  vertical-align:middle;
+#centralImg #expand{
   position: absolute;
-  cursor:pointer;
-}
-#centralImg .nextPrev:nth-child(0){
+  top: 2%;
   right: 0;
-  padding-left: 10px;
+  width:30px;
+  height: 30px;
+  color:gray;
+  cursor: pointer;
+  z-index: 2;
 }
-#centralImg .nextPrev:nth-child(1){
-  left: 0;
-  padding-right: 10px;
+#centralImg #expand:hover{
+  color: white;
+}
+#expand .fa-plus{
+  font-size: 20px;
+  padding-top:6px;
 }
 
-#centralImg .nextPrev:hover i{
-  color: gray;
+#centralImg .imgAsBG div{
+  display: inline-block;
+  height: 100%;
+  width: 50%;
+  cursor:pointer;
 }
-#centralImg .nextPrev i{
-  position: relative;
-  top: 50%;
-  font-size: 20px;
+#centralImg .imgAsBG div:nth-child(1){
+}
+#centralImg .imgAsBG div:nth-child(2){
 }
 #contentPersonal > #thumbs{
   display: none;
@@ -297,7 +367,7 @@ nav .menu_item{
   left: 80%;
   right:0;
   vertical-align: top;
-  overflow-y:scroll;
+  overflow-y:auto;
 }
 #contentPersonal > #thumbs img{
   display: block;
@@ -313,19 +383,20 @@ nav .menu_item{
   opacity: 1;/* Good browsers */
 }
 #contentPersonal > #bottomPersonal{
-  
   position: absolute;
   top:90%;
   bottom: 0;
   right: 20%;
   left:0;
 }
-#bottomPersonal h2{
+#bottomPersonal h2,
+#popBot h2{
   display: inline-block;
   text-transform: capitalize;
   margin: 0 20px 0 0;
 }
-#bottomPersonal i:hover{
+#bottomPersonal i:hover,
+#popBot i:hover{
   cursor: pointer;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";/* IE 8 */
   filter: alpha(opacity=50);/* IE 5-7 */
@@ -346,14 +417,21 @@ nav .menu_item{
   opacity: 0.5;/* Good browsers */
 } 
 
-#bottomPersonal .floatRight{
+.floatRight{
   position: absolute;
   top: 0;
   right: 0;
   font-size: 20px;
   text-align: right;
 }
-#bottomPersonal .description{
+#popBot .floatRight
+{
+  font-size: 15px;
+  margin-right: 15px;
+  margin-top: 4px;
+
+}
+.description{
   width: 50%;
 }
 #bottomPersonal .description,
@@ -432,7 +510,7 @@ nav .menu_item{
   height: 48%;
   width: 50%;
   margin-left: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
   font-size: 12pt;
   font-family: 'Bague', Arial, Helvetica;
   margin-left:auto;
