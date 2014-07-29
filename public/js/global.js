@@ -66,33 +66,15 @@ function window_load(){
 	var path = window.location.pathname;
 	path = path.substring(1,path.length);// remove the first '/'
 
-	switch(path)
-	{
-		case 'admin':
-			getFolders('root','forward');
-		break;
-		case 'login':
-		break;
-		case '':
-		break;
-	}
 }
 /*
 	Absolutely put these function in the admin page only (external JS)====================================
 */
+
 function getFolders(folderName, forward){
 		var path = $('#contentAdmin #path')[0];
-		$('#content > #contentAdmin form').html('');
-		if (forward){
-			if(folderName !='root')
-				path.value = path.value + '/'+folderName;
-			else
-				path.value = 'root';
-		}
-		else{
-			path.value = path.value.slice(0,path.value.lastIndexOf('/'));
-		}
-		folderName = path.value;
+		if (!folderName)
+				folderName='root'
 		var dataForAjax ={};	dataForAjax[folderName]=forward;
 		$.ajax({
 			  type: "GET",
@@ -100,7 +82,6 @@ function getFolders(folderName, forward){
 			  data: dataForAjax,
 			  success: function(data){
 			  	renderFolders(data);
-			  	renderImgInAdmin(data);
 			  }
 			});
 
@@ -126,21 +107,22 @@ function validateAdminForm(formId){
 	else return true;
 }
 
-function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
-	var container = $('#content > #contentAdmin > #foldersRight > form')[0];
-	//empty the form first
-	$(container).html('');
-
-	//creating inputs
-	var html='';
+function showInputs(oldName,oldOrder,oldSubtitle,oldFileName,action){
 	
-	if(action=='modifyFolder')	{
-		html+='<input type="text" name="name" value="'+oldName+'" placeholder="Name"/>';
-		html+='<input type="hidden" name="oldName" value="'+oldName+'"/>';
-		html+='<input type="text" name="subtitle" value="'+oldSubtitle+'" placeholder="Subtitle"/>';
-		html+='<input type="number" name="order" value="'+oldOrder+'" placeholder="1"/>';
-		html+='<input type="submit" value="Submit" />';
-		$(container).html(html);
+	$("input[name='name']").val(oldName);
+	$("input[name='order']").val(oldOrder);
+	$("textarea[name='subtitle']").val(oldSubtitle);
+	$("input[name='oldName']").val(oldName);
+	$("input[name='oldFileName']").val(oldFileName);
+	$("input").removeClass('visibleInlineBlock');
+	$("textarea").removeClass('visibleInlineBlock');
+
+	$("input[name='name']").toggleClass('visibleInlineBlock');
+	$("input[name='order']").toggleClass('visibleInlineBlock');
+	$("textarea[name='subtitle']").toggleClass('visibleInlineBlock');
+
+	if(action=='modifyFolder' || action=='addFolder')	{
+			$('#adminRight form')[0].action='/folders';
 	}
 	else if(action=='deleteFolder')	{
 		var r=confirm("Are you sure you want to delete the "+oldName+" folder and its content?");
@@ -162,42 +144,15 @@ function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
 			}
 		}
 	}
-	else if(action=='addFolder'){
-		html+='<input type="text" name="name" value="'+oldName+'" placeholder="Name"/>';
-		html+='<input type="text" name="subtitle" value="'+oldSubtitle+'" placeholder="Subtitle"/>';
-		html+='<input type="number" name="order" value="'+oldOrder+'" placeholder="1"/>';
-		html+='<input type="submit" value="Submit" />';
-
-		$(container).html(html);
-	}
-
-
-	else if(action=='uploadImage') {
-
-		html+='<input type="file" name="upload" multiple="multiple"/>';
-		html+='<input type="text" name="name" placeholder="Name"/>';
-		html+='<input type="hidden" name="path" form="picturesForm" value="'+$('#contentAdmin #path')[0].value+'"/>';
-		html+='<input type="text" name="subtitle" placeholder="Subtitle"/>';
-		html+='<input type="number" name="order" placeholder="1"/>';
-		html+='<input type="submit" value="Submit" />';
-
-		container = $('#content > #contentAdmin > #picturesRight > form')[0];
-		$(container).html(html);
-		
+	else if(action=='uploadImage' ){
+		$('#adminRight form')[0].action='/pictures';
+		$("input[name='upload']").toggleClass('visibleInlineBlock');
 	}
 	else if(action=='modifyImage'){
-
-		html+='<input type="text" name="name" value="'+oldName+'" placeholder="Name"/>';
-		html+='<input type="text" name="fileName" value="'+oldFileName.replace('w_','')+'"/>';
-		html+='<input type="hidden" name="oldFileName" value="'+oldFileName+'"/>';
-		html+='<input type="hidden" name="path" form="picturesForm" value="'+$('#contentAdmin #path')[0].value+'"/>';
-		html+='<input type="text" name="subtitle" value="'+oldSubtitle+'" placeholder="Subtitle"/>';
-		html+='<input type="number" name="order" value="'+oldOrder+'" placeholder="1"/>';
-		html+='<input type="submit" value="Submit" />';
-
-		container = $('#content > #contentAdmin > #picturesRight > form')[0];
-		$(container).html(html);
-		
+			$('#adminRight form')[0].action='/pictures';
+			$("input[name='fileName']").val(oldFileName.replace('w_',''));
+			$("input[name='fileName']").toggleClass('visibleInlineBlock');
+			$("input[name='oldFileName']").val(oldFileName.replace('w_',''));
 	}
 	else if(action=='deleteImage'){
 		var r=confirm("Are you sure you want to delete "+oldFileName+" ?");
@@ -219,48 +174,46 @@ function insertInput(oldName,oldOrder,oldSubtitle,oldFileName,action){
 			}
 		}
 	}
-
+	$("input[type='submit']").toggleClass('visibleInlineBlock');
 }
 function renderFolders(data){
-	var form = $('#foldersRight > form')[0];
-	$(form).html('');
-	var title ='';
-	if(data.title !='Your Website')
-		title+='<i class="fa fa-reply" value="'+data.title
-		+'" title="Go back to parent folder" onclick="getFolders(\''+data.title+'\',false)"></i>';
-	title +=data.title;
-	$('#contentAdmin > h1').html(title);
-	var str='';
-	if(data.tree)
-	Object.keys(data.tree).forEach(function(value){
-		if (value!= 'subtitle' && value!= 'order' && value!= 'img'&& value!= 'path')
-			str+="<div onclick='getFolders(\""+value+"\",true);'>"+value+"</div><div>"
-				+ 	"<i title='Modify the folder' class='fa fa-font' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",null,\"modifyFolder\")'></i>"
-				+	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",null,\"deleteFolder\")'></i>"
-				+"</div><br/>";
-	});
-	str+='<button onclick="insertInput(\'\',\'\',\'\',null,\'addFolder\')">Add a folder into '+data.title+'</button>';
-	$('#contentAdmin #foldersLeft').html(str);
-}
-
-function renderImgInAdmin(data)
-{
-	var container = $('#content #contentAdmin #picturesLeft');
-	$(container).html('');
-	var path = $('#contentAdmin #path')[0].value+'/';
-	if(data.tree.img && data.tree.img.length>0)
-	{
-		for(var i=0;i<data.tree.img.length;i++)
-		{
-			var str='';
-
-			str+= 	"<div><i title='Modify the picture' class='fa fa-font' onclick='insertInput(\""+data.tree.img[i].name+"\",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\""+data.tree.img[i].fileName+"\",\"modifyImage\")'></i>"
-				 +	"<i title='Delete this folder' class='fa fa-times' onclick='insertInput(\""+data.tree.img[i].name+"\",\""+data.tree.img[i].order+"\",\""+data.tree.img[i].subtitle+"\",\""+data.tree.img[i].fileName+"\",\"deleteImage\")'></i></div>"
-				 +	"<div><img src='"+path.replace('root/','/img/')+data.tree.img[i].fileName.replace('w_','t_')+"' alt='"+data.tree.img[i].name+"'/></div>"
-			$(container).append('<div class="thumbBlock">'+str+'</div>');
+	$("input").removeClass('visibleInlineBlock');
+	$("textarea").removeClass('visibleInlineBlock');
+	if(data){
+		var title ='';
+		if(data.title !='Your Website'){
+			title+='<i class="fa fa-reply" value="'+data.title
+			+'" title="Go back to parent folder" onclick="getFolders(\''+data.title+'\',false)"></i>';
+			$('#contentAdmin #path')[0].value=data.title;
 		}
+		else
+			$('#contentAdmin #path')[0].value='';
+		title +=data.title;
+		$('#contentAdmin > h1').html(title);
+		var folders='',pix='';
+		if(data.tree)
+		Object.keys(data.tree).forEach(function(value){
+			if (value!= 'subtitle' && value!= 'order' && value!= 'img'&& value!= 'path')
+				folders+="<div class='folder'>"
+					+   "<i class='fa fa-folder'></i>"
+					+   "<span onclick='getFolders(\""+value+"\",true);'>"+value+"</span>"
+					+ 	"<i title='Modify the folder' class='fa fa-font' onclick='showInputs(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",null,\"modifyFolder\")'></i>"
+					+	"<i title='Delete this folder' class='fa fa-times' onclick='showInputs(\""+value+"\",\""+data.tree[value].order+"\",\""+data.tree[value].subtitle+"\",null,\"deleteFolder\")'></i>"
+					+"</div>";
+			else if (value == 'img' && data.tree.img.length>0)
+				data.tree.img.forEach(function(img){
+					pix+="<div class='adminPix'>"
+							+"<i class='fa fa-file-image-o'></i>"
+							+"<span>"+img.fileName.substring(2)+"</span>"
+							+"<i class='fa fa-font' title='Modify the photo' onclick='showInputs(\""+img.name+"\",\""+img.order+"\",\""+img.subtitle+"\",\""+img.fileName+"\",\"modifyImage\")'></i>"
+							+"<i class='fa fa-times' title='Delete the photo' onclick='showInputs(\""+img.name+"\",\""+img.order+"\",\""+img.subtitle+"\",\""+img.fileName+"\",\"deleteImage\")'></i>"
+							+"<img src='"+data.tree.path+img.fileName+"'/>"
+						+"</div>";
+				});
+		});
+		$('#contentAdmin #folders').html(folders);
+		$('#contentAdmin #adminPictures').html(pix);
 	}
-	$(container).append('<button onclick="insertInput(\'\',\'\',\'\',null,\'uploadImage\')">Add a picture into '+data.title+'</button>')
 }
 /*
 	=========================================================================================================
@@ -381,10 +334,16 @@ function lookForPictures(data){
 	}
 }
 function enlargePersonalPicture(){
-	var x = $('#centralImg .imgAsBG').filter(function () { 
-	    return this.style.display == 'inline-block' 
+	var idx=0;
+	var x = $('#centralImg .imgAsBG').filter(function (index) { 
+		if(this.style.display == 'inline-block'){
+			idx=index;	return true;
+		}
+		else return false;
 	});
+	$('.popContent .imgIdx').text(idx+1);
 	x=  x[0].style.backgroundImage.substring(4,x[0].style.backgroundImage.length-1);
+
 	showImageInFullScreen(x);
 }
 function showImageInFullScreen(imgFile){
@@ -399,14 +358,19 @@ function share(type) {
     var w = 600;
     var h = 500;
     var url = 'http://www.jdmontero.com';
+    var pix='';
+
+    if($('.popContent').hasClass('visibleBlock')){
+    	pix = '?pix='+$('.popContent .imgIdx').text();
+    }
 
     if (type == "f") {
-        url= 'https://www.facebook.com/sharer/sharer.php?u='+document.URL;
+        url= 'https://www.facebook.com/sharer/sharer.php?u='+encodeURI(document.URL+pix);
         w = 600;
         h = 322;
     }
     else if (type == "l") { 
-		url= 'http://www.linkedin.com/shareArticle?mini=true&url='+encodeURI(document.URL)+'&title='+encodeURI('Juan Montero Photography'+window.location.pathname.replace(/\//g,' - '));
+		url= 'http://www.linkedin.com/shareArticle?mini=true&url='+encodeURI(document.URL+pix)+'&title='+encodeURI('Juan Montero Photography'+window.location.pathname.replace(/\//g,' - '));
         w = 600;
         h = 540;
     }

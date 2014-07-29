@@ -97,6 +97,22 @@ module.exports = function(app) {
 		});
 		
 	});
+	// FOLDERS ===============================================================
+	app.get('/folders', restrict,function(req, res){
+		var path = Object.keys(req.query)[0];
+		if(path){
+			var next = function(err,obj){
+				if(err){res.send('error while retrieving folder content');res.end();}
+				else res.json(obj);
+			};
+			if(req.query[path] && req.query[path] =='true')
+				core.getContentFolder(path,next);
+			else 
+				core.getParentFolder(path,next);
+
+		}
+			
+	});
 	// RESTRICTED & LOGIN ======================================================
 
 	app.get('/restricted', restrict, function(req, res){
@@ -119,28 +135,20 @@ module.exports = function(app) {
 	});
 
 	app.get('/admin', restrict,function(req, res){
-	  res.render('admin.jade', {
-			title: 'Manage your content',
-			personal: navData,
-		});
-	});
-	
-	// FOLDERS ===============================================================
-	app.get('/folders', restrict,function(req, res){
-		
-		var path = Object.keys(req.query)[0];
-		core.getContentFolder(path,function(err,obj){
-			if(err){
-				console.log(err);
+		core.getContentFolder('root',function(err,obj){
+			if (err){
 				res.send('error while retrieving folder content');
 				res.end();
 			}
-			else
-			{
-				res.json(obj);
+			else{
+				res.render('admin.jade', {
+					title: 'Manage your content',
+					personal: navData,
+					data: obj.tree
+				});
 			}
 		});
-			
+	  
 	});
 
 
@@ -204,27 +212,27 @@ module.exports = function(app) {
 	app.delete('/folders', restrict,function(req,res){
 		var fol2delete =req.body.arr[0]; 
 		var path =req.body.arr[1]; 
-		if (fol2delete && path){
-			core.deleteFolder(fol2delete,path,res);
+		if (fol2delete){
+			core.deleteFolder(fol2delete,res);
 		}
 		else
 			res.send({
 		      retStatus : 500,
 		      redirectTo: '/admin',
-		      msg: 'folder to delete or path is null'
+		      msg: 'folder to delete'
 		    });
 	});
 	app.delete('/pictures', restrict,function(req,res){
 		var img2delete =req.body.arr[0]; 
 		var path =req.body.arr[1]; 
-		if (img2delete && path){
+		if (img2delete){
 			core.deletePicture(img2delete,path,res);
 		}
 		else
 			res.send({
 		      retStatus : 500,
 		      redirectTo: '/admin',
-		      msg: 'image-to-delete or path is null'
+		      msg: 'image-to-delete is null'
 		    });
 	});
 	/*==========================

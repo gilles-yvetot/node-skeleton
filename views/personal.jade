@@ -37,7 +37,8 @@ block content
             #popImg
                 i.fa.fa-chevron-left(onclick="previousPictureInPersonal()")
                 #imgHere
-                    img(src='#{data.path}#{data.img[parseInt(pix)-1].fileName}')
+                    if pix && data.img && pix < data.img.length
+                        img(src='#{data.path}#{data.img[parseInt(pix)-1].fileName}')
                 i.fa.fa-compress
                 i.fa.fa-chevron-right(onclick="nextPictureInPersonal()")
                 #popBot

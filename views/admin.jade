@@ -3,14 +3,44 @@ extends layout
 block content
     #contentAdmin
         h1 Your Website
-        h2 Folders
-        #foldersLeft
-        #foldersRight
+        #adminLeft
+            #folders
+                if data
+                    for item,index in Object.keys(data)
+                        if item!= 'path' && item!= 'img' && item!= 'order' && item!= 'subtitle'
+                            .folder
+                                i.fa.fa-folder
+                                span(onclick="getFolders('#{item}',true)")= item
+                                i.fa.fa-font(title='Modify the folder' onclick="showInputs('#{item}','#{data[item].order}','#{data[item].subtitle}',null,'modifyFolder')")
+                                i.fa.fa-times(title='Delete the folder' onclick="showInputs('#{item}','#{data[item].order}','#{data[item].subtitle}',null,'deleteFolder')")
+            #addAfolder(onclick="showInputs('','','','','addFolder')")
+                i.fa.fa-folder
+                | New folder...
+            #adminPictures
+                if data && data.img && data.img.length>0
+                    for item,index in data.img
+                        .adminPix
+                            i.fa.fa-file-image-o
+                            span= item.fileName.substring(2)
+                            i.fa.fa-font(title='Modify the photo' onclick="showInputs('#{item.name}','#{item.order}','#{item.subtitle}','#{item.fileName}','modifyImage')")
+                            i.fa.fa-times(title='Delete the photo' onclick="showInputs('#{item.name}','#{item.order}','#{item.subtitle}','#{item.fileName}','deleteImage')")
+                            img(src='#{data.path}#{data.img[0].fileName}')
+            #addApix(onclick="showInputs('','','','','uploadImage')")
+                i.fa.fa-file-image-o
+                | New photo...
+        
+        #adminRight
             form(action='/folders', method='post', id='foldersForm',enctype='multipart/form-data' onsubmit='return validateAdminForm("foldersForm")')
+                input(name="name" placeholder="Name")
+                input(type='hidden' name='oldName')
+                input(type="number" name="order" placeholder="1")
+                br
+                input(name="fileName")
+                input(type='hidden' name='oldFileName')
+                input(type="file" name="upload" multiple="multiple")
+                br
+                textarea(name="subtitle" placeholder="Enter a subtitle or a description here...")
+                br
+                input(type='hidden' id='path' name='path' )
+                input(type="submit" value="Submit")
 
-        h2 Pictures
-        #picturesLeft
-        #picturesRight
-            form(action='/pictures', method='post', id='picturesForm',enctype='multipart/form-data' onsubmit='return validateAdminForm("picturesForm")')
-
-        input(type='hidden' id='path' form='foldersForm' name='path')

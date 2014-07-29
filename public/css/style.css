@@ -31,6 +31,9 @@ a{
 .visibleBlock{
   display: block !important;
 }
+.visibleInlineBlock{
+  display: inline-block !important;
+}
 .visibleTable{
   display: table !important;
 }
@@ -268,7 +271,10 @@ nav .menu_item{
   right:0;
   left:0;
 }
+#contentAdmin{
+  padding:30px 50px;
 
+}
 #contentLogin{
   margin: auto;
   width:500px;
@@ -277,9 +283,7 @@ nav .menu_item{
   padding:10px;
   margin-top:100px;
 }
-#contentAdmin{
-  text-align: center;
-}
+
 #contentPhotography{
   width: 606px; /* 3 imgs + their borders */
   padding-right: 20px; /*scrollbar*/
@@ -314,12 +318,98 @@ nav .menu_item{
 #loginMain input{
   margin-left: 5px;
 }
+/*                Admin               */
+#contentAdmin #adminLeft,
+#contentAdmin #adminRight{
+  width: 40%;
+  padding: 0 5%;
+  display: inline-block;
+  vertical-align: top;
+}
+#adminLeft .folder,
+#adminLeft .adminPix{
+  font-size: 18px;
+}
+#adminLeft .folder span:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+#adminLeft i.fa-folder,
+#adminLeft i.fa-file-image-o{
+  font-size:24px;
+  padding-right:10px;
+}
+.folder i.fa-font,
+.folder i.fa-times,
+.adminPix i.fa-font,
+.adminPix i.fa-times{
+  font-size:22px;
+  padding-left: 5px;
+  cursor: pointer;
+}
+.folder i.fa-font:hover,
+.folder i.fa-times:hover,
+.adminPix i.fa-font:hover,
+.adminPix i.fa-times:hover{
+  color:gray;
+}
+#adminPictures{
+  margin-top: 30px;
+}
+.adminPix img{
+  display: none;
+  max-width: 75px;
+  max-height: 75px;
+  position: absolute;
+  padding-left: 80px;
+}
+.adminPix:hover img{
+  display: inline-block;
+}
+#adminRight form input,
+#adminRight form textarea
+{
+  min-height: 18px;
+  border-radius: 4px;
+  outline: none;
+  padding: 3px 0px 3px 3px;
+  margin: 5px 2px 3px 2px;
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  border: 1px solid rgba(81, 203, 238, 1);
+  font-family: 'Bague';
+  font-size: 16px;
+  display: none;
+}
 
-
-
-
-
-
+#adminRight form input[name="name"]{
+  width:50%;
+}
+#adminRight form input[name="fileName"]{
+  width:50%;
+}
+#adminRight form input[name="order"]{
+  min-width: 25px;
+  width:5%;
+}
+#adminRight form input[type="submit"]{
+  background: white;
+  width:70px;
+  cursor: pointer;
+}
+#adminRight form input[name="upload"]{
+  border:0;
+  box-shadow:none;
+}
+#adminRight form textarea[name="subtitle"]{
+  width: 56%;
+  height: 100px;
+  vertical-align: top;
+}
+#adminLeft #addAfolder,
+#adminLeft #addApix{
+  cursor: pointer;
+  font-style: italic;
+}
 /*                Personal              */
 
 #contentPersonal > #centralImg{
