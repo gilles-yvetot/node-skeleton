@@ -19,7 +19,7 @@ block content
             for item,index in data.img
                 img.opacity50(src='#{data.path}#{item.fileName.replace("w_","t_")}' onclick='showPictureInPersonal(#{index})')
         #bottomPersonal
-            h2= title
+            h2= title.split('-')[0]
             span 
                 span.imgIdx 1
                 span /#{data.img.length}

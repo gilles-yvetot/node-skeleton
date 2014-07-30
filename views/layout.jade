@@ -11,6 +11,7 @@ html(lang='en')
     //----------Style
     link(href='/css/style.css', rel='stylesheet', type='text/css')
     link(href='//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css' rel='stylesheet')
+    link(rel="icon" href="/img/favicon.ico" type="image/x-icon")
     //----------Script
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js')
     script(src='/js/global.js')
@@ -28,21 +29,39 @@ html(lang='en')
                 a(href='/')
                     img(src='/img/logo.png' alt='juan montero logo')
             nav
-                .menu_item
-                    a(href='#') Personal
-                    .submenu
-                        ul
-                            for val in personal
-                                +submenuItem(val)
-                .menu_item
-                    a(href='/photography/') Photography
-                    .submenu
-                .menu_item
-                    a(href='/pdf/') PDF 
-                    .submenu
-                .menu_item
-                    a(href='/contact/') About/Contact
-                    .submenu
+                if title.indexOf('Personal')>0
+                    .menu_item.active
+                        a(href='#') Personal
+                        .submenu
+                            ul
+                                for val in personal
+                                    +submenuItem(val)
+                else
+                    .menu_item
+                        a(href='#') Personal
+                        .submenu
+                            ul
+                                for val in personal
+                                    +submenuItem(val)
+                if title == 'Photography'
+                    .menu_item.active
+                        a(href='/photography/') Photography
+                else 
+                    .menu_item
+                        a(href='/photography/') Photography
+                if title == 'PDF'
+                    .menu_item.active
+                        a(href='/pdf/') PDF 
+                else
+                    .menu_item
+                        a(href='/pdf/') PDF 
+                if title == 'Contact'
+                    .menu_item.active
+                        a(href='/contact/') About/Contact
+                else
+                    .menu_item
+                        a(href='/contact/') About/Contact
+
         
         #content
             block content

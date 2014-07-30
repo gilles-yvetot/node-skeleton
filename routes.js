@@ -11,7 +11,6 @@ module.exports = function(app) {
 	    Routes: GET
 	==========================*/
 
-
 	// HOME ====================================================================
 	app.get('/', function(req, res){
 		res.render('home.jade', {
@@ -41,7 +40,7 @@ module.exports = function(app) {
 			else{
 				res.render('personal.jade', {
 					personal: navData,
-					title: (req.params.subpart)?req.params.subpart:'Personal',
+					title: (req.params.subpart)?req.params.subpart+' - Personal':'Personal',
 					data: content.tree,
 					pix: query.pix,
 				});

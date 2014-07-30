@@ -28,6 +28,21 @@ a{
   font-family: 'Bague';
   src: url('/font/PFBagueSansPro-Regular.eot') format('embedded-opentype'),  url('/font/PFBagueSansPro-Regular.woff') format('woff');
 }
+/*scrollbars*/
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar,
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-corner,
+::-webkit-resizer  
+ {background: none;border:0;}
+::-webkit-scrollbar-thumb{ 
+      background: none;
+      border-right: 1px solid white;
+      margin: 5px 0;
+ }
+
 .visibleBlock{
   display: block !important;
 }
@@ -218,11 +233,14 @@ nav .menu_item{
   z-index: 2;
 }
 .menu_item > a:first-child{
-    display: block;
-    padding:10px;
+    display: inline-block;
+    margin: auto;
+    padding: 10px 0 5px 0;
+
 }
 .submenu{
   display: none;
+  margin-top: -1px;
 }
 .submenu ul{
   list-style: none;
@@ -234,11 +252,18 @@ nav .menu_item{
 .submenu ul li{
   padding: 5px 0;
 }
+.submenu ul li a:hover{
+  border-bottom: 1px solid black;
+}
 .menu_item:hover .submenu{
   display: block;
 }
-.menu_item:hover{
-  border: 1px solid white;
+.menu_item:hover > a,
+.menu_item.active:hover > a{
+  border-bottom: 1px solid white;
+}
+.menu_item.active > a{
+  border-bottom: 1px solid gray;
 }
 
 
@@ -285,11 +310,10 @@ nav .menu_item{
 }
 
 #contentPhotography{
-  width: 606px; /* 3 imgs + their borders */
-  padding-right: 20px; /*scrollbar*/
-  height: 95%;
-  margin:auto;
-  overflow-y:auto;
+  width: 624px; /*3 imgs+ borders + and margin right for scroll bar*/
+  height: 90%;
+  margin: 5% auto;
+  overflow-y: auto;
 }
 #contentPersonal{
   margin-left: 25%;
@@ -550,7 +574,7 @@ nav .menu_item{
   display: block;
   width: 200px;
   height: 200px;
-  border: 1px solid white;
+  border: 1px solid black;
   background-position: center center;
   background-size: cover;
   float: left;
@@ -598,7 +622,8 @@ nav .menu_item{
 }
 #resume div{
   height: 48%;
-  width: 50%;
+  width: 48%;
+  margin-right: 2%;
   margin-left: auto;
   overflow-y: auto;
   font-size: 12pt;
