@@ -31,13 +31,13 @@ block content
                 include share
                 i.fa.fa-share-alt
             .description #{data.img[0].subtitle}
-        - var klass = (pix && data.img && pix < data.img.length)?"visibleBlock":""
+        - var klass = (pix && data.img && (pix-1) < data.img.length)?"visibleBlock":""
         .popBG.opacity50(class=klass)
         .popContent(class=klass)
             #popImg
                 i.fa.fa-chevron-left(onclick="previousPictureInPersonal()")
                 #imgHere
-                    if pix && data.img && pix < data.img.length
+                    if pix && data.img && (pix-1) < data.img.length
                         img(src='#{data.path}#{data.img[parseInt(pix)-1].fileName}')
                 i.fa.fa-compress
                 i.fa.fa-chevron-right(onclick="nextPictureInPersonal()")

@@ -361,7 +361,7 @@ function share(type) {
     var pix='';
 
     if($('.popContent').hasClass('visibleBlock')){
-    	pix = '?pix='+$('.popContent .imgIdx').text();
+    	pix = parseInt($('.popContent .imgIdx').text())-1;
     }
 
     if (type == "f") {

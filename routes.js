@@ -27,8 +27,10 @@ module.exports = function(app) {
 		});
 	});
 	// PERSONAL =================================================================
-	app.get('/personal/:subpart', function(req, res){
-		var query = url.parse(req.url, true).query;
+	app.get('/personal/:subpart/:subpart2?', function(req, res){
+		
+		var pixIdx = (req.params.subpart2 && parseInt(req.params.subpart2))?parseInt(req.params.subpart2):null;
+
 		core.getContentFolder(req.params.subpart, function(err,content){
 			if(err){
 				res.render('personal.jade', {
@@ -42,7 +44,7 @@ module.exports = function(app) {
 					personal: navData,
 					title: (req.params.subpart)?req.params.subpart+' - Personal':'Personal',
 					data: content.tree,
-					pix: query.pix,
+					pix: pixIdx,
 				});
 			}
 		});

@@ -8,7 +8,7 @@ var http = require('http');
 var path = require('path');
 require('./pass.js').initUsers();
 var app = module.exports =express();
-
+var favicon = require('serve-favicon');
 
 /*
 	Server config
@@ -16,7 +16,7 @@ var app = module.exports =express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.use(express.favicon());
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());

@@ -12,11 +12,17 @@ block content
                         div(onclick="redirectToPhoto('#{key}')") #{key}
                     for item in data[key].img
                         .tile.lazy(data-original="#{data[key].path}#{item.fileName}" title="#{item.name}" onclick="showImageInFullScreen('#{data[key].path}#{item.fileName}')")
-    if pix && data.img && pix < data.img.length
-        .popBG.opacity50.visibleBlock
-        .popContent.visibleBlock
-            div(style='background-image:url("#{data.path}#{data.img[pix].fileName}");')
-    else
-        .popBG
-        .popContent
+        - var klass = (pix && data.img)?"visibleBlock":""
+        .popBG.opacity50(class=klass)
+        .popContent(class=klass)
+            #popImg
+                #imgHere
+                    if pix && data.img
+                        img(src='#{data.path}#{data.img[parseInt(pix)-1].fileName}')
+                i.fa.fa-compress
+                #popBot
+                    h2= title
+                    .floatRight
+                        div 2014 All rights reserved &copy; Juan David Montero
+                        include share
 
